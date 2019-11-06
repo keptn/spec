@@ -147,8 +147,8 @@ Now, if the response time of your service is slower than defined in your SLOs, t
 
 *   Setup Unleash server for demo
 *   Integrate Feature toggle into demo application
-*   Build featuretoggle action for remediation service
-*   Provide load generation script
+*   Build featuretoggle action for remediation service (in Keptn core)
+*   Provide load generation script (for demo)
 *   Provide instructions to setup custom alerting rule in Dynatrace (not yet available via API)
 
 # Open Issues to be discussed
