@@ -22,7 +22,7 @@ Failed tests result in an automatic roll-back of the latest deployment in case o
   * `functional` 
   * `performance` 
 
-In future versions of Keptn, it is not necessary to distinguish between functional and performance tests. But it is necessary to define multiple tests for a stage that can either be executed sequentially or in parallel. Therefore, we need a link between the shipyard and the uniform (i.e. using selectors and labels as known by k8s).
+  In future versions of Keptn, it is not necessary to distinguish between functional and performance tests. But it is necessary to define multiple tests for a stage that can either be executed sequentially or in parallel. Therefore, we need a link between the shipyard and the uniform (i.e. using selectors and labels as known by k8s).
 
 ## Example of a shipyard.yml file
 
