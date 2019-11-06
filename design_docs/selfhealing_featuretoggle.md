@@ -28,16 +28,16 @@ remediation.yaml
 
 ```yaml
 remediations:
-- name: responsetime_p90_sockshop_carts
+- name: "responsetime_p90_sockshop_carts"
   actions:
-  - action: featuretoggle
-    value: enablecache:on
+  - action: "featuretoggle"
+    value: "enablecache:on"
 ```
 
 
 *   `name`: it is the name of the violated SLO or type of problem.
 *   `actions`: a list of actions that can be executed to remediate the problem
-*   `action`: name of the action as well as the value which should be set. I.e., the action should be set to `featuretoggle`, the value defines which feature toggle as well as the new value the feature toggle should be set to.
+*   `action`: name of the action as well as the value which should be set. I.e., the action should be set to `featuretoggle`, the value defines which feature toggle as well as the new value the feature toggle should be set to. In this case, the name of the feature toggle is `enablecache` and the value will be set to `on` once this remediation is executed.
 
 
 # User Walkthrough
