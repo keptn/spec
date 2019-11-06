@@ -45,6 +45,9 @@ remediations:
 
 ## Setup & Configure Keptn 
 
+As you would normally do with Keptn, create a project, onboard a service, and deploy your service into your Kubernetes cluster.
+
+<details><summary>Instructions</summary>
 
 ### Create project 
 
@@ -54,41 +57,7 @@ Create a Keptn project which where you want to onboard your service. Define all 
 keptn create project PROJECTNAME --shipyard=shipyard.yaml
 ```
 
-### Add secret for Unleash server
 
-Add a secret to let Keptn access the Unleash server and toggle the feature flags.
-
-unleash-secret:
-
-```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: unleash-secret
-type: Opaque
-data:
-  username: unleash-username
-  token: unleash-token
-  server-url: unleash-server-url
-```
-
-
-Apply the secret to the cluster.
-
-```
-kubectl apply -f unleash-secret -n keptn
-```
-
-<!--
-ALTERNATIVE
-
-```
-#keptn add secret secret.yaml # needed to access the unleash server
-#keptn apply uniform --project=PROJECTNAME uniform.yaml
-```
-
-uniform not needed right now since unleash is built in as action in Keptn core remediation service 
--->
 
 
 
@@ -109,7 +78,50 @@ Configure Keptn - add the remediation file
 keptn add-resource --project=PROJECTNAME --service=SERVICENAME --stage=STAGENAME --resource=remediation.yaml
 ```
 
+Deploy your application to Keptn.
 
+```
+keptn send event new-artifact --project=PROJECTNAME --service=SERVICENAME --image=docker.io/IMAGENAME --tag=TAG
+```
+
+</details>
+
+
+### Add secret for Unleash server
+
+In order to let the Keptn built-in Unleash remediation service communicate with the Unleash server, provide the credentials in terms of a Kubernetes secret.
+
+unleash-secret.yaml:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: unleash-secret
+type: Opaque
+data:
+  username: unleash-username
+  token: unleash-token
+  server-url: unleash-server-url
+```
+
+
+Apply the secret to the cluster.
+
+```
+kubectl apply -f unleash-secret.yaml -n keptn
+```
+
+<!--
+ALTERNATIVE
+
+```
+#keptn add secret secret.yaml # needed to access the unleash server
+#keptn apply uniform --project=PROJECTNAME uniform.yaml
+```
+
+uniform not needed right now since unleash is built in as action in Keptn core remediation service 
+-->
 
 ### Configure your monitoring
 
@@ -122,10 +134,13 @@ To be able to react on any issues in your environment, the monitoring solution h
     An example can be seen in this screenshot:
     ![Custom alert](./assets/dt-custom-alert.png)
 
+    Please note that in this case, the title of the custom alert has to match the remediation name in the remediation.yaml file, i.e., in this case `responsetime_p90_sockshop_carts`.
+
+
 
 ### Watch self healing in action
 
-Now, if the response time of your service is slower than defined in your SLOs, the monitoring tool will send out an alert (problem ticket) to Keptn. Keptn on the other hand will find that there is a remediation set for the affected service (defined in the remediation.yaml file). Thus, Keptn will trigger the remediation, by making an API call to the feature toggle server and set the toggle to the desired state described in the remediation action.
+Now, if the response time of your service is slower than defined in your SLOs, the monitoring tool will send out an alert (problem ticket) to Keptn. Keptn on the other hand will find that there is a remediation set for the affected service (defined in the remediation.yaml file). Thus, Keptn will trigger the remediation, by making an API call to the feature toggle server and set the toggle to the desired state described in the remediation action. Afterwards, Keptn will send out a `sh.keptn.events.deployment-finished` event (TODO verify what is correct event type) to verify via the Keptn quality gates if the remediation access was successful. 
 
 
 # **ACTION ITEMS for implementation**
@@ -135,4 +150,11 @@ Now, if the response time of your service is slower than defined in your SLOs, t
 *   Build featuretoggle action for remediation service
 *   Provide load generation script
 *   Provide instructions to setup custom alerting rule in Dynatrace (not yet available via API)
+
+# Open Issues to be discussed
+
+* If and how to sync state of all feature toggles to Keptn config repository
+    - Most feature toggle frameworks provide webhooks which could be used to sync state. However, each framework has different payload to define a feature toggle.
+
+* Extraction of feature toggle remediation into own services. Or better abstract the remediation action to be just a container to run when needed (instead of having services running in the cluster all the time).
 
