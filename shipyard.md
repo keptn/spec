@@ -33,7 +33,7 @@ stages:
     tests: "functional"
   - name: "staging"
     deployment: "blue_green_service"
-    test: "performance"
+    tests: "performance"
   - name: "production"
     deployment: "blue_green_service"
     remediation: "automated"
