@@ -44,7 +44,7 @@ stages:
     approval: "automatic"
   - name: "staging"
     deployment: "blue_green_service"
-    test: "performance"
+    tests: "performance"
     approval: "manual"
   - name: "production"
     deployment: "blue_green_service"
