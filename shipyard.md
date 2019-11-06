@@ -22,7 +22,11 @@ Failed tests result in an automatic roll-back of the latest deployment in case o
   * `functional` 
   * `performance` 
 
-In future versions of Keptn, it is not necessary to distinguish between functional and performance tests. But it is necessary to define multiple tests for a stage that can either be executed sequentially or in parallel. Therefore, we need a link between the shipyard and the uniform (i.e. using selectors and labels as known by k8s).
+  In future versions of Keptn, it is not necessary to distinguish between functional and performance tests. But it is necessary to define multiple tests for a stage that can either be executed sequentially or in parallel. Therefore, we need a link between the shipyard and the uniform (i.e. using selectors and labels as known by k8s).
+
+* **Remediation**. The remediation property specifies whether remediation actions should automatically be executed in the respective stage. If Keptn receives a problem event (of type `sh.keptn.event.problem.open`), a remediation action is defined for this problem (in the `remediation.yaml` file), and the remediation is set to `automated`, then the remediation action is executed. 
+Keptn supports remediations of type:
+  * `automated`
 
 ## Example of a shipyard.yml file
 
