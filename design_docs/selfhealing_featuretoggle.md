@@ -133,7 +133,6 @@ To be able to react on any issues in your environment, the monitoring solution h
 
     An example can be seen in this screenshot:
     ![Custom alert](./assets/dt-custom-alert.png)
-    TODO update screenshot
 
     Please note that in this case, the title of the custom alert has to match the remediation name in the remediation.yaml file, i.e., in this case `response_time_p90`.
 
