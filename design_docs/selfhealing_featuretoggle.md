@@ -28,13 +28,13 @@ remediation.yaml
 
 ```yaml
 remediations:
-- name: "responsetime_p90"
+- name: "response_time_p90"
   actions:
   - action: "featuretoggle"
     value: "enablecache:on"
 ```
 
-*   `name`: it is the name of the violated SLO or type of problem, e.g., `responseTime_p90`, `errorRate`, TODO add more examples
+*   `name`: it is the name of the violated SLO (or SLI, respectively), e.g., `response_time_p90`, `throughput`, or `error_rate`. Find a [list of all currenlty supported SLIs here](https://github.com/keptn/spec/blob/master/design_docs/keptn_quality_gates.md#service-level-objectives).
 *   `actions`: a list of actions that can be executed to remediate the problem
 *   `action`: name of the action as well as the value which should be set. I.e., the action should be set to `featuretoggle`, the value defines which feature toggle as well as the new value the feature toggle should be set to. In this case, the name of the feature toggle is `enablecache` and the value will be set to `on` once this remediation is executed.
 
@@ -135,7 +135,7 @@ To be able to react on any issues in your environment, the monitoring solution h
     ![Custom alert](./assets/dt-custom-alert.png)
     TODO update screenshot
 
-    Please note that in this case, the title of the custom alert has to match the remediation name in the remediation.yaml file, i.e., in this case `responsetime_p90`.
+    Please note that in this case, the title of the custom alert has to match the remediation name in the remediation.yaml file, i.e., in this case `response_time_p90`.
 
 
 
