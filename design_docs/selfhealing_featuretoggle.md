@@ -28,14 +28,13 @@ remediation.yaml
 
 ```yaml
 remediations:
-- name: "responsetime_p90_sockshop_carts"
+- name: "responsetime_p90"
   actions:
   - action: "featuretoggle"
     value: "enablecache:on"
 ```
 
-
-*   `name`: it is the name of the violated SLO or type of problem.
+*   `name`: it is the name of the violated SLO or type of problem, e.g., `responseTime_p90`, `errorRate`, TODO add more examples
 *   `actions`: a list of actions that can be executed to remediate the problem
 *   `action`: name of the action as well as the value which should be set. I.e., the action should be set to `featuretoggle`, the value defines which feature toggle as well as the new value the feature toggle should be set to. In this case, the name of the feature toggle is `enablecache` and the value will be set to `on` once this remediation is executed.
 
@@ -101,10 +100,11 @@ metadata:
 type: Opaque
 data:
   username: unleash-username
-  token: unleash-token
+  password: unleash-password
   server-url: unleash-server-url
 ```
 
+Please note that although Unleash does provide [multiple ways of authentification](https://unleash.github.io/docs/securing_unleash#securing-the-admin-api), currently only basic auth is supported by Keptn.
 
 Apply the secret to the cluster.
 
@@ -133,8 +133,9 @@ To be able to react on any issues in your environment, the monitoring solution h
 
     An example can be seen in this screenshot:
     ![Custom alert](./assets/dt-custom-alert.png)
+    TODO update screenshot
 
-    Please note that in this case, the title of the custom alert has to match the remediation name in the remediation.yaml file, i.e., in this case `responsetime_p90_sockshop_carts`.
+    Please note that in this case, the title of the custom alert has to match the remediation name in the remediation.yaml file, i.e., in this case `responsetime_p90`.
 
 
 
@@ -142,14 +143,6 @@ To be able to react on any issues in your environment, the monitoring solution h
 
 Now, if the response time of your service is slower than defined in your SLOs, the monitoring tool will send out an alert (problem ticket) to Keptn. Keptn on the other hand will find that there is a remediation set for the affected service (defined in the remediation.yaml file). Thus, Keptn will trigger the remediation, by making an API call to the feature toggle server and set the toggle to the desired state described in the remediation action. Afterwards, Keptn will send out a `sh.keptn.events.deployment-finished` event (TODO verify what is correct event type) to verify via the Keptn quality gates if the remediation access was successful. 
 
-
-# **ACTION ITEMS for implementation**
-
-*   Setup Unleash server for demo
-*   Integrate Feature toggle into demo application
-*   Build featuretoggle action for remediation service (in Keptn core)
-*   Provide load generation script (for demo)
-*   Provide instructions to setup custom alerting rule in Dynatrace (not yet available via API)
 
 # Open Issues to be discussed
 
