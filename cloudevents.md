@@ -1,25 +1,113 @@
 # Keptn Cloud Events
 
 * [Create Project](#create-project)
+* [Delete Project](#delete-project)
 * [Create Service](#create-service)
 * [Configuration Change](#configuration-change)
 * [Deployment Finished](#deployment-finished)
 * [Tests Finished](#tests-finished)
+* [Start Evaluation](#start-evaluation)
 * [Evaluation Done](#evaluation-done)
 * [Problem](#problem)
 * [Configure Monitoring](#configure-monitoring)
 
 ---
 
+## Keptn Cloud Event
+
+A Keptn Cloud Event has following specification: 
+```json
+"keptn.event": {
+  "required": [
+    "project",
+    "shipyard"
+  ],
+  "properties": {
+    "contenttype": {
+      "type": "string"
+    },
+    "data": {
+      "type": ["object", "string"]
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "shkeptncontext": {
+      "format": "uuid",
+      "type": "string"
+    },
+    "source": {
+      "format": "uri-reference",
+      "type": "string"
+    },
+    "specversion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "time": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "type": "object"
+}
+```
+
 ## Create Project
 
 The *project create* event is sent when a new project should be created.
+
+### type
+```json
+{
+  "type": "sh.keptn.internal.event.project.create"
+}
+```
+
+### data
+```json
+"ProjectCreateEventData": {
+  "required": [
+    "project",
+    "shipyard"
+  ],
+  "properties": {
+    "gitRemoteURL": {
+      "type": "string"
+    },
+    "gitToken": {
+      "type": "string"
+    },
+    "gitUser": {
+      "type": "string"
+    },
+    "project": {
+      "type": "string"
+    },
+    "shipyard": {
+      "type": "string",
+      "format": "base64 encoded"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+### Example:
+<details><summary>Example of sh.keptn.internal.event.project.create</summary>
+<p>
 
 ```json
 {
   "type": "sh.keptn.internal.event.project.create",
   "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/cli",
+  "source": "https://github.com/keptn/keptn/api",
   "id": "49ac0dec-a83b-4bc1-9dc0-1f050c7e781b",
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
@@ -28,22 +116,119 @@ The *project create* event is sent when a new project should be created.
     "project": "sockshop",
     "gitUser": "scott",
     "gitToken": "token",
-    "gitRemoteURL": "https://remote.url/project/repository",
-    "shipyard": "stages:
-      - name: \"staging\"
-        deployment_strategy: \"blue_green_service\"
-        test_strategy: \"performance\"
-      - name: \"production\"
-        deployment_strategy: \"blue_green_service\"
-        remediation_strategy: \"automated\""
+    "gitRemoteURL": "https://github.com/project/repository",
+    "shipyard": "c3RhZ2VzOg0KICAtIG5hbWU6ICJkZXYiDQogICAgZGVwbG95bWVudF9zdHJhdGVneTogImRpcmVj
+                dCINCiAgICB0ZXN0X3N0cmF0ZWd5OiAiZnVuY3Rpb25hbCINCiAgLSBuYW1lOiAic3RhZ2luZyIN
+                CiAgICBkZXBsb3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHRlc3Rf
+                c3RyYXRlZ3k6ICJwZXJmb3JtYW5jZSINCiAgLSBuYW1lOiAicHJvZHVjdGlvbiINCiAgICBkZXBs
+                b3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHJlbWVkaWF0aW9uX3N0
+                cmF0ZWd5OiAiYXV0b21hdGVkIg0K"
   }
 }
+
 ```
+</p>
+</details>
+
 ([&uarr; up to index](#keptn-cloud-events))
+
+## Delete Project
+
+The *project delete* event is sent when a project should be deleted.
+
+### type
+```json
+{
+  "type": "sh.keptn.internal.event.project.delete"
+}
+```
+
+### data
+```json
+"ProjectDeleteEventData": {
+  "required": [
+    "project",
+  ],
+  "properties": {
+    "project": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+### Example:
+<details><summary>Example of sh.keptn.internal.event.project.delete</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.internal.event.project.delete",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/api",
+  "id": "49ac0dec-a83b-4bc1-9dc0-1f050c7e781b",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "contenttype": "application/json",
+  "shkeptncontext": "49ac0dec-a83b-4bc1-9dc0",
+  "data": {
+    "project": "sockshop"
+  }
+}
+
+```
+</p>
+</details>
 
 ## Create Service
 
 The *service create* event is sent when a new service should be created.
+
+### type
+```json
+{
+  "type": "sh.keptn.internal.event.service.create"
+}
+```
+
+### data
+```json
+"ServiceCreateEventData": {
+  "required": [
+    "project",
+    "service",
+    "helmChart",
+    "deploymentStrategies"
+  ],
+  "properties": {
+    "deploymentStrategies": {
+      "patternProperties": {
+        ".*": {
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "helmChart": {
+      "type": "string",
+      "format": "base64 encoded"
+    },
+    "project": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+### Example:
+<details><summary>Example of sh.keptn.internal.event.service.create</summary>
+<p>
 
 ```json
 {
@@ -57,22 +242,119 @@ The *service create* event is sent when a new service should be created.
   "data": {
     "project": "sockshop",
     "service": "carts",
-    "helmChart": "string",
-    "deploymentStrategies": "string"
+    "helmChart": "c3RhZ2VzOg0KICAtIG5hbWU6ICJkZXYiDQogICAgZGVwbG95bWVudF9zdHJhdGVneTogImRpcmVj
+                dCINCiAgICB0ZXN0X3N0cmF0ZWd5OiAiZnVuY3Rpb25hbCINCiAgLSBuYW1lOiAic3RhZ2luZyIN
+                CiAgICBkZXBsb3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHRlc3Rf
+                c3RyYXRlZ3k6ICJwZXJmb3JtYW5jZSINCiAgLSBuYW1lOiAicHJvZHVjdGlvbiINCiAgICBkZXBs
+                b3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHJlbWVkaWF0aW9uX3N0
+                cmF0ZWd5OiAiYXV0b21hdGVkIg0K",
+    "deploymentStrategies": {
+      "*": 0
+    }
   }
 }
+
 ```
+</p>
+</details>
+
 ([&uarr; up to index](#keptn-cloud-events))
 
 ## Configuration Change
 
 The *configuration change* event is sent when a desired state for a service is available and has to be updated in its configuration.
 
+### type
+```json
+{
+  "type": "sh.keptn.event.configuration.change"
+}
+```
+
+### data
+```json
+"ConfigurationChangeEventData": {
+  "required": [
+    "project",
+    "service",
+    "stage"
+  ],
+  "properties": {
+    "canary": {
+      "$ref": "#/definitions/Canary"
+    },
+    "fileChangesGeneratedChart": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "fileChangesUmbreallaChart": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "fileChangesUserChart": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "project": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "valuesCanary": {
+      "patternProperties": {
+        ".*": {
+          "additionalProperties": true,
+          "type": "object"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+},
+"Canary": {
+  "required": [
+    "action"
+  ],
+  "properties": {
+    "action": {
+      "type": "integer"
+    },
+    "value": {
+      "type": "integer"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+### Example:
+<details><summary>Example of sh.keptn.event.configuration.change</summary>
+<p>
+
 ```json
 {
   "type": "sh.keptn.event.configuration.change",
   "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/cli",
+  "source": "https://github.com/keptn/keptn/api",
   "id": "49ac0dec-a83b-4bc1-9dc0-1f050c7e781b",
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
@@ -87,17 +369,72 @@ The *configuration change* event is sent when a desired state for a service is a
   }
 }
 ```
+
+</p>
+</details>
+
 ([&uarr; up to index](#keptn-cloud-events))
 
 ## Deployment Finished
 
 The *deployment-finished* event is sent when a desired state of a service is deployed in a stage.
 
+### type
+```json
+{
+  "type": "sh.keptn.events.deployment-finished"
+}
+```
+
+### data
+```json
+"DeploymentFinishedEventData": {
+  "required": [
+    "project",
+    "stage",
+    "service",
+    "teststrategy",
+    "deploymentstrategy",
+    "tag",
+    "image"
+  ],
+  "properties": {
+    "deploymentstrategy": {
+      "type": "string"
+    },
+    "image": {
+      "type": "string"
+    },
+    "project": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "tag": {
+      "type": "string"
+    },
+    "teststrategy": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+### Example:
+<details><summary>Example of sh.keptn.events.deployment-finished</summary>
+<p>
+
 ```json
 {
   "type": "sh.keptn.events.deployment-finished",
   "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/helm-service",
+  "source": "https://github.com/keptn/keptn/api",
   "id": "49ac0dec-a83b-4bc1-9dc0-1f050c7e781b",
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
@@ -107,15 +444,72 @@ The *deployment-finished* event is sent when a desired state of a service is dep
     "stage": "staging",
     "service": "carts",
     "testStrategy": "performance",
-    "deploymentStrategy": "direct"
+    "deploymentStrategy": "direct",
+    "tag": "0.9.1",
+    "image": "docker.io/keptnexamples/carts" 
   }
 }
 ```
+
+</p>
+</details>
+
 ([&uarr; up to index](#keptn-cloud-events))
 
 ## Tests Finished
 
 The *tests-finished* event is sent when the tests for a service in a stage are finished.
+
+### type
+```json
+{
+  "type": "sh.keptn.events.tests-finished"
+}
+```
+
+### data
+```json
+"TestsFinishedEventData": {
+  "required": [
+    "project",
+    "service",
+    "stage",
+    "teststrategy",
+    "deploymentstrategy",
+    "start",
+    "end"
+  ],
+  "properties": {
+    "deploymentstrategy": {
+      "type": "string"
+    },
+    "end": {
+      "type": "string"
+    },
+    "project": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "start": {
+      "type": "string"
+    },
+    "teststrategy": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+### Example:
+<details><summary>Example of sh.keptn.events.tests-finished</summary>
+<p>
 
 ```json
 {
@@ -132,77 +526,74 @@ The *tests-finished* event is sent when the tests for a service in a stage are f
     "service": "carts",
     "testStrategy": "performance",
     "deploymentStrategy": "direct",
-    "startedat": "2019-09-01 12:03"
+    "start": "2019-09-01 12:00:00",
+    "end": "2019-09-01 12:05:00"
   }
 }
 ```
+</p>
+</details>
+
 ([&uarr; up to index](#keptn-cloud-events))
 
-## Evaluation Done
+## Start Evaluation
 
-The *evaluation-done* event is sent when the evaluation of the test execution is completed.
+The *start-evaluation* event is sent when the evaluation of a test run should be triggered.
 
+### type
 ```json
 {
-  "type": "sh.keptn.events.evaluation-done",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/pitometer-service",
-  "id": "49ac0dec-a83b-4bc1-9dc0-1f050c7e781b",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext":"49ac0dec-a83b-4bc1-9dc0-1f050c7e789b",
-  "data":{  
-    "project":"sockshop",
-    "service":"carts",
-    "image":"keptnexamples/carts",
-    "tag":"0.7.1",
-    "stage":"dev",
-    "teststrategy":"functional",
-    "deploymentstrategy":"direct",
-    "evaluationpassed":"false",
-    "evaluationdetails": {
-      "options": {
-        "timeStart": 1558428643,
-        "timeEnd": 1558429200
-      },
-      "totalScore": 50,
-      "objectives": {
-        "pass": 90,
-        "warning": 75
-      },
-      "indicatorResults": [
-        {
-          "id": "ResponseTime_Service",
-          "violations": [],
-          "score": 50
-        },
-        {
-          "id": "FailureRate_Service",
-          "violations": [
-            {
-              "value": 12.55862428348098,
-              "key": "SERVICE-34E5F883CB9DF269",
-              "breach": "upperSevere",
-              "threshold": 10
-            }
-          ],
-          "score": 0
-        }
-      ],
-      "result": "fail"
-      }
-   }
+  "type": "sh.keptn.event.start-evaluation"
 }
 ```
-([&uarr; up to index](#keptn-cloud-events))
 
-## Configure Monitoring
+### data
+```json
+"StartEvaluationEventData": {
+  "required": [
+    "project",
+    "service",
+    "stage",
+    "teststrategy",
+    "deploymentstrategy",
+    "start",
+    "end"
+  ],
+  "properties": {
+    "deploymentstrategy": {
+      "type": "string"
+    },
+    "end": {
+      "type": "string"
+    },
+    "project": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "start": {
+      "type": "string"
+    },
+    "teststrategy": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
 
-The *monitoring configure* event is sent when a monitoring solution need to be configured for a new service.
+### Example:
+<details><summary>Example of sh.keptn.events.start-evaluation</summary>
+<p>
 
 ```json
 {
-  "type": "sh.keptn.event.monitoring.configure",
+  "type": "sh.keptn.events.start-evaluation",
   "specversion": "0.2",
   "source": "https://github.com/keptn/keptn/jmeter-service",
   "id": "49ac0dec-a83b-4bc1-9dc0-1f050c7e781b",
@@ -210,37 +601,304 @@ The *monitoring configure* event is sent when a monitoring solution need to be c
   "contenttype": "application/json",
   "shkeptncontext":"49ac0dec-a83b-4bc1-9dc0-1f050c7e789b",
   "data": {
-    "type": "prometheus",
     "project": "sockshop",
+    "stage": "staging",
     "service": "carts",
-    "serviceIndicators": "",
-    "serviceObjectives": "",
-    "remediation": ""
+    "testStrategy": "performance",
+    "deploymentStrategy": "direct",
+    "start": "2019-09-01 12:00:00",
+    "end": "2019-09-01 12:05:00"
   }
 }
 ```
+</p>
+</details>
+
+
+## Evaluation Done
+
+The *evaluation-done* event is sent when the evaluation of the test execution is completed.
+
+### type
+```json
+{
+  "type": "sh.keptn.events.evaluation-done"
+}
+```
+
+### data
+```json
+"EvaluationDoneEventData": {
+  "required": [
+    "evaluationdetails",
+    "result",
+    "project",
+    "service",
+    "stage",
+    "teststrategy",
+    "deploymentstrategy"
+  ],
+  "properties": {
+    "deploymentstrategy": {
+      "type": "string"
+    },
+    "evaluationdetails": {
+      "$ref": "#/definitions/EvaluationDetails"
+    },
+    "project": {
+      "type": "string"
+    },
+    "result": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "teststrategy": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+},
+"EvaluationDetails": {
+  "required": [
+    "timeStart",
+    "timeEnd",
+    "result",
+    "score",
+    "indicatorResults"
+  ],
+  "properties": {
+    "indicatorResults": {
+      "items": {
+        "$ref": "#/definitions/SLIEvaluationResult"
+      },
+      "type": "array"
+    },
+    "result": {
+      "type": "string"
+    },
+    "score": {
+      "type": "number"
+    },
+    "timeEnd": {
+      "type": "string"
+    },
+    "timeStart": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+},
+"SLIEvaluationResult": {
+  "required": [
+    "score",
+    "value",
+    "violations",
+    "status"
+  ],
+  "properties": {
+    "score": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string"
+    },
+    "value": {
+      "$ref": "#/definitions/SLIResult"
+    },
+    "violations": {
+      "items": {
+        "$ref": "#/definitions/SLIViolation"
+      },
+      "type": "array"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+},
+"SLIResult": {
+  "required": [
+    "metric",
+    "value",
+    "success"
+  ],
+  "properties": {
+    "message": {
+      "type": "string"
+    },
+    "metric": {
+      "type": "string"
+    },
+    "success": {
+      "type": "boolean"
+    },
+    "value": {
+      "type": "number"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+},
+"SLIViolation": {
+  "required": [
+    "criteria",
+    "targetValue"
+  ],
+  "properties": {
+    "criteria": {
+      "type": "string"
+    },
+    "targetValue": {
+      "type": "number"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+### Example:
+<details><summary>Example of sh.keptn.events.evaluation-done</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.events.evaluation-done",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/jmeter-service",
+  "id": "49ac0dec-a83b-4bc1-9dc0-1f050c7e781b",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "contenttype": "application/json",
+  "shkeptncontext":"49ac0dec-a83b-4bc1-9dc0-1f050c7e789b",
+  "data": {
+  }
+}
+```
+</p>
+</details>
+
 ([&uarr; up to index](#keptn-cloud-events))
 
 ## Problem
 
 The *problem* event is sent when a monitored service causes any problem.
 
+### type
 ```json
 {
-  "type": "sh.keptn.events.problem",
+  "type": "sh.keptn.event.problem.open"
+}
+```
+
+### data
+```json
+"ProblemEventData": {
+  "required": [
+    "ProblemID",
+    "ProblemTitle",
+    "ProblemDetails",
+    "PID"
+  ],
+  "properties": {
+    "ImpactedEntities": {
+      "type": "string"
+    },
+    "PID": {
+      "type": "string"
+    },
+    "ProblemDetails": {
+      "items": {
+        "type": "integer"
+      },
+      "type": "array"
+    },
+    "ProblemID": {
+      "type": "string"
+    },
+    "ProblemTitle": {
+      "type": "string"
+    },
+    "State": {
+      "type": "string"
+    },
+    "Tags": {
+      "type": "string"
+    },
+    "project": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+
+```
+
+### Example
+<details><summary>Example of sh.keptn.events.problem.open</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.events.problem.open",
   "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/jmeter-service",
+  "source": "https://github.com/keptn/keptn/prometheus-service",
   "id": "49ac0dec-a83b-4bc1-9dc0-1f050c7e781b",
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
   "shkeptncontext":"49ac0dec-a83b-4bc1-9dc0-1f050c7e789b",
   "data": {
-    "state": "open",
-    "problemID": "ad7a-139fyf-915da",
-    "problemtitle": "problem title",
-    "problemdetails": "problem details",
-    "impactedEntity": "impacted entity",
+
   }
 }
 ```
+</p>
+</details>
+
 ([&uarr; up to index](#keptn-cloud-events))
+
+# IS THIS EVENT STILL NECESSARY???
+
+## Configure Monitoring 
+
+### type
+```json
+{
+  "type": "sh.keptn.event.monitoring.configure"
+}
+```
+
+### data
+
+### Example
+<details><summary>sh.keptn.event.monitoring.configure</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.event.monitoring.configure",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/prometheus-service",
+  "id": "49ac0dec-a83b-4bc1-9dc0-1f050c7e781b",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "contenttype": "application/json",
+  "shkeptncontext":"49ac0dec-a83b-4bc1-9dc0-1f050c7e789b",
+  "data": {
+
+  }
+}
+```
+</p>
+</details>
