@@ -8,8 +8,10 @@
 * [Tests Finished](#tests-finished)
 * [Start Evaluation](#start-evaluation)
 * [Evaluation Done](#evaluation-done)
-* [Problem](#problem)
+* [Problem Open](#problem-open)
 * [Configure Monitoring](#configure-monitoring)
+* [Get SLI](#get-sli)
+* [Get SLI Done](#get-sli-done)
 
 ---
 
@@ -234,7 +236,7 @@ The *service create* event is sent when a new service should be created.
 {
   "type": "sh.keptn.internal.event.service.create",
   "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/cli",
+  "source": "https://github.com/keptn/keptn/api",
   "id": "49ac0dec-a83b-4bc1-9dc0-1f050c7e781b",
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
@@ -354,7 +356,7 @@ The *configuration change* event is sent when a desired state for a service is a
 {
   "type": "sh.keptn.event.configuration.change",
   "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/api",
+  "source": "https://github.com/keptn/keptn/helm-service",
   "id": "49ac0dec-a83b-4bc1-9dc0-1f050c7e781b",
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
@@ -434,7 +436,7 @@ The *deployment-finished* event is sent when a desired state of a service is dep
 {
   "type": "sh.keptn.events.deployment-finished",
   "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/api",
+  "source": "https://github.com/keptn/keptn/helm-service",
   "id": "49ac0dec-a83b-4bc1-9dc0-1f050c7e781b",
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
@@ -595,7 +597,7 @@ The *start-evaluation* event is sent when the evaluation of a test run should be
 {
   "type": "sh.keptn.events.start-evaluation",
   "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/jmeter-service",
+  "source": "https://github.com/keptn/keptn/api",
   "id": "49ac0dec-a83b-4bc1-9dc0-1f050c7e781b",
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
@@ -614,6 +616,7 @@ The *start-evaluation* event is sent when the evaluation of a test run should be
 </p>
 </details>
 
+([&uarr; up to index](#keptn-cloud-events))
 
 ## Evaluation Done
 
@@ -785,9 +788,9 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
 
 ([&uarr; up to index](#keptn-cloud-events))
 
-## Problem
+## Problem Open
 
-The *problem* event is sent when a monitored service causes any problem.
+The *problem.open* event is sent when a monitored service causes any problem.
 
 ### type
 ```json
@@ -869,8 +872,7 @@ The *problem* event is sent when a monitored service causes any problem.
 
 ([&uarr; up to index](#keptn-cloud-events))
 
-# IS THIS EVENT STILL NECESSARY???
-
+# ?? IS THIS EVENT STILL NEEDED ??
 ## Configure Monitoring 
 
 ### type
@@ -889,6 +891,205 @@ The *problem* event is sent when a monitored service causes any problem.
 ```json
 {
   "type": "sh.keptn.event.monitoring.configure",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/prometheus-service",
+  "id": "49ac0dec-a83b-4bc1-9dc0-1f050c7e781b",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "contenttype": "application/json",
+  "shkeptncontext":"49ac0dec-a83b-4bc1-9dc0-1f050c7e789b",
+  "data": {
+
+  }
+}
+```
+</p>
+</details>
+
+
+## Get SLI
+The *get-sli* event is sent when a SLI provider must be triggered for gathering service level indicators.
+
+### type
+```json
+{
+  "type": "sh.keptn.internal.event.get-sli"
+}
+```
+
+### data
+```json
+"InternalGetSLIEventData": {
+  "required": [
+    "sliProvider",
+    "project",
+    "stage",
+    "service",
+    "start",
+    "end",
+    "teststrategy",
+    "indicators",
+    "customFilters"
+  ],
+  "properties": {
+    "customFilters": {
+      "items": {
+        "$ref": "#/definitions/SLIFilter"
+      },
+      "type": "array"
+    },
+    "end": {
+      "type": "string"
+    },
+    "indicators": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "project": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "sliProvider": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "start": {
+      "type": "string"
+    },
+    "teststrategy": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+},
+"SLIFilter": {
+  "required": [
+    "key",
+    "value"
+  ],
+  "properties": {
+    "key": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+### Example
+<details><summary>Example of sh.keptn.events.get-sli</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.events.get-sli",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/lighthouse-service",
+  "id": "49ac0dec-a83b-4bc1-9dc0-1f050c7e781b",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "contenttype": "application/json",
+  "shkeptncontext":"49ac0dec-a83b-4bc1-9dc0-1f050c7e789b",
+  "data": {
+
+  }
+}
+```
+</p>
+</details>
+
+## Get SLI Done
+The *get-sli.done* event is sent when the data gathering by a SLI provider is done.
+
+### type
+```json
+{
+  "type": "sh.keptn.internal.event.get-sli.done"
+}
+```
+
+### data
+```json
+"InternalGetSLIDoneEventData": {
+  "required": [
+    "project",
+    "stage",
+    "service",
+    "start",
+    "end",
+    "teststrategy",
+    "indicatorValues"
+  ],
+  "properties": {
+    "end": {
+      "type": "string"
+    },
+    "indicatorValues": {
+      "items": {
+        "$ref": "#/definitions/SLIResult"
+      },
+      "type": "array"
+    },
+    "project": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "start": {
+      "type": "string"
+    },
+    "teststrategy": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+},
+"SLIResult": {
+  "required": [
+    "metric",
+    "value",
+    "success"
+  ],
+  "properties": {
+    "message": {
+      "type": "string"
+    },
+    "metric": {
+      "type": "string"
+    },
+    "success": {
+      "type": "boolean"
+    },
+    "value": {
+      "type": "number"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+### Example
+<details><summary>Example of sh.keptn.events.get-sli.done</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.events.get-sli.done",
   "specversion": "0.2",
   "source": "https://github.com/keptn/keptn/prometheus-service",
   "id": "49ac0dec-a83b-4bc1-9dc0-1f050c7e781b",
