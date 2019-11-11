@@ -810,10 +810,10 @@ The *problem.open* event is sent when a monitored service causes any problem.
   ],
   "properties": {
     "ImpactedEntities": {
-      "type": "string"
+      "type": "string",
     },
     "PID": {
-      "type": "string"
+      "type": "string",
     },
     "ProblemDetails": {
       "items": {
@@ -825,7 +825,7 @@ The *problem.open* event is sent when a monitored service causes any problem.
       "type": "string"
     },
     "ProblemTitle": {
-      "type": "string"
+      "type": "string",
     },
     "State": {
       "type": "string"
@@ -863,8 +863,12 @@ The *problem.open* event is sent when a monitored service causes any problem.
   "contenttype": "application/json",
   "shkeptncontext":"49ac0dec-a83b-4bc1-9dc0-1f050c7e789b",
   "data": {
-
-  }
+    "ImpactedEntity": "carts-primary",
+    "PID": "93a5-3fas-a09d-8ckf",
+    "ProblemDetails": "Pod name",
+    "ProblemTitle": "cpu_usage_sockshop_carts",
+    "State": "OPEN"
+  },
 }
 ```
 </p>
@@ -873,6 +877,7 @@ The *problem.open* event is sent when a monitored service causes any problem.
 ([&uarr; up to index](#keptn-cloud-events))
 
 # ?? IS THIS EVENT STILL NEEDED ??
+
 ## Configure Monitoring 
 
 ### type
@@ -1000,7 +1005,18 @@ The *get-sli* event is sent when a SLI provider must be triggered for gathering 
   "contenttype": "application/json",
   "shkeptncontext":"49ac0dec-a83b-4bc1-9dc0-1f050c7e789b",
   "data": {
-
+    "sliProvider": "dynatrace",
+    "project": "sockshop",
+    "service": "carts",
+    "stage": "dev",
+    "start": "2019-10-28T15:44:27.152330783Z",
+    "end": "2019-10-28T15:54:27.152330783Z",
+    "teststrategy":"manual",
+    "indicators": ["throughput", "error_rate", "request_latency_p95"],
+    "customFilters": [
+      { "key" : "dynatraceEntityName", "value": "HealthCheckController" },
+      { "key" : "tags", "value": "test-subject:true" }
+    ]
   }
 }
 ```
