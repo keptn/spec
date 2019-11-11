@@ -27,11 +27,14 @@ A shipyard file can consist of any number of stages. A stage has the following p
 Keptn supports remediations of type:
   * `automated`
   
-* **Approval Strategy**. The approval strategy specifies the kind of approval before promoting an artifact into the next stage. Keptn will/should support the following approval strategies:
+* **Approval Strategy**. The approval strategy specifies the kind of approval before promoting an artifact into the next stage. Additionally, it specifies the evaluation result (i.e. can be `pass`, `warning`, and `fail`) that needs to be passed for promoting the artifact. 
+Keptn will/should support the following approval strategies:
   * `automatic_pass`: The artifact is promoted in an automatic fashion if the evaluation result is `pass`.
   * `automatic_warning`: The artifact is promoted in an automatic fashion if the evaluation result is `warning` or `pass`.
-  * `manual`: The user is always asked for approval regardless of the evaluation result. 
-  * `manual_warning`: The user is asked for approval if the evaluation result is `warning`.
+  * `automatic_fail`: The artifact is promoted in an automatic fashion if the evaluation result is `fail`, `warning`, or `pass`.
+  * `manual_pass`: The user is asked for approval if the evaluation result is `pass`.
+  * `manual_warning`: The user is asked for approval if the evaluation result is `warning` or `pass`.
+  * `manual_fail`: The user is asked for approval if the evaluation result is `fail`, `warning`, or `pass`.
 
 ## Example of a shipyard.yml file
 
@@ -40,11 +43,11 @@ stages:
   - name: "dev"
     deployment_strategy: "direct"
     test_strategy: "functional"
-    approval_strategy: "automatic"
+    approval_strategy: "automatic_warning"
   - name: "staging"
     deployment_strategy: "blue_green_service"
     test_strategy: "performance"
-    approval_strategy: "manual"
+    approval_strategy: "manual_pass"
   - name: "production"
     deployment_strategy: "blue_green_service"
     remediation_strategy: "automated"
