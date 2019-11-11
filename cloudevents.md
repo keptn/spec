@@ -876,7 +876,93 @@ The *problem.open* event is sent when a monitored service causes any problem.
 
 ([&uarr; up to index](#keptn-cloud-events))
 
-# ?? IS THIS EVENT STILL NEEDED ??
+## Problem
+
+The *problem* event is sent when a monitored service causes any problem.
+
+### type
+```json
+{
+  "type": "sh.keptn.events.problem"
+}
+```
+
+### data
+```json
+"ProblemEventData": {
+  "required": [
+    "ProblemID",
+    "ProblemTitle",
+    "ProblemDetails",
+    "PID"
+  ],
+  "properties": {
+    "ImpactedEntities": {
+      "type": "string",
+    },
+    "PID": {
+      "type": "string",
+    },
+    "ProblemDetails": {
+      "items": {
+        "type": "integer"
+      },
+      "type": "array"
+    },
+    "ProblemID": {
+      "type": "string"
+    },
+    "ProblemTitle": {
+      "type": "string",
+    },
+    "State": {
+      "type": "string"
+    },
+    "Tags": {
+      "type": "string"
+    },
+    "project": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+
+```
+
+### Example
+<details><summary>Example of sh.keptn.events.problem</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.events.problem",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/prometheus-service",
+  "id": "49ac0dec-a83b-4bc1-9dc0-1f050c7e781b",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "contenttype": "application/json",
+  "shkeptncontext":"49ac0dec-a83b-4bc1-9dc0-1f050c7e789b",
+  "data": {
+    "ImpactedEntity": "carts-primary",
+    "PID": "93a5-3fas-a09d-8ckf",
+    "ProblemDetails": "Pod name",
+    "ProblemTitle": "cpu_usage_sockshop_carts",
+    "State": "OPEN"
+  },
+}
+```
+</p>
+</details>
+
+([&uarr; up to index](#keptn-cloud-events))
 
 ## Configure Monitoring 
 
