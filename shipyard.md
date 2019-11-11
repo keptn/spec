@@ -30,9 +30,9 @@ Keptn supports remediations of type:
   
 * **Approval**. The approval property specifies the kind of approval before promoting an artifact into the next stage. Keptn will/should support the following approval strategies:
   * `automatic_pass`: The artifact is promoted in an automatic fashion if the evaluation result is `pass`.
-  * `automatic_waring`: The artifact is promoted in an automatic fashion if the evaluation result is `waring` or `pass`.
+  * `automatic_warning`: The artifact is promoted in an automatic fashion if the evaluation result is `warning` or `pass`.
   * `manual`: The user is always asked for approval regardless of the evaluation result. 
-  * `manual_warning`: The user is asked for approval if the evaluation result is `waring`.
+  * `manual_warning`: The user is asked for approval if the evaluation result is `warning`.
 
 ## Example of a shipyard.yml file
 
