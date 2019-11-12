@@ -18,7 +18,9 @@
 
 ## Keptn Cloud Event
 
-A Keptn Cloud Event has following specification: 
+All Keptn events conform to CloudEvents - [Version 0.2](https://github.com/cloudevents/spec/blob/v0.2/spec.md).  CloudEvents is a vendor-neutral specification for defining the format of event data.
+
+All events will have a payload structure as follows:
 ```json
 "sh.keptn.event": {
   "required": [
@@ -33,34 +35,45 @@ A Keptn Cloud Event has following specification:
   ],
   "properties": {
     "contenttype": {
-      "type": "string"
+      "type": "string",
+      "description":"Content type of the data attribute value",
+      "value": "application/json"
     },
     "data": {
-      "type": ["object", "string"]
+      "type": ["object", "string"],
+      "description": "The Keptn event payload. The payload depends on the event type."
     },
     "id": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "description": "Unique UUID for the Keptn event"
     },
     "shkeptncontext": {
       "format": "uuid",
-      "type": "string"
+      "type": "string",
+      "description": "Unique UUID value that connects various events together"
     },
     "source": {
       "format": "uri-reference",
-      "type": "string"
+      "type": "string",
+      "minLength": 1,
+      "description": "URL to service implementation in Keptn code repo"
     },
     "specversion": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "description": "The version of the CloudEvents specification which the event uses",
+      "value": "0.2"
     },
     "time": {
       "format": "date-time",
-      "type": "string"
+      "type": "string",
+      "description": "Timestamp of when the event happened"
     },
     "type": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "description": "Keptn event name"
     }
   },
   "additionalProperties": false,
@@ -116,10 +129,10 @@ The *project create* event is sent when a new project should be created.
   "type": "sh.keptn.internal.event.project.create",
   "specversion": "0.2",
   "source": "https://github.com/keptn/keptn/api",
-  "id": "4dec-a83b-4bc1-9dc0",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
-  "shkeptncontext": "0dec-a83b-4bc1-9dc0",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
     "project": "sockshop",
     "gitUser": "scott",
@@ -174,10 +187,10 @@ The *project delete* event is sent when a project should be deleted.
   "type": "sh.keptn.internal.event.project.delete",
   "specversion": "0.2",
   "source": "https://github.com/keptn/keptn/api",
-  "id": "4dec-a83b-4bc1-9dc0",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
-  "shkeptncontext": "0dec-a83b-4bc1-9dc0",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
     "project": "sockshop"
   }
@@ -239,10 +252,10 @@ The *service create* event is sent when a new service should be created.
   "type": "sh.keptn.internal.event.service.create",
   "specversion": "0.2",
   "source": "https://github.com/keptn/keptn/api",
-  "id": "4dec-a83b-4bc1-9dc0",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
-  "shkeptncontext": "0dec-a83b-4bc1-9dc0",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
     "project": "sockshop",
     "service": "carts",
@@ -357,10 +370,10 @@ The *configuration change* event is sent when a desired state for a service is a
   "type": "sh.keptn.event.configuration.change",
   "specversion": "0.2",
   "source": "https://github.com/keptn/keptn/helm-service",
-  "id": "4dec-a83b-4bc1-9dc0",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
-  "shkeptncontext": "0dec-a83b-4bc1-9dc0",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
     "project": "sockshop",
     "stage": "staging",
@@ -435,10 +448,10 @@ The *deployment-finished* event is sent when a desired state of a service is dep
   "type": "sh.keptn.events.deployment-finished",
   "specversion": "0.2",
   "source": "https://github.com/keptn/keptn/helm-service",
-  "id": "4dec-a83b-4bc1-9dc0",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
-  "shkeptncontext": "0dec-a83b-4bc1-9dc0",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
     "project": "sockshop",
     "stage": "staging",
@@ -514,10 +527,10 @@ The *tests-finished* event is sent when the tests for a service in a stage are f
   "type": "sh.keptn.events.tests-finished",
   "specversion": "0.2",
   "source": "https://github.com/keptn/keptn/jmeter-service",
-  "id": "4dec-a83b-4bc1-9dc0",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
-  "shkeptncontext": "0dec-a83b-4bc1-9dc0",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
     "project": "sockshop",
     "stage": "staging",
@@ -592,10 +605,10 @@ The *start-evaluation* event is sent when the evaluation of a test run should be
   "type": "sh.keptn.events.start-evaluation",
   "specversion": "0.2",
   "source": "https://github.com/keptn/keptn/api",
-  "id": "4dec-a83b-4bc1-9dc0",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
-  "shkeptncontext": "0dec-a83b-4bc1-9dc0",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
     "project": "sockshop",
     "stage": "staging",
@@ -767,11 +780,50 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
   "type": "sh.keptn.events.evaluation-done",
   "specversion": "0.2",
   "source": "https://github.com/keptn/keptn/jmeter-service",
-  "id": "4dec-a83b-4bc1-9dc0",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
-  "shkeptncontext": "0dec-a83b-4bc1-9dc0",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
+    "project": "sockshop",
+    "result": "warning",
+    "service": "carts",
+    "stage": "staging",
+    "teststrategy": "performance",
+    "deploymentstrategy":"blue_green_service",
+    "evaluationdetails": {
+      "indicatorResults": [
+        {
+          "score": 0.5,
+          "value": {
+              "metric": "request_latency_p95",
+              "value": 1.162000,
+              "success": true
+          },
+          "violations": [
+            {
+              "criteria": "<=+10%",
+              "targetValue": 0
+            }
+          ],
+          "status": "warning"
+        },
+        {
+          "score": 2,
+          "value": {
+              "metric": "error_rate",
+              "value": 0,
+              "success": true
+          },
+          "violations": null,
+          "status": "pass"
+        }
+      ],
+      "result": "warning",
+      "score": 83.34,
+      "timeEnd": "2019-11-05T16:35:27.152Z",
+      "timeStart": "2019-11-05T16:30:27.152Z"
+    }
   }
 }
 ```
@@ -782,7 +834,7 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
 
 ## Problem Open
 
-The *problem.open* event is sent when a monitored service causes any problem.
+The *problem open* event is sent when a monitored service causes any problem.
 
 ### type
 ```json
@@ -840,18 +892,18 @@ The *problem.open* event is sent when a monitored service causes any problem.
 ```
 
 ### Example
-<details><summary>Example of sh.keptn.events.problem.open</summary>
+<details><summary>Example of sh.keptn.event.problem.open</summary>
 <p>
 
 ```json
 {
-  "type": "sh.keptn.events.problem.open",
+  "type": "sh.keptn.event.problem.open",
   "specversion": "0.2",
   "source": "https://github.com/keptn/keptn/prometheus-service",
-  "id": "4dec-a83b-4bc1-9dc0",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
-  "shkeptncontext": "0dec-a83b-4bc1-9dc0",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
     "ImpactedEntity": "carts-primary",
     "PID": "93a5-3fas-a09d-8ckf",
@@ -934,10 +986,10 @@ The *problem* event is sent when a monitored service causes any problem.
   "type": "sh.keptn.events.problem",
   "specversion": "0.2",
   "source": "https://github.com/keptn/keptn/prometheus-service",
-  "id": "4dec-a83b-4bc1-9dc0",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
-  "shkeptncontext": "0dec-a83b-4bc1-9dc0",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
     "ImpactedEntity": "carts-primary",
     "PID": "93a5-3fas-a09d-8ckf",
@@ -994,10 +1046,10 @@ The *monitoring configure* event is sent to configure a monitoring solution for 
   "type": "sh.keptn.event.monitoring.configure",
   "specversion": "0.2",
   "source": "https://github.com/keptn/keptn/prometheus-service",
-  "id": "4dec-a83b-4bc1-9dc0",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
-  "shkeptncontext": "0dec-a83b-4bc1-9dc0",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
     "project": "sockshop",
     "service": "carts",
@@ -1087,18 +1139,18 @@ The *get-sli* event is sent when a SLI provider must be triggered for gathering 
 ```
 
 ### Example
-<details><summary>Example of sh.keptn.events.get-sli</summary>
+<details><summary>Example of sh.keptn.internal.event.get-sli</summary>
 <p>
 
 ```json
 {
-  "type": "sh.keptn.events.get-sli",
+  "type": "sh.keptn.internal.event.get-sli",
   "specversion": "0.2",
   "source": "https://github.com/keptn/keptn/lighthouse-service",
-  "id": "4dec-a83b-4bc1-9dc0",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
-  "shkeptncontext": "0dec-a83b-4bc1-9dc0",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
     "sliProvider": "dynatrace",
     "project": "sockshop",
@@ -1119,7 +1171,7 @@ The *get-sli* event is sent when a SLI provider must be triggered for gathering 
 </details>
 
 ## Get SLI Done
-The *get-sli.done* event is sent when the data gathering by a SLI provider is done.
+The *get-sli done* event is sent when the data gathering by a SLI provider is done.
 
 ### type
 ```json
@@ -1193,20 +1245,37 @@ The *get-sli.done* event is sent when the data gathering by a SLI provider is do
 ```
 
 ### Example
-<details><summary>Example of sh.keptn.events.get-sli.done</summary>
+<details><summary>Example of sh.keptn.internal.event.get-sli.done</summary>
 <p>
 
 ```json
 {
-  "type": "sh.keptn.events.get-sli.done",
+  "type": "sh.keptn.internal.event.get-sli.done",
   "specversion": "0.2",
   "source": "https://github.com/keptn/keptn/prometheus-service",
-  "id": "4dec-a83b-4bc1-9dc0",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
-  "shkeptncontext": "0dec-a83b-4bc1-9dc0",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
-
+    "project": "sockshop",
+    "stage": "staging",
+    "service": "carts",
+    "start": "2019-11-05T16:30:27.152Z",
+    "end": "2019-11-05T16:35:27.152Z",
+    "teststrategy": "manual",
+    "indicatorValues": [
+      {
+        "metric":"request_latency_p95",
+        "value": 1.1620000000000001,
+        "success": true
+      },
+      {
+        "metric":"error_rate",
+        "value": 0,
+        "success": true
+      }
+    ]
   }
 }
 ```
