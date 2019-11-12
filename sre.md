@@ -13,7 +13,7 @@ The *Service Level Objectives (SLO)* configuration specifies a target value or r
 ```yaml
 spec_version: '1.0'
 filter:
-  handler: "<prometheus_scrap_job_id>"
+  handler: "ItemsController.addToCart"
 comparison:
   compare_with: "single_result"
   include_result_with_score: "pass"
@@ -236,7 +236,7 @@ objectives:
           - "<=800"
 total_score:
   pass: "90%"
-  warning: 75%
+  warning: "75%"
 ```
 
 ([&uarr; up to index](#specifications-for-site-reliability-engineering-with-keptn))
