@@ -911,7 +911,10 @@ The *problem open* event is sent when a monitored service causes any problem.
     "PID": "93a5-3fas-a09d-8ckf",
     "ProblemDetails": "Pod name",
     "ProblemTitle": "cpu_usage_sockshop_carts",
-    "State": "OPEN"
+    "State": "OPEN",
+    "project": "sockshop",
+    "stage": "production", 
+    "service": "service"
   },
 }
 ```
