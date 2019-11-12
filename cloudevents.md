@@ -200,6 +200,8 @@ The *project delete* event is sent when a project should be deleted.
 </p>
 </details>
 
+([&uarr; up to index](#keptn-cloud-events))
+
 ## Create Service
 
 The *service create* event is sent when a new service should be created.
@@ -1060,6 +1062,8 @@ The *monitoring configure* event is sent to configure a monitoring solution for 
 </p>
 </details>
 
+([&uarr; up to index](#keptn-cloud-events))
+
 ## Get SLI
 The *get-sli* event is sent when a SLI provider must be triggered for gathering service level indicators.
 
@@ -1169,6 +1173,8 @@ The *get-sli* event is sent when a SLI provider must be triggered for gathering 
 ```
 </p>
 </details>
+
+([&uarr; up to index](#keptn-cloud-events))
 
 ## Get SLI Done
 The *get-sli done* event is sent when the data gathering by a SLI provider is done.
@@ -1281,3 +1287,5 @@ The *get-sli done* event is sent when the data gathering by a SLI provider is do
 ```
 </p>
 </details>
+
+([&uarr; up to index](#keptn-cloud-events))
