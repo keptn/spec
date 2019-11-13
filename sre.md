@@ -34,11 +34,10 @@ total_score:
 ```
 
 #### Filter
-SLOs are defined per service. A service filter is a key-value pair and the following list contains all valid keys for service filters. The service filters project, stage, and service can be inferred from the Keptn configuration by using $PROJECT, $STAGE, and $SERVICE respectively. These values can also be overwritten in the configuration. The service filter id can be used to specify a unique identifier of that service.
-*   project
-*   stage
-*   service
-*   id
+SLOs are defined per service. A service filter is a key-value pair, whereas project, stage, and service can be inferred from the Keptn configuration by using $PROJECT, $STAGE, and $SERVICE respectively. These values can also be overwritten within the SLO configuration. Additional keys (e.g., `handler` from the example above) can also be introduced at any time.
+
+Any filter defined here will be passed to the respective SLI provider, which is then responsible to apply the filter.
+
 
 #### Comparison
 By default, Keptn compares with the previous values of the SLIs. The **compare_with** configuration parameter controls how many previous results are compared: *single_result* or *several_results*. The **include_result_with_score** configuration parameter controls which of the previous results are included in the comparison: *pass*, *pass_or_warn*, *all* (default, also used if not specified). For example,
