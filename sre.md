@@ -12,8 +12,8 @@ The *Service Level Objectives (SLO)* configuration specifies a target value or r
 
 ```yaml
 spec_version: '1.0'
-filter:
-  handler: "ItemsController.addToCart"
+scope:
+  endpoint: "ItemsController.addToCart"
 comparison:
   compare_with: "single_result"
   include_result_with_score: "pass"
@@ -33,10 +33,22 @@ total_score:
   warning: "75%"
 ```
 
-#### Filter
-SLOs are defined per service. A service filter is a key-value pair, whereas project, stage, and service can be inferred from the Keptn configuration by using $PROJECT, $STAGE, and $SERVICE respectively. These values can also be overwritten within the SLO configuration. Additional keys (e.g., `handler` from the example above) can also be introduced at any time.
+#### Scope
+SLOs are defined per service and can be scoped by using key-value pairs. Any key-value pair described in the `scope` section is passed to the respective SLI provider (e.g., prometheus-sli-service or dynatrace-sli-service). By default the keys project, stage, and service are set by Keptn to the respective values $PROJECT, $STAGE, and $SERVICE. These values can also be overwritten within the SLO configuration. 
 
-Any filter defined here will be passed to the respective SLI provider, which is then responsible to apply the filter.
+For instance, the prometheus-sli-service can make use of the scopes as follows:
+
+```yaml
+apiVersion: v1
+data:
+  custom-queries: |
+    cpu_usage: avg(rate(container_cpu_usage_seconds_total{namespace="$PROJECT-$STAGE",pod_name=~"$SERVICE-primary-.*"}[5m]))
+    response_time_p95: histogram_quantile(0.95, sum by(le) (rate(http_response_time_milliseconds_bucket{handler="$ENDPOINT",job="$SERVICE-$PROJECT-$STAGE-canary"}[$DURATION_SECONDS])))
+kind: ConfigMap
+metadata:
+  name: prometheus-sli-service-config-sockshop
+  namespace: keptn
+```
 
 
 #### Comparison
