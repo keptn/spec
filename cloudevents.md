@@ -643,8 +643,8 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
     "evaluationdetails",
     "result",
     "project",
-    "service",
     "stage",
+    "service",
     "teststrategy",
     "deploymentstrategy"
   ],
@@ -680,6 +680,7 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
     "timeEnd",
     "result",
     "score",
+    "serviceLevelObjectives",
     "indicatorResults"
   ],
   "properties": {
@@ -695,6 +696,9 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
     "score": {
       "type": "number"
     },
+    "serviceLevelObjectives": {
+      "$ref": "#/definitions/ServiceLevelObjectives"
+    },
     "timeEnd": {
       "type": "string"
     },
@@ -709,7 +713,7 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
   "required": [
     "score",
     "value",
-    "violations",
+    "targets",
     "status"
   ],
   "properties": {
@@ -719,14 +723,14 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
     "status": {
       "type": "string"
     },
-    "value": {
-      "$ref": "#/definitions/SLIResult"
-    },
-    "violations": {
+    "targets": {
       "items": {
-        "$ref": "#/definitions/SLIViolation"
+        "$ref": "#/definitions/SLITarget"
       },
       "type": "array"
+    },
+    "value": {
+      "$ref": "#/definitions/SLIResult"
     }
   },
   "additionalProperties": false,
@@ -755,10 +759,11 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
   "additionalProperties": false,
   "type": "object"
 },
-"SLIViolation": {
+"SLITarget": {
   "required": [
     "criteria",
-    "targetValue"
+    "targetValue",
+    "violated"
   ],
   "properties": {
     "criteria": {
@@ -766,10 +771,139 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
     },
     "targetValue": {
       "type": "number"
+    },
+    "violated": {
+      "type": "boolean"
     }
   },
   "additionalProperties": false,
   "type": "object"
+},
+"SLO": {
+  "required": [
+    "sli",
+    "pass",
+    "warning",
+    "weight",
+    "key_sli"
+  ],
+  "properties": {
+    "key_sli": {
+      "type": "boolean"
+    },
+    "pass": {
+      "items": {
+        "$ref": "#/definitions/SLOCriteria"
+      },
+      "type": "array"
+    },
+    "sli": {
+      "type": "string"
+    },
+    "warning": {
+      "items": {
+        "$ref": "#/definitions/SLOCriteria"
+      },
+      "type": "array"
+    },
+    "weight": {
+      "type": "integer"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+},
+"SLOComparison": {
+  "required": [
+    "compare_with",
+    "include_result_with_score",
+    "number_of_comparison_results",
+    "aggregate_function"
+  ],
+  "properties": {
+    "aggregate_function": {
+      "type": "string"
+    },
+    "compare_with": {
+      "type": "string"
+    },
+    "include_result_with_score": {
+      "type": "string"
+    },
+    "number_of_comparison_results": {
+      "type": "integer"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+},
+"SLOCriteria": {
+  "required": [
+    "criteria"
+  ],
+  "properties": {
+    "criteria": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+},
+"SLOScore": {
+  "required": [
+    "pass",
+    "warning"
+  ],
+  "properties": {
+    "pass": {
+      "type": "string"
+    },
+    "warning": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+},
+"ServiceLevelObjectives": {
+  "required": [
+    "spec_version",
+    "filter",
+    "comparison",
+    "objectives",
+    "total_score"
+  ],
+  "properties": {
+    "comparison": {
+      "$ref": "#/definitions/SLOComparison"
+    },
+    "filter": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "objectives": {
+      "items": {
+        "$ref": "#/definitions/SLO"
+      },
+      "type": "array"
+    },
+    "spec_version": {
+      "type": "string"
+    },
+    "total_score": {
+      "$ref": "#/definitions/SLOScore"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
 }
 ```
 
@@ -779,54 +913,93 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
 
 ```json
 {
-  "type": "sh.keptn.events.evaluation-done",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/jmeter-service",
-  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "data": {
-    "project": "sockshop",
-    "result": "warning",
-    "service": "carts",
-    "stage": "staging",
-    "teststrategy": "performance",
-    "deploymentstrategy":"blue_green_service",
-    "evaluationdetails": {
-      "indicatorResults": [
-        {
-          "score": 0.5,
-          "value": {
-              "metric": "request_latency_p95",
-              "value": 1.162000,
-              "success": true
-          },
-          "violations": [
+   "contenttype":"application/json",
+   "data":{
+      "deploymentstrategy":"blue_green_service",
+      "evaluationdetails":{
+         "indicatorResults":[
             {
-              "criteria": "<=+10%",
-              "targetValue": 0
+               "score":0,
+               "status":"failed",
+               "targets":[
+                  {
+                     "criteria":"<=800",
+                     "targetValue":800,
+                     "violated":true
+                  },
+                  {
+                     "criteria":"<=+10%",
+                     "targetValue":549.1967956487127,
+                     "violated":true
+                  },
+                  {
+                     "criteria":"<600",
+                     "targetValue":600,
+                     "violated":true
+                  }
+               ],
+               "value":{
+                  "metric":"response_time_p95",
+                  "success":true,
+                  "value":1002.6278552658177
+               }
             }
-          ],
-          "status": "warning"
-        },
-        {
-          "score": 2,
-          "value": {
-              "metric": "error_rate",
-              "value": 0,
-              "success": true
-          },
-          "violations": null,
-          "status": "pass"
-        }
-      ],
-      "result": "warning",
-      "score": 83.34,
-      "timeEnd": "2019-11-05T16:35:27.152Z",
-      "timeStart": "2019-11-05T16:30:27.152Z"
-    }
-  }
+         ],
+         "result":"fail",
+         "score":0,
+         "serviceLevelObjectives":{
+            "comparison":{
+               "aggregate_function":"avg",
+               "compare_with":"single_result",
+               "include_result_with_score":"pass",
+               "number_of_comparison_results":3
+            },
+            "filter":{
+               "handler":"ItemsController.addToCart"
+            },
+            "objectives":[
+               {
+                  "key_sli":false,
+                  "pass":[
+                     {
+                        "criteria":[
+                           "<=+10%",
+                           "<600"
+                        ]
+                     }
+                  ],
+                  "sli":"response_time_p95",
+                  "warning":[
+                     {
+                        "criteria":[
+                           "<=800"
+                        ]
+                     }
+                  ],
+                  "weight":1
+               }
+            ],
+            "spec_version":"1.0",
+            "total_score":{
+               "pass":"90%",
+               "warning":"75%"
+            }
+         },
+         "timeEnd":"2019-11-18T11:29:36Z",
+         "timeStart":"2019-11-18T11:21:06Z"
+      },
+      "project":"sockshop",
+      "result":"fail",
+      "service":"carts",
+      "stage":"staging",
+      "teststrategy":"performance"
+   },
+   "id":"1b7cd584-320e-4ef0-8522-8a817263fdab",
+   "source":"lighthouse-service",
+   "specversion":"0.2",
+   "time":"2019-11-18T11:30:45.340Z",
+   "type":"sh.keptn.events.evaluation-done",
+   "shkeptncontext":"60077081-f902-4407-bc15-7c70be41a836"
 }
 ```
 </p>
