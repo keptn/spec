@@ -696,8 +696,8 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
     "score": {
       "type": "number"
     },
-    "serviceLevelObjectives": {
-      "$ref": "#/definitions/ServiceLevelObjectives"
+    "sloFileContent": {
+      "type": "string"
     },
     "timeEnd": {
       "type": "string"
@@ -778,132 +778,6 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
   },
   "additionalProperties": false,
   "type": "object"
-},
-"SLO": {
-  "required": [
-    "sli",
-    "pass",
-    "warning",
-    "weight",
-    "key_sli"
-  ],
-  "properties": {
-    "key_sli": {
-      "type": "boolean"
-    },
-    "pass": {
-      "items": {
-        "$ref": "#/definitions/SLOCriteria"
-      },
-      "type": "array"
-    },
-    "sli": {
-      "type": "string"
-    },
-    "warning": {
-      "items": {
-        "$ref": "#/definitions/SLOCriteria"
-      },
-      "type": "array"
-    },
-    "weight": {
-      "type": "integer"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-},
-"SLOComparison": {
-  "required": [
-    "compare_with",
-    "include_result_with_score",
-    "number_of_comparison_results",
-    "aggregate_function"
-  ],
-  "properties": {
-    "aggregate_function": {
-      "type": "string"
-    },
-    "compare_with": {
-      "type": "string"
-    },
-    "include_result_with_score": {
-      "type": "string"
-    },
-    "number_of_comparison_results": {
-      "type": "integer"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-},
-"SLOCriteria": {
-  "required": [
-    "criteria"
-  ],
-  "properties": {
-    "criteria": {
-      "items": {
-        "type": "string"
-      },
-      "type": "array"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-},
-"SLOScore": {
-  "required": [
-    "pass",
-    "warning"
-  ],
-  "properties": {
-    "pass": {
-      "type": "string"
-    },
-    "warning": {
-      "type": "string"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-},
-"ServiceLevelObjectives": {
-  "required": [
-    "spec_version",
-    "filter",
-    "comparison",
-    "objectives",
-    "total_score"
-  ],
-  "properties": {
-    "comparison": {
-      "$ref": "#/definitions/SLOComparison"
-    },
-    "filter": {
-      "patternProperties": {
-        ".*": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    },
-    "objectives": {
-      "items": {
-        "$ref": "#/definitions/SLO"
-      },
-      "type": "array"
-    },
-    "spec_version": {
-      "type": "string"
-    },
-    "total_score": {
-      "$ref": "#/definitions/SLOScore"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
 }
 ```
 
