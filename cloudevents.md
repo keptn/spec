@@ -821,44 +821,7 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
          ],
          "result":"fail",
          "score":0,
-         "serviceLevelObjectives":{
-            "comparison":{
-               "aggregate_function":"avg",
-               "compare_with":"single_result",
-               "include_result_with_score":"pass",
-               "number_of_comparison_results":3
-            },
-            "filter":{
-               "handler":"ItemsController.addToCart"
-            },
-            "objectives":[
-               {
-                  "key_sli":false,
-                  "pass":[
-                     {
-                        "criteria":[
-                           "<=+10%",
-                           "<600"
-                        ]
-                     }
-                  ],
-                  "sli":"response_time_p95",
-                  "warning":[
-                     {
-                        "criteria":[
-                           "<=800"
-                        ]
-                     }
-                  ],
-                  "weight":1
-               }
-            ],
-            "spec_version":"1.0",
-            "total_score":{
-               "pass":"90%",
-               "warning":"75%"
-            }
-         },
+         "sloFileContent":"LS0tDQpzcGVjX3ZlcnNpb246ICcxLjAnDQpjb21wYXJpc29uOg0KICBjb21wYXJlX3dpdGg6ICJzaW5nbGVfcmVzdWx0Ig0KICBpbmNsdWRlX3Jlc3VsdF93aXRoX3Njb3JlOiAicGFzcyINCiAgYWdncmVnYXRlX2Z1bmN0aW9uOiBhdmcNCm9iamVjdGl2ZXM6DQogIC0gc2xpOiByZXNwb25zZV90aW1lX3A5NQ0KICAgIHBhc3M6ICAgICAgICAjIHBhc3MgaWYgKHJlbGF0aXZlIGNoYW5nZSA8PSAxMCUgQU5EIGFic29sdXRlIHZhbHVlIGlzIDwgNTAwKQ0KICAgICAgLSBjcml0ZXJpYToNCiAgICAgICAgICAtICI8PSsxMCUiICMgcmVsYXRpdmUgdmFsdWVzIHJlcXVpcmUgYSBwcmVmaXhlZCBzaWduIChwbHVzIG9yIG1pbnVzKQ0KICAgICAgICAgIC0gIjw2MDAiICAgIyBhYnNvbHV0ZSB2YWx1ZXMgb25seSByZXF1aXJlIGEgbG9naWNhbCBvcGVyYXRvcg0KICAgIHdhcm5pbmc6ICAgICAjIGlmIHRoZSByZXNwb25zZSB0aW1lIGlzIGJlbG93IDgwMG1zLCB0aGUgcmVzdWx0IHNob3VsZCBiZSBhIHdhcm5pbmcNCiAgICAgIC0gY3JpdGVyaWE6DQogICAgICAgICAgLSAiPD04MDAiDQp0b3RhbF9zY29yZToNCiAgcGFzczogIjkwJSINCiAgd2FybmluZzogNzUl",
          "timeEnd":"2019-11-18T11:29:36Z",
          "timeStart":"2019-11-18T11:21:06Z"
       },
