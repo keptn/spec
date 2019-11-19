@@ -643,8 +643,8 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
     "evaluationdetails",
     "result",
     "project",
-    "service",
     "stage",
+    "service",
     "teststrategy",
     "deploymentstrategy"
   ],
@@ -680,6 +680,7 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
     "timeEnd",
     "result",
     "score",
+    "sloFileContent",
     "indicatorResults"
   ],
   "properties": {
@@ -695,6 +696,9 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
     "score": {
       "type": "number"
     },
+    "sloFileContent": {
+      "type": "string"
+    },
     "timeEnd": {
       "type": "string"
     },
@@ -709,7 +713,7 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
   "required": [
     "score",
     "value",
-    "violations",
+    "targets",
     "status"
   ],
   "properties": {
@@ -719,14 +723,14 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
     "status": {
       "type": "string"
     },
-    "value": {
-      "$ref": "#/definitions/SLIResult"
-    },
-    "violations": {
+    "targets": {
       "items": {
-        "$ref": "#/definitions/SLIViolation"
+        "$ref": "#/definitions/SLITarget"
       },
       "type": "array"
+    },
+    "value": {
+      "$ref": "#/definitions/SLIResult"
     }
   },
   "additionalProperties": false,
@@ -755,10 +759,11 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
   "additionalProperties": false,
   "type": "object"
 },
-"SLIViolation": {
+"SLITarget": {
   "required": [
     "criteria",
-    "targetValue"
+    "targetValue",
+    "violated"
   ],
   "properties": {
     "criteria": {
@@ -766,6 +771,9 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
     },
     "targetValue": {
       "type": "number"
+    },
+    "violated": {
+      "type": "boolean"
     }
   },
   "additionalProperties": false,
@@ -779,54 +787,56 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
 
 ```json
 {
-  "type": "sh.keptn.events.evaluation-done",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/jmeter-service",
-  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "data": {
-    "project": "sockshop",
-    "result": "warning",
-    "service": "carts",
-    "stage": "staging",
-    "teststrategy": "performance",
-    "deploymentstrategy":"blue_green_service",
-    "evaluationdetails": {
-      "indicatorResults": [
-        {
-          "score": 0.5,
-          "value": {
-              "metric": "request_latency_p95",
-              "value": 1.162000,
-              "success": true
-          },
-          "violations": [
+   "contenttype":"application/json",
+   "data":{
+      "deploymentstrategy":"blue_green_service",
+      "evaluationdetails":{
+         "indicatorResults":[
             {
-              "criteria": "<=+10%",
-              "targetValue": 0
+               "score":0,
+               "status":"failed",
+               "targets":[
+                  {
+                     "criteria":"<=800",
+                     "targetValue":800,
+                     "violated":true
+                  },
+                  {
+                     "criteria":"<=+10%",
+                     "targetValue":549.1967956487127,
+                     "violated":true
+                  },
+                  {
+                     "criteria":"<600",
+                     "targetValue":600,
+                     "violated":true
+                  }
+               ],
+               "value":{
+                  "metric":"response_time_p95",
+                  "success":true,
+                  "value":1002.6278552658177
+               }
             }
-          ],
-          "status": "warning"
-        },
-        {
-          "score": 2,
-          "value": {
-              "metric": "error_rate",
-              "value": 0,
-              "success": true
-          },
-          "violations": null,
-          "status": "pass"
-        }
-      ],
-      "result": "warning",
-      "score": 83.34,
-      "timeEnd": "2019-11-05T16:35:27.152Z",
-      "timeStart": "2019-11-05T16:30:27.152Z"
-    }
-  }
+         ],
+         "result":"fail",
+         "score":0,
+         "sloFileContent":"LS0tDQpzcGVjX3ZlcnNpb246ICcxLjAnDQpjb21wYXJpc29uOg0KICBjb21wYXJlX3dpdGg6ICJzaW5nbGVfcmVzdWx0Ig0KICBpbmNsdWRlX3Jlc3VsdF93aXRoX3Njb3JlOiAicGFzcyINCiAgYWdncmVnYXRlX2Z1bmN0aW9uOiBhdmcNCm9iamVjdGl2ZXM6DQogIC0gc2xpOiByZXNwb25zZV90aW1lX3A5NQ0KICAgIHBhc3M6ICAgICAgICAjIHBhc3MgaWYgKHJlbGF0aXZlIGNoYW5nZSA8PSAxMCUgQU5EIGFic29sdXRlIHZhbHVlIGlzIDwgNTAwKQ0KICAgICAgLSBjcml0ZXJpYToNCiAgICAgICAgICAtICI8PSsxMCUiICMgcmVsYXRpdmUgdmFsdWVzIHJlcXVpcmUgYSBwcmVmaXhlZCBzaWduIChwbHVzIG9yIG1pbnVzKQ0KICAgICAgICAgIC0gIjw2MDAiICAgIyBhYnNvbHV0ZSB2YWx1ZXMgb25seSByZXF1aXJlIGEgbG9naWNhbCBvcGVyYXRvcg0KICAgIHdhcm5pbmc6ICAgICAjIGlmIHRoZSByZXNwb25zZSB0aW1lIGlzIGJlbG93IDgwMG1zLCB0aGUgcmVzdWx0IHNob3VsZCBiZSBhIHdhcm5pbmcNCiAgICAgIC0gY3JpdGVyaWE6DQogICAgICAgICAgLSAiPD04MDAiDQp0b3RhbF9zY29yZToNCiAgcGFzczogIjkwJSINCiAgd2FybmluZzogNzUl",
+         "timeEnd":"2019-11-18T11:29:36Z",
+         "timeStart":"2019-11-18T11:21:06Z"
+      },
+      "project":"sockshop",
+      "result":"fail",
+      "service":"carts",
+      "stage":"staging",
+      "teststrategy":"performance"
+   },
+   "id":"1b7cd584-320e-4ef0-8522-8a817263fdab",
+   "source":"lighthouse-service",
+   "specversion":"0.2",
+   "time":"2019-11-18T11:30:45.340Z",
+   "type":"sh.keptn.events.evaluation-done",
+   "shkeptncontext":"60077081-f902-4407-bc15-7c70be41a836"
 }
 ```
 </p>
