@@ -680,7 +680,7 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
     "timeEnd",
     "result",
     "score",
-    "serviceLevelObjectives",
+    "sloFileContent",
     "indicatorResults"
   ],
   "properties": {
