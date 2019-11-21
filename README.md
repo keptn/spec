@@ -6,7 +6,7 @@ This repository contains the specification for the [Keptn](https://keptn.sh) pro
 
 ## Versioning
 
-Changes to this spec repo are versioned using [GitHub releases](https://github.com/keptn/spec/releases). Specific implementations of the specification should specify which version of the spec they implement.
+Changes to this spec repo are versioned and changes can be tracked via the [GitHub releases page](https://github.com/keptn/spec/releases). Specific implementations of the specification should specify which version of the spec they implement.
 
 ## Contributions
 
