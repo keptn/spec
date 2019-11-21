@@ -591,6 +591,10 @@ The *start-evaluation* event is sent when the evaluation of a test run should be
     },
     "teststrategy": {
       "type": "string"
+    },
+    "labels": {
+      "additionalProperties": true,
+      "type": "object"
     }
   },
   "additionalProperties": false,
@@ -618,7 +622,12 @@ The *start-evaluation* event is sent when the evaluation of a test run should be
     "testStrategy": "performance",
     "deploymentStrategy": "direct",
     "start": "2019-09-01 12:00:00",
-    "end": "2019-09-01 12:05:00"
+    "end": "2019-09-01 12:05:00",
+    "labels": {
+      "testid": "12345",
+      "buildnr": "build17",
+      "runby": "JohnDoe"
+    }
   }
 }
 ```
