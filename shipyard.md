@@ -17,12 +17,24 @@ A shipyard file can consist of any number of stages. A stage has the following p
 
    Future versions of Keptn will also support canary deployments.
 
-* **Remediation Strategy**. The remediation strategy specifies whether remediation actions should automatically be executed in the respective stage. If Keptn receives a problem event (of type `sh.keptn.event.problem.open`), a remediation action is defined for this problem (in the `remediation.yaml` file), and the remediation is set to `automated`, then the remediation action is executed. This property is optional and no remediation actions are exectued if this property is not set to `automated`.
-
-
 * **Test Strategy**. Defines the test strategy used to validate a deployment. Failed tests result in an automatic roll-back of the latest deployment in case of a blue/green deployment strategy. Keptn supports tests of type:
   * `functional` 
   * `performance` 
+
+  In future versions of Keptn, it is not necessary to distinguish between functional and performance tests. But it is necessary to define multiple tests for a stage that can either be executed sequentially or in parallel. Therefore, we need a link between the shipyard and the uniform (i.e. using selectors and labels as known by k8s).
+
+* **Remediation Strategy**. The remediation strategy specifies whether remediation actions should automatically be executed in the respective stage. If Keptn receives a problem event (of type `sh.keptn.event.problem.open`), a remediation action is defined for this problem (in the `remediation.yaml` file), and the remediation is set to `automated`, then the remediation action is executed. 
+Keptn supports remediations of type:
+  * `automated`
+  
+* **Approval Strategy**. The approval strategy specifies the kind of approval before promoting an artifact into the next stage. Additionally, it specifies the evaluation result (i.e. can be `pass`, `warning`, and `fail`) that needs to be passed for promoting the artifact. 
+Keptn will/should support the following approval strategies:
+  * `automatic_pass`: The artifact is promoted in an automatic fashion if the evaluation result is `pass`.
+  * `automatic_warning`: The artifact is promoted in an automatic fashion if the evaluation result is `warning` or `pass`.
+  * `automatic_fail`: The artifact is promoted in an automatic fashion if the evaluation result is `fail`, `warning`, or `pass`.
+  * `manual_pass`: The user is asked for approval if the evaluation result is `pass`.
+  * `manual_warning`: The user is asked for approval if the evaluation result is `warning` or `pass`.
+  * `manual_fail`: The user is asked for approval if the evaluation result is `fail`, `warning`, or `pass`.
 
 ## Example of a shipyard.yml file
 
@@ -31,9 +43,11 @@ stages:
   - name: "dev"
     deployment_strategy: "direct"
     test_strategy: "functional"
+    approval_strategy: "automatic_warning"
   - name: "staging"
     deployment_strategy: "blue_green_service"
     test_strategy: "performance"
+    approval_strategy: "manual_pass"
   - name: "production"
     deployment_strategy: "blue_green_service"
     remediation_strategy: "automated"
