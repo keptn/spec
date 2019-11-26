@@ -17,6 +17,9 @@ A shipyard file can consist of any number of stages. A stage has the following p
 
    Future versions of Keptn will also support canary deployments.
 
+* **Remediation Strategy**. The remediation strategy specifies whether remediation actions should automatically be executed in the respective stage. If Keptn receives a problem event (of type `sh.keptn.event.problem.open`), a remediation action is defined for this problem (in the `remediation.yaml` file), and the remediation is set to `automated`, then the remediation action is executed. This property is optional and no remediation actions are exectued if this property is not set to `automated`.
+
+
 * **Test Strategy**. Defines the test strategy used to validate a deployment. Failed tests result in an automatic roll-back of the latest deployment in case of a blue/green deployment strategy. Keptn supports tests of type:
   * `functional` 
   * `performance` 
