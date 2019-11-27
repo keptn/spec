@@ -1,1 +1,15 @@
-* @dirkwall @AloisReitbauer
+##############################################################
+#
+# List of approvers/reviewers for Keptn Spec
+#
+##############################################################
+#
+# Get in touch with us via the Keptn Community
+#  https://github.com/keptn/community
+# 
+#
+# Learn about CODEOWNERS file format: 
+#  https://help.github.com/en/articles/about-code-owners
+#
+
+* @dirkwall @AloisReitbauer @christian-kreuzberger-dtx
