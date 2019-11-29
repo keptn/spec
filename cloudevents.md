@@ -593,7 +593,11 @@ The *start-evaluation* event is sent when the evaluation of a test run should be
       "type": "string"
     },
     "labels": {
-      "additionalProperties": true,
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
       "type": "object"
     }
   },
@@ -619,8 +623,8 @@ The *start-evaluation* event is sent when the evaluation of a test run should be
     "project": "sockshop",
     "stage": "staging",
     "service": "carts",
-    "testStrategy": "performance",
-    "deploymentStrategy": "direct",
+    "teststrategy": "performance",
+    "deploymentstrategy": "direct",
     "start": "2019-09-01 12:00:00",
     "end": "2019-09-01 12:05:00",
     "labels": {
