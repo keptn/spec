@@ -1096,6 +1096,8 @@ The *get-sli* event is sent when a SLI provider must be triggered for gathering 
     "start",
     "end",
     "teststrategy",
+    "deploymentstrategy",
+    "deployment",
     "indicators",
     "customFilters"
   ],
@@ -1131,6 +1133,12 @@ The *get-sli* event is sent when a SLI provider must be triggered for gathering 
       "type": "string"
     },
     "teststrategy": {
+      "type": "string"
+    },
+    "deploymentstrategy": {
+      "type": "string"
+    },
+    "deployment": {
       "type": "string"
     }
   },
@@ -1175,6 +1183,8 @@ The *get-sli* event is sent when a SLI provider must be triggered for gathering 
     "stage": "dev",
     "start": "2019-10-28T15:44:27.152330783Z",
     "end": "2019-10-28T15:54:27.152330783Z",
+    "deployment": "direct",
+    "deploymentstrategy": "direct",
     "teststrategy":"manual",
     "indicators": ["throughput", "error_rate", "request_latency_p95"],
     "customFilters": [
@@ -1207,6 +1217,8 @@ The *get-sli done* event is sent when the data gathering by a SLI provider is do
     "start",
     "end",
     "teststrategy",
+    "deploymentstrategy",
+    "deployment",
     "indicatorValues"
   ],
   "properties": {
@@ -1283,6 +1295,8 @@ The *get-sli done* event is sent when the data gathering by a SLI provider is do
     "start": "2019-11-05T16:30:27.152Z",
     "end": "2019-11-05T16:35:27.152Z",
     "teststrategy": "manual",
+    "deploymentstrategy": "direct",
+    "deployment": "direct",
     "indicatorValues": [
       {
         "metric":"request_latency_p95",
