@@ -992,8 +992,8 @@ The *problem* event is sent when a monitored service causes any problem.
 
 ```
 
-### Example
-<details><summary>Example of sh.keptn.events.problem</summary>
+### Examples
+<details><summary>Example of sh.keptn.events.problem (without project/service/stage)</summary>
 <p>
 
 ```json
@@ -1011,7 +1011,34 @@ The *problem* event is sent when a monitored service causes any problem.
     "ProblemDetails": "Pod name",
     "ProblemTitle": "cpu_usage_sockshop_carts",
     "State": "OPEN"
-  },
+  }
+}
+```
+</p>
+</details>
+
+<details><summary>Example of sh.keptn.events.problem (with project/service/stage)</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.events.problem",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/dynatrace-service",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "time": "2019-07-09T09:03:25.437Z",
+  "contenttype": "application/json",
+  "shkeptncontext": "08635340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {
+    "ImpactedEntity": "carts-primary",
+    "PID": "93a5-3fas-a09d-8ckf",
+    "ProblemDetails": "Pod name",
+    "ProblemTitle": "cpu_usage_sockshop_carts",
+    "State": "OPEN",
+    "project": "sockshop",
+    "service": "carts",
+    "stage": "production"
+  }
 }
 ```
 </p>
