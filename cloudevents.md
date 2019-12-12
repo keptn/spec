@@ -490,7 +490,8 @@ The *tests-finished* event is sent when the tests for a service in a stage are f
     "teststrategy",
     "deploymentstrategy",
     "start",
-    "end"
+    "end",
+    "result"
   ],
   "properties": {
     "deploymentstrategy": {
@@ -512,6 +513,9 @@ The *tests-finished* event is sent when the tests for a service in a stage are f
       "type": "string"
     },
     "teststrategy": {
+      "type": "string"
+    },
+    "result": {
       "type": "string"
     }
   },
@@ -540,7 +544,8 @@ The *tests-finished* event is sent when the tests for a service in a stage are f
     "testStrategy": "performance",
     "deploymentStrategy": "direct",
     "start": "2019-09-01 12:00:00",
-    "end": "2019-09-01 12:05:00"
+    "end": "2019-09-01 12:05:00",
+    "result": "pass"
   }
 }
 ```
