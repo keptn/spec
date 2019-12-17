@@ -1,7 +1,7 @@
 # Specifications for Site Reliability Engineering with Keptn
 
 To support site reliability engineering with Keptn and to enable the self-healing use case, Keptn relies on two configurations called as:
-* [Service Level Objectives (SLO)](#service-level-objectives-slo-configuration))
+* [Service Level Objectives (SLO)](#service-level-objectives-slo-configuration)
 * [Service Level Indicators (SLI)](#service-level-indicators-sli-configuration)
 * [Remediation Action](#remediation-action)
 
