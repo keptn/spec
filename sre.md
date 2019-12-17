@@ -274,7 +274,7 @@ An indicator is a key-value pair with the SLI name as key and the provider-speci
 }
 ```
 
-### Example of a Service Level Indicators (SLO) configuration (in yaml)
+### Example of a Service Level Indicators (SLI) configuration (in yaml)
 
 ```yaml
 spec_version: "1.0"
