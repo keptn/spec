@@ -1,15 +1,15 @@
 # Specifications for Site Reliability Engineering with Keptn
 
 To support site reliability engineering with Keptn and to enable the self-healing use case, Keptn relies on two configurations called as:
-* [Service Level Objectives (SLO)](#service-level-objectives-(slo))
-* [Service Level Indicators (SLI)](#service-level-indicators-(sli))
+* [Service Level Objectives (SLO)](#service-level-objectives-slo-configuration))
+* [Service Level Indicators (SLI)](#service-level-indicators-sli-configuration)
 * [Remediation Action](#remediation-action)
 
 ---
 
 ## Service Level Objectives (SLO) Configuration
 
-The *Service Level Objectives (SLO)* configuration specifies a target value or range of values for a service level that is measured by a [Service Level Indicators (SLI)](#service-level-indicators-(sli)). Next to SLIs, an SLO consists of a service filter that uniquely identifies a service, and evaluation success criteria that depends on the selected comparison strategy. Here’s an example of a minimal SLO - the details to each configuration item are described below.
+The *Service Level Objectives (SLO)* configuration specifies a target value or range of values for a service level that is measured by [Service Level Indicators (SLI)](#service-level-indicators-sli-configuration). Next to SLIs, an SLO consists of a service filter that uniquely identifies a service, and evaluation success criteria that depends on the selected comparison strategy. Here’s an example of a minimal SLO - the details to each configuration item are described below.
 
 ```yaml
 spec_version: '1.0'
