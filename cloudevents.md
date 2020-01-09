@@ -516,7 +516,8 @@ The *tests-finished* event is sent when the tests for a service in a stage are f
     "teststrategy",
     "deploymentstrategy",
     "start",
-    "end"
+    "end",
+    "result"
   ],
   "properties": {
     "deploymentstrategy": {
@@ -547,6 +548,9 @@ The *tests-finished* event is sent when the tests for a service in a stage are f
         }
       },
       "type": "object"
+     },
+    "result": {
+      "type": "string"
     }
   },
   "additionalProperties": false,
@@ -579,7 +583,8 @@ The *tests-finished* event is sent when the tests for a service in a stage are f
       "testid": "12345",
       "buildnr": "build17",
       "runby": "JohnDoe"
-    }
+    },
+    "result": "pass"
   }
 }
 ```
@@ -1057,8 +1062,8 @@ The *problem* event is sent when a monitored service causes any problem.
 
 ```
 
-### Example
-<details><summary>Example of sh.keptn.events.problem</summary>
+### Examples
+<details><summary>Example of sh.keptn.events.problem (without project/service/stage)</summary>
 <p>
 
 ```json
@@ -1076,7 +1081,34 @@ The *problem* event is sent when a monitored service causes any problem.
     "ProblemDetails": "Pod name",
     "ProblemTitle": "cpu_usage_sockshop_carts",
     "State": "OPEN"
-  },
+  }
+}
+```
+</p>
+</details>
+
+<details><summary>Example of sh.keptn.events.problem (with project/service/stage)</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.events.problem",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/dynatrace-service",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "time": "2019-07-09T09:03:25.437Z",
+  "contenttype": "application/json",
+  "shkeptncontext": "08635340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {
+    "ImpactedEntity": "carts-primary",
+    "PID": "93a5-3fas-a09d-8ckf",
+    "ProblemDetails": "Pod name",
+    "ProblemTitle": "cpu_usage_sockshop_carts",
+    "State": "OPEN",
+    "project": "sockshop",
+    "service": "carts",
+    "stage": "production"
+  }
 }
 ```
 </p>
@@ -1161,6 +1193,8 @@ The *get-sli* event is sent when a SLI provider must be triggered for gathering 
     "start",
     "end",
     "teststrategy",
+    "deploymentstrategy",
+    "deployment",
     "indicators",
     "customFilters"
   ],
@@ -1205,6 +1239,12 @@ The *get-sli* event is sent when a SLI provider must be triggered for gathering 
         }
       },
       "type": "object"
+    },
+    "deploymentstrategy": {
+      "type": "string"
+    },
+    "deployment": {
+      "type": "string"
     }
   },
   "additionalProperties": false,
@@ -1248,6 +1288,8 @@ The *get-sli* event is sent when a SLI provider must be triggered for gathering 
     "stage": "dev",
     "start": "2019-10-28T15:44:27.152330783Z",
     "end": "2019-10-28T15:54:27.152330783Z",
+    "deployment": "direct",
+    "deploymentstrategy": "direct",
     "teststrategy":"manual",
     "indicators": ["throughput", "error_rate", "request_latency_p95"],
     "customFilters": [
@@ -1285,6 +1327,8 @@ The *get-sli done* event is sent when the data gathering by a SLI provider is do
     "start",
     "end",
     "teststrategy",
+    "deploymentstrategy",
+    "deployment",
     "indicatorValues"
   ],
   "properties": {
@@ -1369,6 +1413,8 @@ The *get-sli done* event is sent when the data gathering by a SLI provider is do
     "start": "2019-11-05T16:30:27.152Z",
     "end": "2019-11-05T16:35:27.152Z",
     "teststrategy": "manual",
+    "deploymentstrategy": "direct",
+    "deployment": "direct",
     "indicatorValues": [
       {
         "metric":"request_latency_p95",
