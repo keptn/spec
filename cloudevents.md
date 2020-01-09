@@ -341,6 +341,14 @@ The *configuration change* event is sent when a desired state for a service is a
         }
       },
       "type": "object"
+    },
+    "labels": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
     }
   },
   "additionalProperties": false,
@@ -382,6 +390,11 @@ The *configuration change* event is sent when a desired state for a service is a
     "service": "carts",
     "valuesCanary": {
       "image": "docker.io/keptnexamples/carts:0.9.1"
+    },
+    "labels": {
+      "testid": "12345",
+      "buildnr": "build17",
+      "runby": "JohnDoe"
     }
   }
 }
@@ -434,6 +447,14 @@ The *deployment-finished* event is sent when a desired state of a service is dep
     },
     "teststrategy": {
       "type": "string"
+    },
+    "labels": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
     }
   },
   "additionalProperties": false,
@@ -461,7 +482,12 @@ The *deployment-finished* event is sent when a desired state of a service is dep
     "testStrategy": "performance",
     "deploymentStrategy": "direct",
     "tag": "0.9.1",
-    "image": "docker.io/keptnexamples/carts" 
+    "image": "docker.io/keptnexamples/carts",
+    "labels": {
+      "testid": "12345",
+      "buildnr": "build17",
+      "runby": "JohnDoe"
+    }
   }
 }
 ```
@@ -515,6 +541,14 @@ The *tests-finished* event is sent when the tests for a service in a stage are f
     "teststrategy": {
       "type": "string"
     },
+    "labels": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+     },
     "result": {
       "type": "string"
     }
@@ -545,6 +579,11 @@ The *tests-finished* event is sent when the tests for a service in a stage are f
     "deploymentStrategy": "direct",
     "start": "2019-09-01 12:00:00",
     "end": "2019-09-01 12:05:00",
+    "labels": {
+      "testid": "12345",
+      "buildnr": "build17",
+      "runby": "JohnDoe"
+    },
     "result": "pass"
   }
 }
@@ -596,6 +635,14 @@ The *start-evaluation* event is sent when the evaluation of a test run should be
     },
     "teststrategy": {
       "type": "string"
+    },
+    "labels": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
     }
   },
   "additionalProperties": false,
@@ -620,10 +667,15 @@ The *start-evaluation* event is sent when the evaluation of a test run should be
     "project": "sockshop",
     "stage": "staging",
     "service": "carts",
-    "testStrategy": "performance",
-    "deploymentStrategy": "direct",
+    "teststrategy": "performance",
+    "deploymentstrategy": "direct",
     "start": "2019-09-01 12:00:00",
-    "end": "2019-09-01 12:05:00"
+    "end": "2019-09-01 12:05:00",
+    "labels": {
+      "testid": "12345",
+      "buildnr": "build17",
+      "runby": "JohnDoe"
+    }
   }
 }
 ```
@@ -674,6 +726,14 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
     },
     "teststrategy": {
       "type": "string"
+    },
+    "labels": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
     }
   },
   "additionalProperties": false,
@@ -834,7 +894,12 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
       "result":"fail",
       "service":"carts",
       "stage":"staging",
-      "teststrategy":"performance"
+      "teststrategy":"performance",
+      "labels": {
+        "testid": "12345",
+        "buildnr": "build17",
+        "runby": "JohnDoe"
+      }
    },
    "id":"1b7cd584-320e-4ef0-8522-8a817263fdab",
    "source":"lighthouse-service",
@@ -1167,6 +1232,14 @@ The *get-sli* event is sent when a SLI provider must be triggered for gathering 
     "teststrategy": {
       "type": "string"
     },
+    "labels": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
     "deploymentstrategy": {
       "type": "string"
     },
@@ -1222,7 +1295,12 @@ The *get-sli* event is sent when a SLI provider must be triggered for gathering 
     "customFilters": [
       { "key" : "dynatraceEntityName", "value": "HealthCheckController" },
       { "key" : "tags", "value": "test-subject:true" }
-    ]
+    ],
+    "labels": {
+      "testid": "12345",
+      "buildnr": "build17",
+      "runby": "JohnDoe"
+    }
   }
 }
 ```
@@ -1277,6 +1355,14 @@ The *get-sli done* event is sent when the data gathering by a SLI provider is do
     },
     "teststrategy": {
       "type": "string"
+    },
+    "labels": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
     }
   },
   "additionalProperties": false,
@@ -1340,7 +1426,12 @@ The *get-sli done* event is sent when the data gathering by a SLI provider is do
         "value": 0,
         "success": true
       }
-    ]
+    ],
+    "labels": {
+      "testid": "12345",
+      "buildnr": "build17",
+      "runby": "JohnDoe"
+    }
   }
 }
 ```
