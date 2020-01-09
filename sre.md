@@ -1,6 +1,6 @@
 # Specifications for Site Reliability Engineering with Keptn
 
-To support site reliability engineering with Keptn and to enable the self-healing use case, Keptn relies on two configurations called as:
+To support site reliability engineering with Keptn and to enable the self-healing use case, Keptn relies on three configurations:
 * [Service Level Objectives (SLO)](#service-level-objectives-slo-configuration)
 * [Service Level Indicators (SLI)](#service-level-indicators-sli-configuration)
 * [Remediation Action](#remediation-action)
@@ -9,7 +9,7 @@ To support site reliability engineering with Keptn and to enable the self-healin
 
 ## Service Level Objectives (SLO) Configuration
 
-The *Service Level Objectives (SLO)* configuration specifies a target value or range of values for a service level that is measured by [Service Level Indicators (SLI)](#service-level-indicators-sli-configuration). Next to SLIs, an SLO consists of a service filter that uniquely identifies a service, and evaluation success criteria that depends on the selected comparison strategy. Here’s an example of a minimal SLO - the details to each configuration item are described below.
+The *Service Level Objectives (SLO)* configuration specifies a target value or range of values for a service level that is measured by [Service Level Indicators (SLI)](#service-level-indicators-sli-configuration). Next to SLIs, an SLO consists of a service filter that uniquely identifies a service, and evaluation success criteria that depends on the selected comparison strategy. Here is an example of a minimal SLO configuration - the details to each configuration item are described below.
 
 ```yaml
 spec_version: '1.0'
@@ -36,13 +36,15 @@ total_score:
 
 #### Filter
 SLOs are defined per service. A service filter is a key-value pair and the following list contains all valid keys for service filters. The service filters project, stage, and service can be inferred from the Keptn configuration by using $PROJECT, $STAGE, and $SERVICE respectively. These values can also be overwritten in the configuration. The service filter id can be used to specify a unique identifier of that service.
-*   project
-*   stage
-*   service
-*   id
+* project
+* stage
+* service
+* id
 
 #### Comparison
-By default, Keptn compares with the previous values of the SLIs. The **compare_with** configuration parameter controls how many previous results are compared: *single_result* or *several_results*. The **include_result_with_score** configuration parameter controls which of the previous results are included in the comparison: *pass*, *pass_or_warn*, *all* (default, also used if not specified). For example,
+By default, Keptn compares with the previous values of the SLIs. The **compare_with** configuration parameter controls how many previous results are compared: *single_result* or *several_results*. The **include_result_with_score** configuration parameter controls which of the previous results are included in the comparison: *pass*, *pass_or_warn*, or *all* (*all* is the default, also used if not specified). 
+
+*1. Example:*
 
 ```yaml
 comparison:
@@ -51,7 +53,9 @@ comparison:
   number_of_comparison_results: 3
   aggregate_function: avg
 ```
-means that the current result is only compared to the last result that passed. Whereas, if
+This comparison configuration means that the current result is only compared to the last result that passed. 
+
+*2. Example:*
 
 ```yaml
 comparison:
@@ -61,7 +65,7 @@ comparison:
   aggregate_function: "avg"
 ```
 
-the current result is compared to the average of the three previous results that had pass or warning as a result.
+This comparison configuration means that the current result is compared to the average of the three previous results that had pass or warning as a result.
 
 #### Objectives
 An objective consists of a **sli**, a **pass** criteria, an optional **warning** criteria, an optional **weight** criteria and an optional **key_sli** flag. `pass` represents the upper limit up to which an evaluation is successful. `warning`, if defined, describes the border where the result is not pass and not fail, and a manual approval might be needed to decide. `weight` can be used to emphasize the importance of one SLI over the others. By default, `weight` is 1 for all SLIs and can be overwritten. The weight is important for calculating the score later. The `key_sli` flag can be set to true meaning that the objective is not met if this SLI fails.
