@@ -24,7 +24,7 @@ Keptn supports the following approval strategies for the evaluation results `pas
   * `manual`: The user is asked for approval.
 Per default, an `automatic` approval strategy is used for evaluation result `pass` and `warning`.
 
-* **Remediation Strategy**: The remediation strategy specifies whether remediation actions are enabled or not. To enable remediation actions, the `remediation_strategy` property has to be set to `automated`. The actions are specified in the remediation.yaml file as described [here](./sre.md/#remediation-action).
+* **Remediation Strategy**: The remediation strategy specifies whether remediation actions are enabled or not. To enable remediation actions, the `remediation_strategy` property has to be set to `automated`. The actions are specified in the *Remediation Action* configuration as described [here](./sre.md/#remediation-action).
 
 ## Example of a shipyard.yml file
 
