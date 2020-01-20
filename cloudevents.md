@@ -914,23 +914,23 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
 
 ([&uarr; up to index](#keptn-cloud-events))
 
-## Problem Open
+## Problem
 
-The *problem open* event is sent when a monitored service causes any problem.
+The generic *problem* event is sent when a problem activity related to a monitored service is happening. For example, a *problem* event is sent when a problem is opened or resolved. 
 
 ### type
 ```json
-"type": "sh.keptn.event.problem.open"
+"type": "sh.keptn.events.problem"
 ```
 
 ### data
 ```json
 "ProblemEventData": {
   "required": [
-    "ProblemID",
-    "ProblemTitle",
+    "PID",
     "ProblemDetails",
-    "PID"
+    "ProblemID",
+    "ProblemTitle"
   ],
   "properties": {
     "ImpactedEntities": {
@@ -960,11 +960,135 @@ The *problem open* event is sent when a monitored service causes any problem.
     "project": {
       "type": "string"
     },
+    "stage": {
+      "type": "string"
+    },
     "service": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+### Examples
+<details><summary>Example of sh.keptn.events.problem without project, service, and stage</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.events.problem",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/prometheus-service",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "contenttype": "application/json",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {
+    "ImpactedEntity": "carts-primary",
+    "PID": "93a5-3fas-a09d-8ckf",
+    "ProblemDetails": "Pod name",
+    "ProblemID": "762",
+    "ProblemTitle": "cpu_usage_sockshop_carts",
+    "State": "OPEN",
+    "Tags": "keptn_project:sockshop,keptn_stage:production,keptn_service:carts"
+  }
+}
+```
+</p>
+</details>
+
+<details><summary>Example of sh.keptn.events.problem with project, stage, and service</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.events.problem",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/dynatrace-service",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "time": "2019-07-09T09:03:25.437Z",
+  "contenttype": "application/json",
+  "shkeptncontext": "08635340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {
+    "ImpactedEntity": "carts-primary",
+    "PID": "93a5-3fas-a09d-8ckf",
+    "ProblemDetails": "Pod name",
+    "ProblemID": "762",
+    "ProblemTitle": "cpu_usage_sockshop_carts",
+    "State": "OPEN",
+    "project": "sockshop",
+    "stage": "production",
+    "service": "carts"
+  }
+}
+```
+</p>
+</details>
+
+([&uarr; up to index](#keptn-cloud-events))
+
+## Problem Open
+
+The *problem open* event is sent when a monitored service causes any problem **and** the state of the problem is `OPEN`. 
+
+### type
+```json
+"type": "sh.keptn.event.problem.open"
+```
+
+### data
+```json
+"ProblemEventData": {
+  "required": [
+    "PID",
+    "ProblemDetails",
+    "ProblemID",
+    "ProblemTitle"
+  ],
+  "properties": {
+    "ImpactedEntities": {
+      "type": "string",
+    },
+    "PID": {
+      "type": "string",
+    },
+    "ProblemDetails": {
+      "items": {
+        "type": "integer"
+      },
+      "type": "array"
+    },
+    "ProblemID": {
+      "type": "string"
+    },
+    "ProblemTitle": {
+      "type": "string",
+    },
+    "State": {
+      "type": "string",
+      "default": "OPEN"
+    },
+    "Tags": {
+      "type": "string"
+    },
+    "project": {
       "type": "string"
     },
     "stage": {
       "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "labels": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
     }
   },
   "additionalProperties": false,
@@ -990,124 +1114,12 @@ The *problem open* event is sent when a monitored service causes any problem.
     "ImpactedEntity": "carts-primary",
     "PID": "93a5-3fas-a09d-8ckf",
     "ProblemDetails": "Pod name",
+    "ProblemID": "762",
     "ProblemTitle": "cpu_usage_sockshop_carts",
     "State": "OPEN",
     "project": "sockshop",
     "stage": "production", 
     "service": "service"
-  },
-}
-```
-</p>
-</details>
-
-([&uarr; up to index](#keptn-cloud-events))
-
-## Problem
-
-The *problem* event is sent when a monitored service causes any problem.
-
-### type
-```json
-"type": "sh.keptn.events.problem"
-```
-
-### data
-```json
-"ProblemEventData": {
-  "required": [
-    "ProblemID",
-    "ProblemTitle",
-    "ProblemDetails",
-    "PID"
-  ],
-  "properties": {
-    "ImpactedEntities": {
-      "type": "string",
-    },
-    "PID": {
-      "type": "string",
-    },
-    "ProblemDetails": {
-      "items": {
-        "type": "integer"
-      },
-      "type": "array"
-    },
-    "ProblemID": {
-      "type": "string"
-    },
-    "ProblemTitle": {
-      "type": "string",
-    },
-    "State": {
-      "type": "string"
-    },
-    "Tags": {
-      "type": "string"
-    },
-    "project": {
-      "type": "string"
-    },
-    "service": {
-      "type": "string"
-    },
-    "stage": {
-      "type": "string"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-
-```
-
-### Examples
-<details><summary>Example of sh.keptn.events.problem (without project/service/stage)</summary>
-<p>
-
-```json
-{
-  "type": "sh.keptn.events.problem",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/prometheus-service",
-  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "data": {
-    "ImpactedEntity": "carts-primary",
-    "PID": "93a5-3fas-a09d-8ckf",
-    "ProblemDetails": "Pod name",
-    "ProblemTitle": "cpu_usage_sockshop_carts",
-    "State": "OPEN"
-  }
-}
-```
-</p>
-</details>
-
-<details><summary>Example of sh.keptn.events.problem (with project/service/stage)</summary>
-<p>
-
-```json
-{
-  "type": "sh.keptn.events.problem",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/dynatrace-service",
-  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "time": "2019-07-09T09:03:25.437Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08635340-6f9e-4b32-97ff-3b6c292bc509",
-  "data": {
-    "ImpactedEntity": "carts-primary",
-    "PID": "93a5-3fas-a09d-8ckf",
-    "ProblemDetails": "Pod name",
-    "ProblemTitle": "cpu_usage_sockshop_carts",
-    "State": "OPEN",
-    "project": "sockshop",
-    "service": "carts",
-    "stage": "production"
   }
 }
 ```
@@ -1115,6 +1127,7 @@ The *problem* event is sent when a monitored service causes any problem.
 </details>
 
 ([&uarr; up to index](#keptn-cloud-events))
+
 
 ## Configure Monitoring 
 
@@ -1165,7 +1178,7 @@ The *monitoring configure* event is sent to configure a monitoring solution for 
   "data": {
     "project": "sockshop",
     "service": "carts",
-    "type": "prometheus",
+    "type": "prometheus"
   }
 }
 ```
