@@ -1129,6 +1129,105 @@ The *problem open* event is sent when a monitored service causes any problem **a
 ([&uarr; up to index](#keptn-cloud-events))
 
 
+## Problem Close
+
+The *problem close* event is sent when a monitored service is in healthy state again **after** a problem has occured **and** the state of the problem is `RESOLVED`. 
+
+### type
+```json
+"type": "sh.keptn.event.problem.close"
+```
+
+### data
+```json
+"ProblemEventData": {
+  "required": [
+    "PID",
+    "ProblemDetails",
+    "ProblemID",
+    "ProblemTitle"
+  ],
+  "properties": {
+    "ImpactedEntities": {
+      "type": "string",
+    },
+    "PID": {
+      "type": "string",
+    },
+    "ProblemDetails": {
+      "items": {
+        "type": "integer"
+      },
+      "type": "array"
+    },
+    "ProblemID": {
+      "type": "string"
+    },
+    "ProblemTitle": {
+      "type": "string",
+    },
+    "State": {
+      "type": "string",
+      "default": "CLOSED"
+    },
+    "Tags": {
+      "type": "string"
+    },
+    "project": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "labels": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+
+```
+
+### Example
+<details><summary>Example of sh.keptn.event.problem.close</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.event.problem.close",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/prometheus-service",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "contenttype": "application/json",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {
+    "ImpactedEntity": "carts-primary",
+    "PID": "93a5-3fas-a09d-8ckf",
+    "ProblemDetails": "Pod name",
+    "ProblemID": "762",
+    "ProblemTitle": "cpu_usage_sockshop_carts",
+    "State": "RESOLVED",
+    "project": "sockshop",
+    "stage": "production", 
+    "service": "service"
+  }
+}
+```
+</p>
+</details>
+
+([&uarr; up to index](#keptn-cloud-events))
+
 ## Configure Monitoring 
 
 The *monitoring configure* event is sent to configure a monitoring solution for a Keptn cluster.
