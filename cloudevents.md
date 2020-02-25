@@ -455,6 +455,12 @@ The *deployment-finished* event is sent when a desired state of a service is dep
         }
       },
       "type": "object"
+    },
+    "deploymentURILocal": {
+      "type": "string"
+    },
+    "deploymentURIPublic": {
+      "type": "string"
     }
   },
   "additionalProperties": false,
@@ -487,7 +493,8 @@ The *deployment-finished* event is sent when a desired state of a service is dep
       "testid": "12345",
       "buildnr": "build17",
       "runby": "JohnDoe"
-    }
+    },
+    "deploymentURILocal": "http://carts.sockshop-staging.svc.cluster.local"
   }
 }
 ```
