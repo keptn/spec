@@ -18,7 +18,6 @@ filter:
 comparison:
   compare_with: "single_result"
   include_result_with_score: "pass"
-  number_of_comparison_results: 3
   aggregate_function: avg
 objectives:
   - sli: response_time_p95
@@ -50,18 +49,19 @@ By default, Keptn compares with the previous values of the SLIs. The **compare_w
 comparison:
   compare_with: "single_result"
   include_result_with_score: "pass"
-  number_of_comparison_results: 3
   aggregate_function: avg
 ```
 This comparison configuration means that the current result is only compared to the last result that passed. 
+
+> **Note:** If you configure `compare_with: "single_result"` in combination with `number_of_comparison_results`, `compare_with` will negate the `number_of_comparison_results`. 
 
 *2. Example:*
 
 ```yaml
 comparison:
   compare_with: "several_results"
-  include_result_with_score: "pass_or_warn"
   number_of_comparison_results: 3
+  include_result_with_score: "pass_or_warn"
   aggregate_function: "avg"
 ```
 
