@@ -53,7 +53,7 @@ comparison:
 ```
 This comparison configuration means that the current result is only compared to the last result that passed. 
 
-> **Note:** If you configure `compare_with: "single_result"` in combination with `number_of_comparison_results`, `compare_with` will negate the `number_of_comparison_results`. 
+> **Note:** If you configure `compare_with: "single_result"` in combination with **number_of_comparison_results**, **compare_with** will negate the **number_of_comparison_results**. 
 
 *2. Example:*
 
