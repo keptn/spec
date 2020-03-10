@@ -18,7 +18,7 @@ A shipyard file can consist of any number of stages. A stage has the following p
   * `functional` 
   * `performance` 
   
-* **Approval Strategy** (Draft): The approval strategy specifies the kind of approval, which is required before promoting an artifact into the next stage. The approval strategy can be defined based on the evaluation result `pass` and `warning`. 
+* **Approval Strategy**: The approval strategy specifies the kind of approval, which is required before promoting an artifact into the next stage. The approval strategy can be defined based on the evaluation result `pass` and `warning`. 
 Keptn supports the following approval strategies for the evaluation results `pass` and `warning`:
   * `automatic`: The artifact is promoted automatically.
   * `manual`: The user is asked for approval.
