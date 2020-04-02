@@ -81,13 +81,13 @@ total_score:
 ```
 
 #### Filter
-This property allows a list of key-value pairs that are used to uniquely identify a service. This means that the key of a filter can be used as a placeholder in an SLI query. For example, the filter `id: 4711` specifies a unique identifier of the service. Consequently, the key of the filter (i.e., `id`) can be referenced in an SLI query by `$id`. The filters *project*, *stage*, *service*, *deployment* can be inferred from the Keptn configuration by using `$PROJECT`, `$STAGE`, `$SERVICE`, and `$DEPLOYMENT` in SLI queries respectively. These values can also be overwritten in the configuration. The default filters are:
+This property allows a list of key-value pairs that are used to uniquely identify a service. This means that the key of a filter can be used as a placeholder in an SLI query. For example, the filter `id: 4711` specifies a unique identifier of the service. Consequently, the key of the filter (i.e., `id`) can be referenced in an SLI query by `$id`. The filters *project*, *stage*, *service*, and *deployment* can be inferred from the Keptn configuration by using `$PROJECT`, `$STAGE`, `$SERVICE`, and `$DEPLOYMENT` in SLI queries respectively. These values can also be overwritten in the configuration. The default filters are:
 * project
 * stage
 * service
 * deployment
 
-*Example of an SLO with filter*
+*Example of an SLO with filter:*
 ```yaml
 spec_version: '1.0'
 filter:
@@ -96,7 +96,7 @@ comparison:
 ...
 ```
 
-*Example of an SLI with reference to `mz_id` filter from SLO*
+*Example of an SLI with reference to the `mz_id` filter from the SLO:*
 ```yaml
 spec_version: "1.0"
 indicators:
