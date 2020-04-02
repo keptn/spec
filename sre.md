@@ -56,12 +56,13 @@ indicators:
 
 ## Service Level Objectives (SLO) Configuration
 
-The *Service Level Objectives (SLO)* configuration specifies a target value or range of values for a service level that is measured by [Service Level Indicators (SLI)](#service-level-indicators-sli-configuration). An SLO is defined per service and consists of a filter that uniquely identifies a service, and objectives that depends on the selected comparison strategy. Here is an example of a minimal SLO configuration - the details to each configuration item are described below.
+The *Service Level Objectives (SLO)* configuration specifies a target value or range of values for a service level that is measured by [Service Level Indicators (SLI)](#service-level-indicators-sli-configuration). An SLO is defined per service and consists of a filter that uniquely identifies a deployment of a service, and objectives that depends on the selected comparison strategy. Here is an example of a minimal SLO configuration - the details to each configuration item are described below.
 
 ```yaml
 spec_version: '1.0'
 filter:
-  handler: "ItemsController.addToCart"
+  mz_id: "4711"
+  svc_id: "a14b-cd87-0d51"
 comparison:
   compare_with: "single_result"
   include_result_with_score: "pass"
@@ -81,17 +82,18 @@ total_score:
 ```
 
 #### Filter
-This property allows a list of key-value pairs that are used to uniquely identify a service. This means that the key of a filter can be used as a placeholder in an SLI query. For example, the filter `id: 4711` specifies a unique identifier of the service. Consequently, the key of the filter (i.e., `id`) can be referenced in an SLI query by `$id`. The filters *project*, *stage*, *service*, and *deployment* can be inferred from the Keptn configuration by using `$PROJECT`, `$STAGE`, `$SERVICE`, and `$DEPLOYMENT` in SLI queries respectively. These values can also be overwritten in the configuration. The default filters are:
+This property allows a list of key-value pairs that are used to uniquely identify a deployment of a service. This means that the key of a filter can be used as a placeholder in an SLI query. For example, the filter `svc_id: "a14b-cd87-0d51"` specifies a unique identifier of the deployment of a service. Consequently, the key of the filter (i.e., `svc_id`) can be referenced in an SLI query by `$svc_id`. The filters *project*, *stage*, *service*, and *deployment* can be inferred from the Keptn configuration by using `$PROJECT`, `$STAGE`, `$SERVICE`, and `$DEPLOYMENT` in SLI queries respectively. These values can also be overwritten in the configuration. The default filters are:
 * project
 * stage
 * service
 * deployment
 
-*Example of an SLO with filter:*
+*Example of an SLO with a list of filters:*
 ```yaml
 spec_version: '1.0'
 filter:
   mz_id: "4711"
+  svc_id: "a14b-cd87-0d51"
 comparison:
 ...
 ```
@@ -287,7 +289,8 @@ The pass and warning criteria for the `total_score` use the logical operator ">=
 ```yaml
 spec_version: '1.0'
 filter:
-  handler: "ItemsController.addToCart"
+  mz_id: "4711"
+  svc_id: "a14b-cd87-0d51"
 comparison:
   compare_with: "several_results"
   include_result_with_score: "pass"
