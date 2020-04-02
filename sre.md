@@ -100,7 +100,7 @@ comparison:
 ```yaml
 spec_version: "1.0"
 indicators:
-  throughput: "builtin:service.requestCount.total:merge(0):count?scope=tag(keptn_project:$PROJECT),tag(keptn_stage:$STAGE),tag(keptn_service:$SERVICE),tag(keptn_deployment:$DEPLOYMENT),mzId($mz_id)"
+  throughput: "builtin:service.requestCount.total:merge(0):count?scope=tag(keptn_service:$SERVICE),mzId($mz_id)"
 ```
 
 #### Comparison
