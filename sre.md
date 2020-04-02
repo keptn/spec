@@ -1,15 +1,62 @@
 # Specifications for Site Reliability Engineering with Keptn
 
 To support site reliability engineering with Keptn and to enable the self-healing use case, Keptn relies on three configurations:
-* [Service Level Objectives (SLO)](#service-level-objectives-slo-configuration)
 * [Service Level Indicators (SLI)](#service-level-indicators-sli-configuration)
+* [Service Level Objectives (SLO)](#service-level-objectives-slo-configuration)
 * [Remediation Action](#remediation-action)
 
 ---
 
+## Service Level Indicators (SLI) Configuration
+
+A Service Level Indicator (SLI) is a defined quantitative measure of some aspects of the service level. The query for an SLI is provider (tool) dependent. This is the reason why each SLI-provider relies on an individual SLI configuration. This SLI configuration lists those SLIs that are supported by the SLI-provider by their name and query whereas the query is provider specific. 
+
+#### Indicators
+An indicator is a key-value pair with the SLI name as key and the provider-specific query as value.
+
+### Specification
+```json
+"ServiceLevelIndicators": {
+  "required": [
+    "spec_version"
+    "indicators"
+  ],
+  "properties": {
+    "spec_version": {
+      "type": "string"
+    },
+    "indicators": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+### Example of a Service Level Indicators (SLI) configuration (in yaml)
+
+```yaml
+spec_version: "1.0"
+indicators:
+  throughput: "builtin:service.requestCount.total:merge(0):count?scope=tag(keptn_project:$PROJECT),tag(keptn_stage:$STAGE),tag(keptn_service:$SERVICE),tag(keptn_deployment:$DEPLOYMENT)"
+  error_rate: "builtin:service.errors.total.count:merge(0):avg?scope=tag(keptn_project:$PROJECT),tag(keptn_stage:$STAGE),tag(keptn_service:$SERVICE),tag(keptn_deployment:$DEPLOYMENT)"
+  response_time_p50: "builtin:service.response.time:merge(0):percentile(50)?scope=tag(keptn_project:$PROJECT),tag(keptn_stage:$STAGE),tag(keptn_service:$SERVICE),tag(keptn_deployment:$DEPLOYMENT)"
+  response_time_p90: "builtin:service.response.time:merge(0):percentile(90)?scope=tag(keptn_project:$PROJECT),tag(keptn_stage:$STAGE),tag(keptn_service:$SERVICE),tag(keptn_deployment:$DEPLOYMENT)"
+  response_time_p95: "builtin:service.response.time:merge(0):percentile(95)?scope=tag(keptn_project:$PROJECT),tag(keptn_stage:$STAGE),tag(keptn_service:$SERVICE),tag(keptn_deployment:$DEPLOYMENT)"
+```
+
+([&uarr; up to index](#specifications-for-site-reliability-engineering-with-keptn))
+
+
 ## Service Level Objectives (SLO) Configuration
 
-The *Service Level Objectives (SLO)* configuration specifies a target value or range of values for a service level that is measured by [Service Level Indicators (SLI)](#service-level-indicators-sli-configuration). Next to SLIs, an SLO consists of a service filter that uniquely identifies a service, and evaluation success criteria that depends on the selected comparison strategy. Here is an example of a minimal SLO configuration - the details to each configuration item are described below.
+The *Service Level Objectives (SLO)* configuration specifies a target value or range of values for a service level that is measured by [Service Level Indicators (SLI)](#service-level-indicators-sli-configuration). An SLO is defined per service and consists of a filter that uniquely identifies a service, and objectives that depends on the selected comparison strategy. Here is an example of a minimal SLO configuration - the details to each configuration item are described below.
 
 ```yaml
 spec_version: '1.0'
@@ -34,11 +81,27 @@ total_score:
 ```
 
 #### Filter
-SLOs are defined per service. A service filter is a key-value pair and the following list contains all valid keys for service filters. The service filters project, stage, and service can be inferred from the Keptn configuration by using $PROJECT, $STAGE, and $SERVICE respectively. These values can also be overwritten in the configuration. The service filter id can be used to specify a unique identifier of that service.
+This property allows a list of key-value pairs that are used to uniquely identify a service. This means that the key of a filter can be used as a placeholder in an SLI query. For example, the filter `id: 4711` specifies a unique identifier of the service. Consequently, the key of the filter (i.e., `id`) can be referenced in an SLI query by `$id`. The filters *project*, *stage*, *service*, *deployment* can be inferred from the Keptn configuration by using `$PROJECT`, `$STAGE`, `$SERVICE`, and `$DEPLOYMENT` in SLI queries respectively. These values can also be overwritten in the configuration. The default filters are:
 * project
 * stage
 * service
-* id
+* deployment
+
+*Example of an SLO with filter*
+```yaml
+spec_version: '1.0'
+filter:
+  mz_id: "4711"
+comparison:
+...
+```
+
+*Example of an SLI with reference to `mz_id` filter from SLO*
+```yaml
+spec_version: "1.0"
+indicators:
+  throughput: "builtin:service.requestCount.total:merge(0):count?scope=tag(keptn_project:$PROJECT),tag(keptn_stage:$STAGE),tag(keptn_service:$SERVICE),tag(keptn_deployment:$DEPLOYMENT),mzId($mz_id)"
+```
 
 #### Comparison
 By default, Keptn compares with the previous values of the SLIs. The **compare_with** configuration parameter controls how many previous results are compared: *single_result* or *several_results*. The **include_result_with_score** configuration parameter controls which of the previous results are included in the comparison: *pass*, *pass_or_warn*, or *all* (*all* is the default, also used if not specified). 
@@ -242,52 +305,6 @@ objectives:
 total_score:
   pass: "90%"
   warning: "75%"
-```
-
-([&uarr; up to index](#specifications-for-site-reliability-engineering-with-keptn))
-
-## Service Level Indicators (SLI) Configuration
-
-A Service Level Indicator (SLI) is a defined quantitative measure of some aspects of the service level. The query for an SLI is provider (tool) dependent. This is the reason why each SLI-provider relies on an individual SLI configuration. This SLI configuration lists those SLIs that are supported by the SLI-provider by their name and query whereas the query is provider specific. 
-
-#### Indicators
-An indicator is a key-value pair with the SLI name as key and the provider-specific query as value.
-
-### Specification
-```json
-"ServiceLevelIndicators": {
-  "required": [
-    "spec_version"
-    "indicators"
-  ],
-  "properties": {
-    "spec_version": {
-      "type": "string"
-    },
-    "indicators": {
-      "patternProperties": {
-        ".*": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-```
-
-### Example of a Service Level Indicators (SLI) configuration (in yaml)
-
-```yaml
-spec_version: "1.0"
-indicators:
-  throughput: "builtin:service.requestCount.total:merge(0):count?scope=tag(keptn_project:$PROJECT),tag(keptn_stage:$STAGE),tag(keptn_service:$SERVICE),tag(keptn_deployment:$DEPLOYMENT)"
-  error_rate: "builtin:service.errors.total.count:merge(0):avg?scope=tag(keptn_project:$PROJECT),tag(keptn_stage:$STAGE),tag(keptn_service:$SERVICE),tag(keptn_deployment:$DEPLOYMENT)"
-  response_time_p50: "builtin:service.response.time:merge(0):percentile(50)?scope=tag(keptn_project:$PROJECT),tag(keptn_stage:$STAGE),tag(keptn_service:$SERVICE),tag(keptn_deployment:$DEPLOYMENT)"
-  response_time_p90: "builtin:service.response.time:merge(0):percentile(90)?scope=tag(keptn_project:$PROJECT),tag(keptn_stage:$STAGE),tag(keptn_service:$SERVICE),tag(keptn_deployment:$DEPLOYMENT)"
-  response_time_p95: "builtin:service.response.time:merge(0):percentile(95)?scope=tag(keptn_project:$PROJECT),tag(keptn_stage:$STAGE),tag(keptn_service:$SERVICE),tag(keptn_deployment:$DEPLOYMENT)"
 ```
 
 ([&uarr; up to index](#specifications-for-site-reliability-engineering-with-keptn))
