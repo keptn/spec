@@ -524,7 +524,8 @@ The *tests-finished* event is sent when the tests for a service in a stage are f
     "deploymentstrategy",
     "start",
     "end",
-    "result"
+    "result",
+    "resultdetails"
   ],
   "properties": {
     "deploymentstrategy": {
@@ -568,7 +569,7 @@ The *tests-finished* event is sent when the tests for a service in a stage are f
 ### Example
 <details><summary>Example of sh.keptn.events.tests-finished</summary>
 <p>
-
+Successful test execution:
 ```json
 {
   "type": "sh.keptn.events.tests-finished",
@@ -591,7 +592,37 @@ The *tests-finished* event is sent when the tests for a service in a stage are f
       "buildnr": "build17",
       "runby": "JohnDoe"
     },
-    "result": "pass"
+    "result": "pass",
+    "resultdetails": "JMeter executed 100 VUsers with 1000 Loops"
+  }
+}
+```
+
+Failed test execution
+```json
+{
+  "type": "sh.keptn.events.tests-finished",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/jmeter-service",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "contenttype": "application/json",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {
+    "project": "sockshop",
+    "stage": "staging",
+    "service": "carts",
+    "testStrategy": "performance",
+    "deploymentStrategy": "direct",
+    "start": "2019-09-01 12:00:00",
+    "end": "2019-09-01 12:05:00",
+    "labels": {
+      "testid": "12345",
+      "buildnr": "build17",
+      "runby": "JohnDoe"
+    },
+    "result": "fail",
+    "resultdetails": "JMeter returned error: couldn't resolve host carts.staging.svc.local"
   }
 }
 ```
