@@ -8,7 +8,13 @@ Shipyard files are defined at the level of a project. This means that all servic
 
 A shipyard file can consist of any number of stages. A stage has the following properties:
 
-* **Name**: The name of the stage. This name will be used for the GitOps branch and the Kubernetes namespace to which services at this stage will be deployed to. Future versions will allow to explicitly define the target namespace.
+* **Name**: The name of the stage. This name will be used for the GitOps branch and the Kubernetes namespace to which services at this stage will be deployed to.
+
+* **Approval Strategy**: The approval strategy specifies the kind of approval, which is required before deploying an artifact in this stage. The approval strategy can be defined based on the evaluation result `pass` and `warning`. Keptn supports the following approval strategies for the evaluation results `pass` and `warning`:
+  * `automatic`: The artifact is deployed automatically.
+  * `manual`: Keptn asks for an approval before deploying. 
+  
+Per default, an `automatic` approval strategy is used for evaluation result `pass` and `warning`.
 
 * **Deployment Strategy**: Defines the deployment strategy used to deploy a new version of a service. Keptn supports deployment strategies of type: 
   * `direct`: Deploys a new version of a service by replacing the old version of the service.
@@ -18,12 +24,6 @@ A shipyard file can consist of any number of stages. A stage has the following p
   * `functional` 
   * `performance` 
   
-* **Approval Strategy**: The approval strategy specifies the kind of approval, which is required before promoting an artifact into the next stage. The approval strategy can be defined based on the evaluation result `pass` and `warning`. 
-Keptn supports the following approval strategies for the evaluation results `pass` and `warning`:
-  * `automatic`: The artifact is promoted automatically.
-  * `manual`: The user is asked for approval.
-Per default, an `automatic` approval strategy is used for evaluation result `pass` and `warning`.
-
 * **Remediation Strategy**: The remediation strategy specifies whether remediation actions are enabled or not. To enable remediation actions, the `remediation_strategy` property has to be set to `automated`. The actions are specified in the *Remediation Action* configuration as described [here](./sre.md/#remediation-action).
 
 ## Example of a shipyard.yml file
@@ -34,11 +34,11 @@ stages:
     deployment_strategy: "direct"
     test_strategy: "functional"
   - name: "staging"
-    deployment_strategy: "blue_green_service"
-    test_strategy: "performance"
     approval_strategy: 
     - pass: "automatic"
     - warning: "manual"
+    deployment_strategy: "blue_green_service"
+    test_strategy: "performance"
   - name: "production"
     deployment_strategy: "blue_green_service"
     remediation_strategy: "automated"
