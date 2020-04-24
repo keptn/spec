@@ -1073,6 +1073,9 @@ The *problem open* event is sent when a monitored service causes any problem **a
     "ProblemTitle": {
       "type": "string",
     },
+    "ProblemURL": {
+      "type": "string",
+    },
     "State": {
       "type": "string",
       "default": "OPEN"
@@ -1105,7 +1108,7 @@ The *problem open* event is sent when a monitored service causes any problem **a
 ```
 
 ### Example
-<details><summary>Example of sh.keptn.event.problem.open</summary>
+<details><summary>Example of sh.keptn.event.problem.open from Prometheus</summary>
 <p>
 
 ```json
@@ -1123,6 +1126,44 @@ The *problem open* event is sent when a monitored service causes any problem **a
     "ProblemDetails": "Pod name",
     "ProblemID": "762",
     "ProblemTitle": "cpu_usage_sockshop_carts",
+    "State": "OPEN",
+    "project": "sockshop",
+    "stage": "production", 
+    "service": "service"
+  }
+}
+```
+</p>
+</details>
+
+<details><summary>Example of sh.keptn.event.problem.open from Dynatrace</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.event.problem.open",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/prometheus-service",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "contenttype": "application/json",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {
+    "ImpactedEntity": "carts-primary",
+    "PID": "93a5-3fas-a09d-8ckf",
+    "ProblemDetails": "Pod name",
+    "ProblemDetails":{
+      "displayName":"641",
+      "endTime":-1,
+      "hasRootCause":false,
+      "id":"1234_5678V2",
+      "impactLevel":"SERVICE",
+      "severityLevel":"PERFORMANCE",
+      "startTime":1587624420000,
+      "status":"OPEN"
+    },
+    "ProblemTitle": "cpu_usage_sockshop_carts",
+    "ProblemURL": "https://.../#problems/problemdetails;pid=93a5-3fas-a09d-8ckf",
     "State": "OPEN",
     "project": "sockshop",
     "stage": "production", 
