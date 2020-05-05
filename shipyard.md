@@ -35,8 +35,8 @@ stages:
     test_strategy: "functional"
   - name: "staging"
     approval_strategy: 
-    - pass: "automatic"
-    - warning: "manual"
+      pass: "automatic"
+      warning: "manual"
     deployment_strategy: "blue_green_service"
     test_strategy: "performance"
   - name: "production"
