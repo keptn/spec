@@ -1586,10 +1586,10 @@ This *approval.finished* event contains the result of the approval.
       "triggered_id": { // The CloudEvent ID of the corresponding sh.keptn.events.approval.triggered
         "type": "string"
       },
-      "result": { // Enum: Pass (approved), Failed (disapproved)
+      "result": { // Enum: pass (represents an approval), failed (represents a disapproval)
         "type": "string" 
       },
-      "status": { // Enum: Succeeded, Errored, Unknown
+      "status": { // Enum: succeeded, errored, unknown
         "type": "string" 
       },
       "type": "object"
