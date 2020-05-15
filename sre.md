@@ -319,49 +319,98 @@ The *Remediation Action* configuration defines remediation actions to execute in
 ```json
 "Remediations": {
   "required": [
-    "remediations"
+    "version",
+    "kind",
+    "metadata",
+    "spec"
   ],
   "properties": {
-    "remediations": {
-      "items": {
-        "$ref": "#/definitions/Remediation"
-      },
-      "type": "array"
-    }
+    "version": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string"
+    },
+    "metadata": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+        }
+      }
+    },
+    "spec": {
+      "$ref": "#/definitions/Spec"
+    },
   },
   "additionalProperties": false,
   "type": "object"
 },
-"Remediation": {
+
+"Spec": {
   "required": [
-    "name",
+    "problems",
+  ],
+  "properties": {
+    "problems": {
+      "items": {
+        "$ref": "#/definitions/Problems"
+      },
+      "type": "array"
+    },
+  },
+  "additionalProperties": false,
+  "type": "object"
+},
+
+"Problems": {
+  "required": [
+    "problem",
     "actions"
   ],
   "properties": {
+    "problem": {
+      "type": "string"
+    },
     "actions": {
       "items": {
-        "$ref": "#/definitions/RemediationAction"
+        "$ref": "#/definitions/Action"
       },
       "type": "array"
-    },
-    "name": {
-      "type": "string"
     }
   },
   "additionalProperties": false,
   "type": "object"
-},
-"RemediationAction": {
+}
+
+"Action": {
   "required": [
-    "action",
-    "value"
+    "name",
+    "action"
+    "description"
+    "values"
   ],
   "properties": {
+    "name": {
+      "type": "string"
+    },
     "action": {
       "type": "string"
     },
-    "value": {
+    "description": {
       "type": "string"
+    },
+    "values": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
     }
   },
   "additionalProperties": false,
@@ -372,15 +421,26 @@ The *Remediation Action* configuration defines remediation actions to execute in
 ### Example of a Remediation Action configuration (in yaml)
 
 ```yaml
-remediations:
-- name: "Response time degradation"
-  actions:
-  - action: scaling
-    value: +1
-- name: "Failure rate increase"
-  actions:
-  - action: featuretoggle
-    value: EnablePromotion:off
+version: 0.2.0
+kind: Remediation
+metadata:
+  name: remedation-service-abc
+spec:
+  problems: 
+    - problem: Response time degradation
+      actions:
+        - name: 
+          action: scaling
+          description: Please provide a description for the remediation action.
+          values: 
+            value: +1
+    - problem: Failure rate increase
+      actions:
+        - name:
+          action: featuretoggle
+          description: Please provide a description for the remediation action.
+          values: 
+            EnablePromotion: off
 ```
 
 ([&uarr; up to index](#specifications-for-site-reliability-engineering-with-keptn))
