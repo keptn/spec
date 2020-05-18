@@ -940,17 +940,8 @@ The generic *problem* event is sent when a problem activity related to a monitor
     "ProblemTitle"
   ],
   "properties": {
-    "ImpactedEntities": {
-      "type": "string",
-    },
     "PID": {
       "type": "string",
-    },
-    "ProblemDetails": {
-      "items": {
-        "type": "integer"
-      },
-      "type": "array"
     },
     "ProblemID": {
       "type": "string"
@@ -958,11 +949,28 @@ The generic *problem* event is sent when a problem activity related to a monitor
     "ProblemTitle": {
       "type": "string",
     },
+    "ProblemDetails": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ProblemURL": {
+      "type": "string",
+    },
     "State": {
       "type": "string"
     },
     "Tags": {
       "type": "string"
+    },
+    "ImpactedEntities": {
+      "type": "string",
+    },
+    "ImpactedEntity": {
+      "type": "string",
     },
     "project": {
       "type": "string"
@@ -987,22 +995,33 @@ The generic *problem* event is sent when a problem activity related to a monitor
 {
   "type": "sh.keptn.events.problem",
   "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/prometheus-service",
+  "source": "https://github.com/keptn/keptn/dynatrace",
   "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "time": "2019-06-07T07:02:15.64489Z",
+  "time": "2019-07-09T09:03:25.437Z",
   "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "shkeptncontext": "08635340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
-    "ImpactedEntity": "carts-primary",
     "PID": "93a5-3fas-a09d-8ckf",
-    "ProblemDetails": "Pod name",
     "ProblemID": "762",
-    "ProblemTitle": "cpu_usage_sockshop_carts",
+    "ProblemTitle": "Response time degradation",
+    "ProblemDetails": {
+      "displayName": "641",
+      "endTime": -1,
+      "hasRootCause": false,
+      "id": "1234_5678V2",
+      "impactLevel": "SERVICE",
+      "severityLevel": "PERFORMANCE",
+      "startTime": 1587624420000,
+      "status": "OPEN"
+    },
+    "ProblemURL": "https://.../#problems/problemdetails;pid=93a5-3fas-a09d-8ckf",
+    "ImpactedEntity": "carts-primary",
     "State": "OPEN",
     "Tags": "keptn_project:sockshop,keptn_stage:production,keptn_service:carts"
   }
 }
 ```
+
 </p>
 </details>
 
@@ -1013,17 +1032,27 @@ The generic *problem* event is sent when a problem activity related to a monitor
 {
   "type": "sh.keptn.events.problem",
   "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/dynatrace-service",
+  "source": "https://github.com/keptn/keptn/dynatrace",
   "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "time": "2019-07-09T09:03:25.437Z",
   "contenttype": "application/json",
   "shkeptncontext": "08635340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
-    "ImpactedEntity": "carts-primary",
     "PID": "93a5-3fas-a09d-8ckf",
-    "ProblemDetails": "Pod name",
     "ProblemID": "762",
-    "ProblemTitle": "cpu_usage_sockshop_carts",
+    "ProblemTitle": "Response time degradation",
+    "ProblemDetails": {
+      "displayName": "641",
+      "endTime": -1,
+      "hasRootCause": false,
+      "id": "1234_5678V2",
+      "impactLevel": "SERVICE",
+      "severityLevel": "PERFORMANCE",
+      "startTime": 1587624420000,
+      "status": "OPEN"
+    },
+    "ProblemURL": "https://.../#problems/problemdetails;pid=93a5-3fas-a09d-8ckf",
+    "ImpactedEntity": "carts-primary",
     "State": "OPEN",
     "project": "sockshop",
     "stage": "production",
@@ -1055,17 +1084,8 @@ The *problem open* event is sent when a monitored service causes any problem **a
     "ProblemTitle"
   ],
   "properties": {
-    "ImpactedEntities": {
-      "type": "string",
-    },
     "PID": {
       "type": "string",
-    },
-    "ProblemDetails": {
-      "items": {
-        "type": "integer"
-      },
-      "type": "array"
     },
     "ProblemID": {
       "type": "string"
@@ -1073,7 +1093,18 @@ The *problem open* event is sent when a monitored service causes any problem **a
     "ProblemTitle": {
       "type": "string",
     },
+    "ProblemDetails": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
     "ProblemURL": {
+      "type": "string",
+    },
+    "ImpactedEntity": {
       "type": "string",
     },
     "State": {
@@ -1121,12 +1152,14 @@ The *problem open* event is sent when a monitored service causes any problem **a
   "contenttype": "application/json",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
-    "ImpactedEntity": "carts-primary",
-    "PID": "93a5-3fas-a09d-8ckf",
-    "ProblemDetails": "Pod name",
+    "State": "OPEN",
+    "PID": "",
     "ProblemID": "762",
     "ProblemTitle": "cpu_usage_sockshop_carts",
-    "State": "OPEN",
+    "ProblemDetails": {
+      "problemDetails":"Pod name"
+    },
+    "ImpactedEntity": "carts-primary",
     "project": "sockshop",
     "stage": "production", 
     "service": "service"
@@ -1143,28 +1176,28 @@ The *problem open* event is sent when a monitored service causes any problem **a
 {
   "type": "sh.keptn.event.problem.open",
   "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/prometheus-service",
+  "source": "https://github.com/keptn/keptn/dynatrace-service",
   "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
-    "ImpactedEntity": "carts-primary",
-    "PID": "93a5-3fas-a09d-8ckf",
-    "ProblemDetails": "Pod name",
-    "ProblemDetails":{
-      "displayName":"641",
-      "endTime":-1,
-      "hasRootCause":false,
-      "id":"1234_5678V2",
-      "impactLevel":"SERVICE",
-      "severityLevel":"PERFORMANCE",
-      "startTime":1587624420000,
-      "status":"OPEN"
-    },
-    "ProblemTitle": "cpu_usage_sockshop_carts",
-    "ProblemURL": "https://.../#problems/problemdetails;pid=93a5-3fas-a09d-8ckf",
     "State": "OPEN",
+    "PID": "93a5-3fas-a09d-8ckf",
+    "ProblemID": "ab81-941c-f198",
+    "ProblemTitle": "Response time degradation",
+    "ProblemDetails": {
+      "displayName": "641",
+      "endTime": -1,
+      "hasRootCause": false,
+      "id": "1234_5678V2",
+      "impactLevel": "SERVICE",
+      "severityLevel": "PERFORMANCE",
+      "startTime": 1587624420000,
+      "status": "OPEN"
+    },
+    "ProblemURL": "https://.../#problems/problemdetails;pid=93a5-3fas-a09d-8ckf",
+    "ImpactedEntity": "carts-primary",
     "project": "sockshop",
     "stage": "production", 
     "service": "service"
