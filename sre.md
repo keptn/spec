@@ -315,6 +315,10 @@ total_score:
 ## Remediation Action
 The *Remediation Action* configuration defines remediation actions to execute in response to a problem. This action is interpreted by Keptn to trigger the proper remediation. 
 
+To specify the problem, either the problem name or a generic selector for any kind of problem can be used: 
+- Problem name, declared as **string**
+- Generic selector, declared as: **\"*\"** for the problem name
+
 ### Specification
 ```json
 "Remediations": {
@@ -390,8 +394,8 @@ The *Remediation Action* configuration defines remediation actions to execute in
 "Action": {
   "required": [
     "name",
-    "action"
-    "description"
+    "action",
+    "description",
     "values"
   ],
   "properties": {
@@ -399,6 +403,9 @@ The *Remediation Action* configuration defines remediation actions to execute in
       "type": "string"
     },
     "action": {
+      "type": "string"
+    },
+    "hook": {
       "type": "string"
     },
     "description": {
@@ -421,26 +428,25 @@ The *Remediation Action* configuration defines remediation actions to execute in
 ### Example of a Remediation Action configuration (in yaml)
 
 ```yaml
-version: 0.2.0
-kind: Remediation
+version: 0.2.0
+kind: Remediation
 metadata:
-  name: remedation-service-abc
+  name: remediation-configuration
 spec:
   problems: 
-    - problem: Response time degradation
-      actions:
-        - name: 
-          action: scaling
-          description: Please provide a description for the remediation action.
-          values: 
-            value: +1
-    - problem: Failure rate increase
-      actions:
-        - name:
-          action: featuretoggle
-          description: Please provide a description for the remediation action.
-          values: 
-            EnablePromotion: off
+  - problem: "Response time degradation"
+    actions:
+    - name: 
+      action: togglefeature
+      description: Toggle feature flag EnablePromotion from ON to OFF
+      values: 
+        EnablePromotion: off
+  - problem: "*"
+    actions:
+    - name: 
+      action: escalate
+      description: Escalate the problem
+      hook: https://my-slack-workspace.com/problem-channel
 ```
 
 ([&uarr; up to index](#specifications-for-site-reliability-engineering-with-keptn))
