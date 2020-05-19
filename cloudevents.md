@@ -13,6 +13,8 @@
 * [Configure Monitoring](#configure-monitoring)
 * [Get SLI](#get-sli)
 * [Get SLI Done](#get-sli-done)
+* [Approval Triggered](#approval-triggered)
+* [Approval Finished](#approval-finished)
 
 ---
 
@@ -1455,6 +1457,206 @@ The *get-sli done* event is sent when the data gathering by a SLI provider is do
   }
 }
 ```
+</p>
+</details>
+
+## Approval Triggered
+
+The *approval.triggered* event is sent when an approval is required before executing the next step 
+(e.g. a configuration-change for the next stage).
+
+### type
+```json
+"type": "sh.keptn.events.approval.triggered"
+```
+
+### data
+```json
+"ApprovalTriggeredEventData": {
+  "required": [
+    "approval",
+    "project",
+    "stage",
+    "service",
+    "image",
+    "tag"
+  ],
+  "properties": {
+    "approval": {
+      "type": "object"
+    },
+    "project": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "image": {
+      "type": "string"
+    },
+    "tag": {
+      "type": "string"
+    },
+    "labels": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "deploymentURILocal": {
+      "type": "string"
+    },
+    "deploymentURIPublic": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+### Example
+<details><summary>Example of sh.keptn.events.approval.triggered</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.events.approval.triggered",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/gatekeeper-service",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "contenttype": "application/json",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {    
+    "approval": {
+    },
+    "project": "sockshop",
+    "stage": "staging",
+    "service": "carts",
+    "image": "docker.io/keptnexamples/carts",
+    "tag": "0.9.1",
+    "labels": {
+      "testid": "12345",
+      "buildnr": "build17",
+      "runby": "JohnDoe"
+    },
+    "deploymentURILocal": "http://carts.sockshop-staging.svc.cluster.local"
+  }
+}
+```
+
+</p>
+</details>
+([&uarr; up to index](#keptn-cloud-events))
+
+## Approval Finished
+
+The *approval.finished* event is sent for responding an *approval.triggered* event.
+This *approval.finished* event contains the result of the approval.
+
+### type
+```json
+"type": "sh.keptn.events.approval.finished"
+```
+
+### data
+```json
+"ApprovalFinishedEventData": {
+  "required": [
+    "approval",
+    "project",
+    "stage",
+    "service",
+    "image",
+    "tag"
+  ],
+  "properties": {
+    "approval": {
+      "required": [
+        "triggered_id"
+        "result",
+        "status",
+      ],
+      "triggered_id": { // The CloudEvent ID of the corresponding sh.keptn.events.approval.triggered
+        "type": "string"
+      },
+      "result": { // Enum: pass (represents an approval), failed (represents a disapproval)
+        "type": "string" 
+      },
+      "status": { // Enum: succeeded, errored, unknown
+        "type": "string" 
+      },
+      "type": "object"
+    },
+    "project": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "image": {
+      "type": "string"
+    },
+    "tag": {
+      "type": "string"
+    },
+    "labels": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+### Example
+<details><summary>Example of sh.keptn.events.approval.finished</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.events.approval.finished",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/gatekeeper-service",
+  "id": "ggb878d3-03c0-4e8f-bc3f-454bc1b3d888",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "contenttype": "application/json",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {
+    "approval": {
+      "triggered_id" : "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+      "result": "Pass",
+      "status": "Succeeded"
+    },
+    "project": "sockshop",
+    "stage": "staging",
+    "service": "carts",
+    "image": "docker.io/keptnexamples/carts",
+    "tag": "0.9.1",
+    "labels": {
+      "testid": "12345",
+      "buildnr": "build17",
+      "runby": "JohnDoe"
+    },
+    "deploymentURILocal": "http://carts.sockshop-staging.svc.cluster.local"
+  }
+}
+```
+
 </p>
 </details>
 
