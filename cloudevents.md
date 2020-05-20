@@ -16,7 +16,7 @@
 * [Approval Triggered](#approval-triggered)
 * [Approval Finished](#approval-finished)
 * [Remediation Triggered](#remediation-triggered)
-* [Remediation InProgress](#remediation-inprogress)
+* [Remediation Status Changed](#remediation-status-changed)
 * [Remediation Finished](#remediation-finished)
 * [Action Triggered](#action-triggered)
 * [Action Finished](#action-finished)
@@ -1786,18 +1786,18 @@ The *remediation.triggered* event indicates the start of following remediation a
 </details>
 ([&uarr; up to index](#keptn-cloud-events))
 
-## Remediation InProgress
+## Remediation Status Changed
 
-The *remediation.inprogress* event is sent when a remediation action is executed but there are further remediation actions available.
+The *remediation.status.changed* event is sent when a remediation action is executed but there are further remediation actions available.
 
 ### type
 ```json
-"type": "sh.keptn.events.remediation.inprogress"
+"type": "sh.keptn.events.remediation.status.changed"
 ```
 
 ### data
 ```json
-"RemediationInProgressEventData": {
+"RemediationStatusChangedEventData": {
   "required": [
     "remediation",
     "problem",
@@ -1889,12 +1889,12 @@ The *remediation.inprogress* event is sent when a remediation action is executed
 ```
 
 ### Example
-<details><summary>Example of sh.keptn.event.remediation.inprogress</summary>
+<details><summary>Example of sh.keptn.event.remediation.status.changed</summary>
 <p>
 
 ```json
 {
-  "type": "sh.keptn.event.remediation.inprogress",
+  "type": "sh.keptn.event.remediation.status.changed",
   "specversion": "0.2",
   "source": "https://github.com/keptn/keptn/remediation-service",
   "id": "ggb878d3-03c0-4e8f-bc3f-454bc1b3d888",
