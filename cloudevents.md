@@ -27,7 +27,74 @@
 
 All Keptn events conform to CloudEvents - [Version 0.2](https://github.com/cloudevents/spec/blob/v0.2/spec.md).  CloudEvents is a vendor-neutral specification for defining the format of event data.
 
-All events will have a payload structure as follows:
+All events with a type ending with `.finished` or `.status.changed`  will have a payload structure as follows (i.e. contain a `triggerid` as attribute):
+```json
+"sh.keptn.event": {
+  "required": [
+    "contenttype",
+    "data",
+    "id",
+    "shkeptncontext",
+    "triggerid",
+    "source",
+    "specversion",
+    "time",
+    "type",
+  ],
+  "properties": {
+    "contenttype": {
+      "type": "string",
+      "description":"Content type of the data attribute value",
+      "value": "application/json"
+    },
+    "data": {
+      "type": ["object", "string"],
+      "description": "The Keptn event payload. The payload depends on the event type."
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique UUID for the Keptn event"
+    },
+    "shkeptncontext": {
+      "format": "uuid",
+      "type": "string",
+      "description": "Unique UUID value that connects various events together"
+    },
+    "triggerid": {
+      "format": "uuid",
+      "type": "string",
+      "description": "The id which has triggered the step"
+    },
+    "source": {
+      "format": "uri-reference",
+      "type": "string",
+      "minLength": 1,
+      "description": "URL to service implementation in Keptn code repo"
+    },
+    "specversion": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The version of the CloudEvents specification which the event uses",
+      "value": "0.2"
+    },
+    "time": {
+      "format": "date-time",
+      "type": "string",
+      "description": "Timestamp of when the event happened"
+    },
+    "type": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Keptn event name"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+All other events will have a payload structure as follows:
 ```json
 "sh.keptn.event": {
   "required": [
@@ -1882,13 +1949,9 @@ The *remediation.status.changed* event is sent when a remediation action is exec
   "properties": {
     "remediation": {
       "required": [
-        "triggeredID",
         "status",
         "result",
       ],
-      "triggeredID": { // The CloudEvent ID of the corresponding sh.keptn.events.remediation.triggered event
-        "type": "string"
-      },
       "status": { // Enum: succeeded, errored, unknown
         "type": "string" 
       },
@@ -1977,7 +2040,6 @@ The *remediation.status.changed* event is sent when a remediation action is exec
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
     "remediation": {
-      "triggeredID" : "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
       "status": "succeeded",
       "result": {
         "finishedActionIndex": 0,
@@ -2031,13 +2093,9 @@ The *remediation.finished* event is sent when a remediation action is finished
   "properties": {
     "remediation": {
       "required": [
-        "triggeredID",
         "status",
         "result",
       ],
-      "triggeredID": { // The CloudEvent ID of the corresponding sh.keptn.events.remediation.triggered event
-        "type": "string"
-      },
       "status": { // Enum: succeeded, errored, unknown
         "type": "string" 
       },
@@ -2117,7 +2175,6 @@ The *remediation.finished* event is sent when a remediation action is finished
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
     "remediation": {
-      "triggeredID" : "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
       "status": "succeeded",
       "result": "pass"
     },
@@ -2160,21 +2217,12 @@ The *action.triggered* event triggers a remediation action.
 "ActionTriggeredEventData": {
   "required": [
     "action",
-    "remediaton",
     "problem",
     "project",
     "stage",
     "service"
   ],
   "properties": {
-    "remediation": {
-      "required": [
-        "triggeredID"
-      ],
-      "triggeredID": {
-        "type": "string"
-      }
-    },
     "action": {
       "required": [
         "name",
@@ -2265,9 +2313,6 @@ The *action.triggered* event triggers a remediation action.
   "contenttype": "application/json",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {    
-    "remediation": {
-      "triggeredID": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d888",
-    },
     "action": {
       "name": "DoScaling",
       "action": "scale",
@@ -2313,7 +2358,6 @@ The *action.finished* event is sent when a remediation action is finished.
 ```json
 "ActionFinishedEventData": {
   "required": [
-    "remediation",
     "action",
     "problem",
     "project",
@@ -2321,18 +2365,11 @@ The *action.finished* event is sent when a remediation action is finished.
     "service",
   ],
   "properties": {
-    "remediation": {
-      "triggeredID": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d888",
-    },
     "action": {
       "required": [
-        "triggeredId",
         "result",
         "status",
       ],
-      "triggeredId": { // The CloudEvent ID of the last sh.keptn.event.remediation.started
-        "type": "string"
-      },
       "result": { // Enum: pass , failed 
         "type": "string" 
       },
@@ -2411,11 +2448,7 @@ The *action.finished* event is sent when a remediation action is finished.
   "contenttype": "application/json",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
-    "remediation": {
-      "triggeredId": "ffff78d3-03c0-4e8f-bc3f-454bc1b3d79d",
-    },
     "action": {
-      "triggeredId" : "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
       "result": "pass",
       "status": "succeeded"
     },
