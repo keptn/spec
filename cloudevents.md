@@ -1957,13 +1957,13 @@ The *remediation.status.changed* event is sent when a remediation action is exec
       },
       "result": {
         "required": [
-          "finishedActionIndex",
-          "finishedActionName",
+          "actionIndex",
+          "actionName",
         ],
-        "finishedActionIndex": {
+        "actionIndex": {
           "type": "integer"
         },      
-        "finishedActionName": {
+        "actionName": {
           "type": "string"
         },
       },
@@ -2101,7 +2101,7 @@ The *remediation.finished* event is sent when a remediation action is finished
       },
       "result": {
         "type": "string"  // Enum: Pass or failed
-      }
+      },
       "type": "object"
     },
     "problem": {
