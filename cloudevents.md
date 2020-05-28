@@ -22,7 +22,74 @@
 
 All Keptn events conform to CloudEvents - [Version 0.2](https://github.com/cloudevents/spec/blob/v0.2/spec.md).  CloudEvents is a vendor-neutral specification for defining the format of event data.
 
-All events will have a payload structure as follows:
+All events with a type ending with `.started`, `.status.changed`, or `.finished`  have a payload structure as follows (i.e. contain a `triggerid` as attribute):
+```json
+"sh.keptn.event": {
+  "required": [
+    "contenttype",
+    "data",
+    "id",
+    "shkeptncontext",
+    "triggerid",
+    "source",
+    "specversion",
+    "time",
+    "type",
+  ],
+  "properties": {
+    "contenttype": {
+      "type": "string",
+      "description":"Content type of the data attribute value",
+      "value": "application/json"
+    },
+    "data": {
+      "type": ["object", "string"],
+      "description": "The Keptn event payload. The payload depends on the event type."
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique UUID for the Keptn event"
+    },
+    "shkeptncontext": {
+      "format": "uuid",
+      "type": "string",
+      "description": "Unique UUID value that connects various events together"
+    },
+    "triggerid": {
+      "format": "uuid",
+      "type": "string",
+      "description": "The id which has triggered the step"
+    },
+    "source": {
+      "format": "uri-reference",
+      "type": "string",
+      "minLength": 1,
+      "description": "URL to service implementation in Keptn code repo"
+    },
+    "specversion": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The version of the CloudEvents specification which the event uses",
+      "value": "0.2"
+    },
+    "time": {
+      "format": "date-time",
+      "type": "string",
+      "description": "Timestamp of when the event happened"
+    },
+    "type": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Keptn event name"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+All events with a type ending with `.triggerid` have a payload structure as follows:
 ```json
 "sh.keptn.event": {
   "required": [
@@ -1653,13 +1720,9 @@ This *approval.finished* event contains the result of the approval.
   "properties": {
     "approval": {
       "required": [
-        "triggered_id"
         "result",
         "status",
       ],
-      "triggered_id": { // The CloudEvent ID of the corresponding sh.keptn.events.approval.triggered
-        "type": "string"
-      },
       "result": { // Enum: pass (represents an approval), failed (represents a disapproval)
         "type": "string" 
       },
@@ -1712,7 +1775,6 @@ This *approval.finished* event contains the result of the approval.
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
     "approval": {
-      "triggered_id" : "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
       "result": "Pass",
       "status": "Succeeded"
     },
