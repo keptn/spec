@@ -434,15 +434,15 @@ metadata:
   name: remediation-configuration
 spec:
   problems: 
-  - problem: "Response time degradation"
-    actions:
-    - name: 
+  - problemType: "Response time degradation"
+    actionsOnOpen:
+    - name: Toogle feature flag
       action: togglefeature
       description: Toggle feature flag EnablePromotion from ON to OFF
       values: 
         EnablePromotion: off
-  - problem: "*"
-    actions:
+  - problemType: "*"
+    actionsOnOpen:
     - name: 
       action: escalate
       description: Escalate the problem
