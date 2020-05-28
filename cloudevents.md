@@ -2227,7 +2227,6 @@ The *action.triggered* event triggers a remediation action.
       "required": [
         "name",
         "action",
-        "values"
       ],     
       "name": {
         "type": "string"
@@ -2238,8 +2237,8 @@ The *action.triggered* event triggers a remediation action.
       "description": {
         "type": "string"
       },
-      "values": {
-        "type": "object"
+      "value": {
+        "type": ["object", "string"]
       },
       "type": "object"
     },
@@ -2314,11 +2313,11 @@ The *action.triggered* event triggers a remediation action.
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {    
     "action": {
-      "name": "DoScaling",
-      "action": "scale",
-      "description": "scales up the replicas",
-      "values": {
-        "value": "+1"
+      "name": "Feature toggeling",
+      "action": "toggle-feature",
+      "description": "toggles a feature",
+      "value": {
+        "EnableItemCache": "on"
       }
     },
     "problem": {

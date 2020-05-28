@@ -396,7 +396,7 @@ To specify the problem, either the problem name or a generic selector for any ki
     "name",
     "action",
     "description",
-    "values"
+    "value"
   ],
   "properties": {
     "name": {
@@ -411,13 +411,8 @@ To specify the problem, either the problem name or a generic selector for any ki
     "description": {
       "type": "string"
     },
-    "values": {
-      "patternProperties": {
-        ".*": {
-          "type": "string"
-        }
-      },
-      "type": "object"
+    "value": {      
+      "type": ["object", "string"],
     }
   },
   "additionalProperties": false,
@@ -428,22 +423,22 @@ To specify the problem, either the problem name or a generic selector for any ki
 ### Example of a Remediation Action configuration (in yaml)
 
 ```yaml
-version: 0.2.0
-kind: Remediation
+version: 0.2.0
+kind: Remediation
 metadata:
   name: remediation-configuration
 spec:
   problems: 
-  - problemType: "Response time degradation"
-    actionsOnOpen:
-    - name: Toogle feature flag
+  - problemType: "Response time degradation"
+    actionsOnOpen:
+    - name: Toogle feature flag
       action: togglefeature
       description: Toggle feature flag EnablePromotion from ON to OFF
-      values: 
+      value:
         EnablePromotion: off
   - problemType: "*"
     actionsOnOpen:
-    - name: 
+    - name:
       action: escalate
       description: Escalate the problem
       hook: https://my-slack-workspace.com/problem-channel
