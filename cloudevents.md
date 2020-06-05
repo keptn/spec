@@ -16,9 +16,11 @@
 * [Approval Triggered](#approval-triggered)
 * [Approval Finished](#approval-finished)
 * [Remediation Triggered](#remediation-triggered)
+* [Remediation Started](#remediation-started)
 * [Remediation Status Changed](#remediation-status-changed)
 * [Remediation Finished](#remediation-finished)
 * [Action Triggered](#action-triggered)
+* [Action Started](#action-started)
 * [Action Finished](#action-finished)
 
 ---
@@ -27,7 +29,7 @@
 
 All Keptn events conform to CloudEvents - [Version 0.2](https://github.com/cloudevents/spec/blob/v0.2/spec.md).  CloudEvents is a vendor-neutral specification for defining the format of event data.
 
-All events with a type ending with `.finished` or `.status.changed`  will have a payload structure as follows (i.e. contain a `triggerid` as attribute):
+All events with a type ending with `started`, `status.changed`, or `.finished`  will have a payload structure as follows (i.e. contain a `triggerid` as attribute):
 ```json
 "sh.keptn.event": {
   "required": [
@@ -1927,9 +1929,88 @@ The *remediation.triggered* event indicates the start of following remediation a
 </details>
 ([&uarr; up to index](#keptn-cloud-events))
 
+## Remediation Started
+
+The *remediation.started* event is sent when a remediation workflow is started.
+
+### type
+```json
+"type": "sh.keptn.events.remediation.started"
+```
+
+### data
+```json
+"RemediationStartedEventData": {
+  "required": [
+    "remediation",
+    "project",
+    "stage",
+    "service",
+  ],
+  "properties": {
+    "remediation": {
+      "type": "object"
+    },
+    "project": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "labels": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+### Example
+<details><summary>Example of sh.keptn.event.remediation.status.changed</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.event.remediation.status.changed",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/remediation-service",
+  "id": "ggb878d3-03c0-4e8f-bc3f-454bc1b3d888",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "contenttype": "application/json",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "triggerid": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "data": {
+    "remediation": {
+    },
+    "project": "sockshop",
+    "stage": "staging",
+    "service": "carts",
+    "labels": {
+      "testid": "12345",
+      "buildnr": "build17",
+      "runby": "JohnDoe"
+    },
+  }
+}
+```
+
+</p>
+</details>
+
+([&uarr; up to index](#keptn-cloud-events))
+
 ## Remediation Status Changed
 
-The *remediation.status.changed* event is sent when a remediation action is executed but there are further remediation actions available.
+The *remediation.status.changed* event is sent when a remediation action was triggered but there are further remediation actions available.
 
 ### type
 ```json
@@ -1941,7 +2022,6 @@ The *remediation.status.changed* event is sent when a remediation action is exec
 "RemediationStatusChangedEventData": {
   "required": [
     "remediation",
-    "problem",
     "project",
     "stage",
     "service",
@@ -1966,39 +2046,6 @@ The *remediation.status.changed* event is sent when a remediation action is exec
         "actionName": {
           "type": "string"
         },
-      },
-      "type": "object"
-    },
-    "problem": {
-      "required": [
-        "PID",
-        "ProblemDetails",
-        "ProblemID",
-        "ProblemTitle"
-      ],
-      "ImpactedEntities": {
-        "type": "string",
-      },
-      "PID": {
-        "type": "string",
-      },
-      "ProblemDetails": {
-        "items": {
-          "type": "integer"
-        },
-        "type": "array"
-      },
-      "ProblemID": {
-        "type": "string"
-      },
-      "ProblemTitle": {
-        "type": "string",
-      },
-      "State": {
-        "type": "string"
-      },
-      "Tags": {
-        "type": "string"
       },
       "type": "object"
     },
@@ -2038,6 +2085,7 @@ The *remediation.status.changed* event is sent when a remediation action is exec
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "triggerid": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "data": {
     "remediation": {
       "status": "succeeded",
@@ -2045,14 +2093,6 @@ The *remediation.status.changed* event is sent when a remediation action is exec
         "finishedActionIndex": 0,
         "finishedActionName": "scaling",
       }
-    },
-    "problem": {
-      "ImpactedEntity": "carts-primary",
-      "PID": "93a5-3fas-a09d-8ckf",
-      "ProblemDetails": "Pod name",
-      "ProblemID": "762",
-      "ProblemTitle": "cpu_usage_sockshop_carts",
-      "State": "OPEN",
     },
     "project": "sockshop",
     "stage": "staging",
@@ -2085,7 +2125,6 @@ The *remediation.finished* event is sent when a remediation action is finished
 "RemediationFinishedEventData": {
   "required": [
     "remediation",
-    "problem",
     "project",
     "stage",
     "service",
@@ -2101,39 +2140,6 @@ The *remediation.finished* event is sent when a remediation action is finished
       },
       "result": {
         "type": "string"  // Enum: Pass or failed
-      },
-      "type": "object"
-    },
-    "problem": {
-      "required": [
-        "PID",
-        "ProblemDetails",
-        "ProblemID",
-        "ProblemTitle"
-      ],
-      "ImpactedEntities": {
-        "type": "string",
-      },
-      "PID": {
-        "type": "string",
-      },
-      "ProblemDetails": {
-        "items": {
-          "type": "integer"
-        },
-        "type": "array"
-      },
-      "ProblemID": {
-        "type": "string"
-      },
-      "ProblemTitle": {
-        "type": "string",
-      },
-      "State": {
-        "type": "string"
-      },
-      "Tags": {
-        "type": "string"
       },
       "type": "object"
     },
@@ -2173,6 +2179,7 @@ The *remediation.finished* event is sent when a remediation action is finished
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "triggerid": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "data": {
     "remediation": {
       "status": "succeeded",
@@ -2345,6 +2352,85 @@ The *action.triggered* event triggers a remediation action.
 
 ([&uarr; up to index](#keptn-cloud-events))
 
+## Action Started
+
+The *action.started* event is sent when a remediation action is started by the action provider.
+
+### type
+```json
+"type": "sh.keptn.event.action.started"
+```
+
+### data
+```json
+"ActionStartedEventData": {
+  "required": [
+    "action",
+    "project",
+    "stage",
+    "service",
+  ],
+  "properties": {
+    "action": {
+      "type": "object"
+    },
+    "project": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "labels": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+### Example
+<details><summary>Example of sh.keptn.event.action.started</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.event.action.started",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/unleash-service",
+  "id": "ggb878d3-03c0-4e8f-bc3f-454bc1b3d888",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "contenttype": "application/json",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "triggerid": "2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "data": {
+    "action": {
+    },
+    "project": "sockshop",
+    "stage": "staging",
+    "service": "carts",
+    "labels": {
+      "testid": "12345",
+      "buildnr": "build17",
+      "runby": "JohnDoe"
+    },
+  }
+}
+```
+
+</p>
+</details>
+
+([&uarr; up to index](#keptn-cloud-events))
+
 ## Action Finished
 
 The *action.finished* event is sent when a remediation action is finished.
@@ -2447,6 +2533,7 @@ The *action.finished* event is sent when a remediation action is finished.
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "triggerid": "2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "data": {
     "action": {
       "result": "pass",
