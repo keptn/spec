@@ -2342,6 +2342,7 @@ The *action.triggered* event triggers a remediation action.
 
 </p>
 </details>
+
 ([&uarr; up to index](#keptn-cloud-events))
 
 ## Action Finished

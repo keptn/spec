@@ -321,7 +321,7 @@ To specify the problem, either the problem name or a generic selector for any ki
 
 ### Specification
 ```json
-"Remediations": {
+"Remediation": {
   "required": [
     "version",
     "kind",
@@ -357,12 +357,12 @@ To specify the problem, either the problem name or a generic selector for any ki
 
 "Spec": {
   "required": [
-    "problems",
+    "remediations",
   ],
   "properties": {
-    "problems": {
+    "remediations": {
       "items": {
-        "$ref": "#/definitions/Problems"
+        "$ref": "#/definitions/Remediations"
       },
       "type": "array"
     },
@@ -371,16 +371,16 @@ To specify the problem, either the problem name or a generic selector for any ki
   "type": "object"
 },
 
-"Problems": {
+"Remediations": {
   "required": [
-    "problem",
-    "actions"
+    "problemType",
+    "actionsOnOpen"
   ],
   "properties": {
-    "problem": {
+    "problemType": {
       "type": "string"
     },
-    "actions": {
+    "actionsOnOpen": {
       "items": {
         "$ref": "#/definitions/Action"
       },
@@ -428,7 +428,7 @@ kind: Remediation
 metadata:
   name: remediation-configuration
 spec:
-  problems: 
+  remediations: 
   - problemType: "Response time degradation"
     actionsOnOpen:
     - name: Toogle feature flag
@@ -436,7 +436,7 @@ spec:
       description: Toggle feature flag EnablePromotion from ON to OFF
       value:
         EnablePromotion: off
-  - problemType: "*"
+  - problemType: default
     actionsOnOpen:
     - name:
       action: escalate
