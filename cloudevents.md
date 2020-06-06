@@ -1615,7 +1615,7 @@ The *approval.triggered* event is sent when an approval is required before execu
 
 ### type
 ```json
-"type": "sh.keptn.events.approval.triggered"
+"type": "sh.keptn.event.approval.triggered"
 ```
 
 ### data
@@ -1669,12 +1669,12 @@ The *approval.triggered* event is sent when an approval is required before execu
 ```
 
 ### Example
-<details><summary>Example of sh.keptn.events.approval.triggered</summary>
+<details><summary>Example of sh.keptn.event.approval.triggered</summary>
 <p>
 
 ```json
 {
-  "type": "sh.keptn.events.approval.triggered",
+  "type": "sh.keptn.event.approval.triggered",
   "specversion": "0.2",
   "source": "https://github.com/keptn/keptn/gatekeeper-service",
   "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
@@ -1710,7 +1710,7 @@ This *approval.finished* event contains the result of the approval.
 
 ### type
 ```json
-"type": "sh.keptn.events.approval.finished"
+"type": "sh.keptn.event.approval.finished"
 ```
 
 ### data
@@ -1731,7 +1731,7 @@ This *approval.finished* event contains the result of the approval.
         "result",
         "status",
       ],
-      "triggered_id": { // The CloudEvent ID of the corresponding sh.keptn.events.approval.triggered
+      "triggered_id": { // The CloudEvent ID of the corresponding sh.keptn.event.approval.triggered
         "type": "string"
       },
       "result": { // Enum: pass (represents an approval), failed (represents a disapproval)
@@ -1772,12 +1772,12 @@ This *approval.finished* event contains the result of the approval.
 ```
 
 ### Example
-<details><summary>Example of sh.keptn.events.approval.finished</summary>
+<details><summary>Example of sh.keptn.event.approval.finished</summary>
 <p>
 
 ```json
 {
-  "type": "sh.keptn.events.approval.finished",
+  "type": "sh.keptn.event.approval.finished",
   "specversion": "0.2",
   "source": "https://github.com/keptn/keptn/gatekeeper-service",
   "id": "ggb878d3-03c0-4e8f-bc3f-454bc1b3d888",
@@ -1935,7 +1935,7 @@ The *remediation.started* event is sent when a remediation workflow is started.
 
 ### type
 ```json
-"type": "sh.keptn.events.remediation.started"
+"type": "sh.keptn.event.remediation.started"
 ```
 
 ### data
@@ -1975,12 +1975,12 @@ The *remediation.started* event is sent when a remediation workflow is started.
 ```
 
 ### Example
-<details><summary>Example of sh.keptn.event.remediation.status.changed</summary>
+<details><summary>Example of sh.keptn.event.remediation.started</summary>
 <p>
 
 ```json
 {
-  "type": "sh.keptn.event.remediation.status.changed",
+  "type": "sh.keptn.event.remediation.started",
   "specversion": "0.2",
   "source": "https://github.com/keptn/keptn/remediation-service",
   "id": "ggb878d3-03c0-4e8f-bc3f-454bc1b3d888",
@@ -2014,7 +2014,7 @@ The *remediation.status.changed* event is sent when a remediation action was tri
 
 ### type
 ```json
-"type": "sh.keptn.events.remediation.status.changed"
+"type": "sh.keptn.event.remediation.status.changed"
 ```
 
 ### data
@@ -2117,7 +2117,7 @@ The *remediation.finished* event is sent when a remediation action is finished
 
 ### type
 ```json
-"type": "sh.keptn.events.remediation.finished"
+"type": "sh.keptn.event.remediation.finished"
 ```
 
 ### data
