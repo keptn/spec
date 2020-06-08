@@ -2090,8 +2090,8 @@ The *remediation.status.changed* event is sent when a remediation action was tri
     "remediation": {
       "status": "succeeded",
       "result": {
-        "finishedActionIndex": 0,
-        "finishedActionName": "scaling",
+        "actionIndex": 0,
+        "actionName": "scaling",
       }
     },
     "project": "sockshop",
@@ -2140,6 +2140,9 @@ The *remediation.finished* event is sent when a remediation action is finished
       },
       "result": {
         "type": "string"  // Enum: Pass or failed
+      },
+      "message": {
+        "type": "string"
       },
       "type": "object"
     },
