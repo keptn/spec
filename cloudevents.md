@@ -29,7 +29,8 @@
 
 All Keptn events conform to CloudEvents - [Version 0.2](https://github.com/cloudevents/spec/blob/v0.2/spec.md).  CloudEvents is a vendor-neutral specification for defining the format of event data.
 
-All events with a type ending with `started`, `status.changed`, or `.finished`  will have a payload structure as follows (i.e. contain a `triggerid` as attribute):
+Events of type `approval.finished`, `action.started`, and `action.finished` 
+will have a payload structure as follows (i.e. contain a `triggeredid` as attribute):
 ```json
 "sh.keptn.event": {
   "required": [
@@ -37,7 +38,7 @@ All events with a type ending with `started`, `status.changed`, or `.finished`  
     "data",
     "id",
     "shkeptncontext",
-    "triggerid",
+    "triggeredid",
     "source",
     "specversion",
     "time",
@@ -63,7 +64,7 @@ All events with a type ending with `started`, `status.changed`, or `.finished`  
       "type": "string",
       "description": "Unique UUID value that connects various events together"
     },
-    "triggerid": {
+    "triggeredid": {
       "format": "uuid",
       "type": "string",
       "description": "The id which has triggered the step"
@@ -1727,13 +1728,9 @@ This *approval.finished* event contains the result of the approval.
   "properties": {
     "approval": {
       "required": [
-        "triggered_id"
         "result",
         "status",
       ],
-      "triggered_id": { // The CloudEvent ID of the corresponding sh.keptn.event.approval.triggered
-        "type": "string"
-      },
       "result": { // Enum: pass (represents an approval), failed (represents a disapproval)
         "type": "string" 
       },
@@ -1784,9 +1781,9 @@ This *approval.finished* event contains the result of the approval.
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "triggeredid" : "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "data": {
     "approval": {
-      "triggered_id" : "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
       "result": "pass",
       "status": "succeeded"
     },
@@ -1987,7 +1984,6 @@ The *remediation.started* event is sent when a remediation workflow is started.
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "triggerid": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "data": {
     "remediation": {
     },
@@ -2085,7 +2081,6 @@ The *remediation.status.changed* event is sent when a remediation action was tri
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "triggerid": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "data": {
     "remediation": {
       "status": "succeeded",
@@ -2182,7 +2177,6 @@ The *remediation.finished* event is sent when a remediation action is finished
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "triggerid": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "data": {
     "remediation": {
       "status": "succeeded",
@@ -2413,7 +2407,7 @@ The *action.started* event is sent when a remediation action is started by the a
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "triggerid": "2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "triggeredid": "2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "data": {
     "action": {
     },
@@ -2536,7 +2530,7 @@ The *action.finished* event is sent when a remediation action is finished.
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "triggerid": "2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "triggeredid": "2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "data": {
     "action": {
       "result": "pass",
