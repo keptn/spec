@@ -72,7 +72,7 @@ objectives:
     pass:
       - criteria:
           - "<=+10%"
-          - "<100"
+          - "<600"
     warning:
       - criteria:
           - "<=800"
@@ -143,7 +143,7 @@ objectives:
     pass:
       - criteria:
           - "<=+10%"
-          - "<100"
+          - "<600"
     warning:
       - criteria:
           - "<=800"
@@ -301,7 +301,7 @@ objectives:
     pass:
       - criteria:
           - "<=+10%"
-          - "<100"
+          - "<600"
     warning:
       - criteria:
           - "<=800"
