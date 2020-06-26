@@ -3,7 +3,7 @@
 To support site reliability engineering with Keptn and to enable the self-healing use case, Keptn relies on three configurations:
 * [Service Level Indicators (SLI)](#service-level-indicators-sli-configuration)
 * [Service Level Objectives (SLO)](#service-level-objectives-slo-configuration)
-* [Remediation Action](#remediation-action)
+* [Remediation](#remediation)
 
 ---
 
@@ -312,8 +312,8 @@ total_score:
 
 ([&uarr; up to index](#specifications-for-site-reliability-engineering-with-keptn))
 
-## Remediation Action
-The *Remediation Action* configuration defines remediation actions to execute in response to a problem. This action is interpreted by Keptn to trigger the proper remediation. 
+## Remediation
+The *Remediation* configuration defines remediation actions to execute in response to a problem. This configuration is interpreted by Keptn to trigger the proper remediation actions. 
 
 To specify the problem, either the problem name or a generic selector for any kind of problem can be used: 
 - Problem name, declared as **string**
@@ -323,13 +323,13 @@ To specify the problem, either the problem name or a generic selector for any ki
 ```json
 "Remediation": {
   "required": [
-    "version",
+    "apiVersion",
     "kind",
     "metadata",
     "spec"
   ],
   "properties": {
-    "version": {
+    "apiVersion": {
       "type": "string"
     },
     "kind": {
@@ -420,10 +420,10 @@ To specify the problem, either the problem name or a generic selector for any ki
 }
 ```
 
-### Example of a Remediation Action configuration (in yaml)
+### Example of a Remediation configuration (in yaml)
 
 ```yaml
-version: 0.2.0
+apiVersion: 0.2.0
 kind: Remediation
 metadata:
   name: remediation-configuration
