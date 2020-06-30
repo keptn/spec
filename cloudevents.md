@@ -15,6 +15,13 @@
 * [Get SLI Done](#get-sli-done)
 * [Approval Triggered](#approval-triggered)
 * [Approval Finished](#approval-finished)
+* [Remediation Triggered](#remediation-triggered)
+* [Remediation Started](#remediation-started)
+* [Remediation Status Changed](#remediation-status-changed)
+* [Remediation Finished](#remediation-finished)
+* [Action Triggered](#action-triggered)
+* [Action Started](#action-started)
+* [Action Finished](#action-finished)
 
 ---
 
@@ -22,7 +29,75 @@
 
 All Keptn events conform to CloudEvents - [Version 0.2](https://github.com/cloudevents/spec/blob/v0.2/spec.md).  CloudEvents is a vendor-neutral specification for defining the format of event data.
 
-All events will have a payload structure as follows:
+Events of type `approval.finished`, `action.started`, and `action.finished` 
+will have a payload structure as follows (i.e. contain a `triggeredid` as attribute):
+```json
+"sh.keptn.event": {
+  "required": [
+    "contenttype",
+    "data",
+    "id",
+    "shkeptncontext",
+    "triggeredid",
+    "source",
+    "specversion",
+    "time",
+    "type",
+  ],
+  "properties": {
+    "contenttype": {
+      "type": "string",
+      "description":"Content type of the data attribute value",
+      "value": "application/json"
+    },
+    "data": {
+      "type": ["object", "string"],
+      "description": "The Keptn event payload. The payload depends on the event type."
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique UUID for the Keptn event"
+    },
+    "shkeptncontext": {
+      "format": "uuid",
+      "type": "string",
+      "description": "Unique UUID value that connects various events together"
+    },
+    "triggeredid": {
+      "format": "uuid",
+      "type": "string",
+      "description": "The id which has triggered the step"
+    },
+    "source": {
+      "format": "uri-reference",
+      "type": "string",
+      "minLength": 1,
+      "description": "URL to service implementation in Keptn code repo"
+    },
+    "specversion": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The version of the CloudEvents specification which the event uses",
+      "value": "0.2"
+    },
+    "time": {
+      "format": "date-time",
+      "type": "string",
+      "description": "Timestamp of when the event happened"
+    },
+    "type": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Keptn event name"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+All other events will have a payload structure as follows:
 ```json
 "sh.keptn.event": {
   "required": [
@@ -1541,7 +1616,7 @@ The *approval.triggered* event is sent when an approval is required before execu
 
 ### type
 ```json
-"type": "sh.keptn.events.approval.triggered"
+"type": "sh.keptn.event.approval.triggered"
 ```
 
 ### data
@@ -1595,12 +1670,12 @@ The *approval.triggered* event is sent when an approval is required before execu
 ```
 
 ### Example
-<details><summary>Example of sh.keptn.events.approval.triggered</summary>
+<details><summary>Example of sh.keptn.event.approval.triggered</summary>
 <p>
 
 ```json
 {
-  "type": "sh.keptn.events.approval.triggered",
+  "type": "sh.keptn.event.approval.triggered",
   "specversion": "0.2",
   "source": "https://github.com/keptn/keptn/gatekeeper-service",
   "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
@@ -1636,7 +1711,7 @@ This *approval.finished* event contains the result of the approval.
 
 ### type
 ```json
-"type": "sh.keptn.events.approval.finished"
+"type": "sh.keptn.event.approval.finished"
 ```
 
 ### data
@@ -1653,13 +1728,9 @@ This *approval.finished* event contains the result of the approval.
   "properties": {
     "approval": {
       "required": [
-        "triggered_id"
         "result",
         "status",
       ],
-      "triggered_id": { // The CloudEvent ID of the corresponding sh.keptn.events.approval.triggered
-        "type": "string"
-      },
       "result": { // Enum: pass (represents an approval), failed (represents a disapproval)
         "type": "string" 
       },
@@ -1698,23 +1769,23 @@ This *approval.finished* event contains the result of the approval.
 ```
 
 ### Example
-<details><summary>Example of sh.keptn.events.approval.finished</summary>
+<details><summary>Example of sh.keptn.event.approval.finished</summary>
 <p>
 
 ```json
 {
-  "type": "sh.keptn.events.approval.finished",
+  "type": "sh.keptn.event.approval.finished",
   "specversion": "0.2",
   "source": "https://github.com/keptn/keptn/gatekeeper-service",
   "id": "ggb878d3-03c0-4e8f-bc3f-454bc1b3d888",
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "triggeredid" : "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "data": {
     "approval": {
-      "triggered_id" : "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-      "result": "Pass",
-      "status": "Succeeded"
+      "result": "pass",
+      "status": "succeeded"
     },
     "project": "sockshop",
     "stage": "staging",
@@ -1727,6 +1798,760 @@ This *approval.finished* event contains the result of the approval.
       "runby": "JohnDoe"
     },
     "deploymentURILocal": "http://carts.sockshop-staging.svc.cluster.local"
+  }
+}
+```
+
+</p>
+</details>
+
+([&uarr; up to index](#keptn-cloud-events))
+
+## Remediation Triggered
+
+The *remediation.triggered* event indicates the start of following remediation actions.
+
+### type
+```json
+"type": "sh.keptn.event.remediation.triggered"
+```
+
+### data
+```json
+"RemediationTriggeredEventData": {
+  "required": [
+    "remediation",
+    "problem",
+    "project",
+    "stage",
+    "service"
+  ],
+  "properties": {
+    "remediation": {
+      "type": "object"
+    },
+    "problem": {
+      "required": [
+        "PID",
+        "ProblemDetails",
+        "ProblemID",
+        "ProblemTitle"
+      ],
+      "ImpactedEntities": {
+        "type": "string",
+      },
+      "PID": {
+        "type": "string",
+      },
+      "ProblemDetails": {
+        "items": {
+          "type": "integer"
+        },
+        "type": "array"
+      },
+      "ProblemID": {
+        "type": "string"
+      },
+      "ProblemTitle": {
+        "type": "string",
+      },
+      "State": {
+        "type": "string"
+      },
+      "Tags": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "project": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "labels": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+### Example
+<details><summary>Example of sh.keptn.event.remediation.triggered</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.event.remediation.triggered",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/remediation-service",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "contenttype": "application/json",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {    
+    "remediation": {
+    },
+    "problem": {
+      "ImpactedEntity": "carts-primary",
+      "PID": "93a5-3fas-a09d-8ckf",
+      "ProblemDetails": "Pod name",
+      "ProblemID": "762",
+      "ProblemTitle": "cpu_usage_sockshop_carts",
+      "State": "OPEN",
+    },
+    "project": "sockshop",
+    "stage": "staging",
+    "service": "carts",
+    "labels": {
+      "testid": "12345",
+      "buildnr": "build17",
+      "runby": "JohnDoe"
+    },
+  }
+}
+```
+
+</p>
+</details>
+([&uarr; up to index](#keptn-cloud-events))
+
+## Remediation Started
+
+The *remediation.started* event is sent when a remediation workflow is started.
+
+### type
+```json
+"type": "sh.keptn.event.remediation.started"
+```
+
+### data
+```json
+"RemediationStartedEventData": {
+  "required": [
+    "remediation",
+    "project",
+    "stage",
+    "service",
+  ],
+  "properties": {
+    "remediation": {
+      "type": "object"
+    },
+    "project": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "labels": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+### Example
+<details><summary>Example of sh.keptn.event.remediation.started</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.event.remediation.started",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/remediation-service",
+  "id": "ggb878d3-03c0-4e8f-bc3f-454bc1b3d888",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "contenttype": "application/json",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {
+    "remediation": {
+    },
+    "project": "sockshop",
+    "stage": "staging",
+    "service": "carts",
+    "labels": {
+      "testid": "12345",
+      "buildnr": "build17",
+      "runby": "JohnDoe"
+    },
+  }
+}
+```
+
+</p>
+</details>
+
+([&uarr; up to index](#keptn-cloud-events))
+
+## Remediation Status Changed
+
+The *remediation.status.changed* event is sent when a remediation action was triggered but there are further remediation actions available.
+
+### type
+```json
+"type": "sh.keptn.event.remediation.status.changed"
+```
+
+### data
+```json
+"RemediationStatusChangedEventData": {
+  "required": [
+    "remediation",
+    "project",
+    "stage",
+    "service",
+  ],
+  "properties": {
+    "remediation": {
+      "required": [
+        "status",
+        "result",
+      ],
+      "status": { // Enum: succeeded, errored, unknown
+        "type": "string" 
+      },
+      "result": {
+        "required": [
+          "actionIndex",
+          "actionName",
+        ],
+        "actionIndex": {
+          "type": "integer"
+        },      
+        "actionName": {
+          "type": "string"
+        },
+      },
+      "type": "object"
+    },
+    "project": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "labels": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+### Example
+<details><summary>Example of sh.keptn.event.remediation.status.changed</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.event.remediation.status.changed",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/remediation-service",
+  "id": "ggb878d3-03c0-4e8f-bc3f-454bc1b3d888",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "contenttype": "application/json",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {
+    "remediation": {
+      "status": "succeeded",
+      "result": {
+        "actionIndex": 0,
+        "actionName": "scaling",
+      }
+    },
+    "project": "sockshop",
+    "stage": "staging",
+    "service": "carts",
+    "labels": {
+      "testid": "12345",
+      "buildnr": "build17",
+      "runby": "JohnDoe"
+    },
+  }
+}
+```
+
+</p>
+</details>
+
+([&uarr; up to index](#keptn-cloud-events))
+
+## Remediation Finished
+
+The *remediation.finished* event is sent when a remediation action is finished
+
+### type
+```json
+"type": "sh.keptn.event.remediation.finished"
+```
+
+### data
+```json
+"RemediationFinishedEventData": {
+  "required": [
+    "remediation",
+    "project",
+    "stage",
+    "service",
+  ],
+  "properties": {
+    "remediation": {
+      "required": [
+        "status",
+        "result",
+      ],
+      "status": { // Enum: succeeded, errored, unknown
+        "type": "string" 
+      },
+      "result": {
+        "type": "string"  // Enum: Pass or failed
+      },
+      "message": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "project": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "labels": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+### Example
+<details><summary>Example of sh.keptn.event.remediation.finished</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.event.remediation.finished",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/remediation-service",
+  "id": "ggb878d3-03c0-4e8f-bc3f-454bc1b3d888",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "contenttype": "application/json",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {
+    "remediation": {
+      "status": "succeeded",
+      "result": "pass"
+    },
+    "problem": {
+      "ImpactedEntity": "carts-primary",
+      "PID": "93a5-3fas-a09d-8ckf",
+      "ProblemDetails": "Pod name",
+      "ProblemID": "762",
+      "ProblemTitle": "cpu_usage_sockshop_carts",
+      "State": "OPEN",
+    },
+    "project": "sockshop",
+    "stage": "staging",
+    "service": "carts",
+    "labels": {
+      "testid": "12345",
+      "buildnr": "build17",
+      "runby": "JohnDoe"
+    },
+  }
+}
+```
+
+</p>
+</details>
+
+([&uarr; up to index](#keptn-cloud-events))
+
+## Action Triggered
+
+The *action.triggered* event triggers a remediation action.
+
+### type
+```json
+"type": "sh.keptn.event.action.triggered"
+```
+
+### data
+```json
+"ActionTriggeredEventData": {
+  "required": [
+    "action",
+    "problem",
+    "project",
+    "stage",
+    "service"
+  ],
+  "properties": {
+    "action": {
+      "required": [
+        "name",
+        "action",
+      ],     
+      "name": {
+        "type": "string"
+      },
+      "action": {
+        "type": "string"
+      },
+      "description": {
+        "type": "string"
+      },
+      "value": {
+        "type": ["object", "string"]
+      },
+      "type": "object"
+    },
+    "problem": {
+      "required": [
+        "PID",
+        "ProblemDetails",
+        "ProblemID",
+        "ProblemTitle"
+      ],
+      "ImpactedEntities": {
+        "type": "string",
+      },
+      "PID": {
+        "type": "string",
+      },
+      "ProblemDetails": {
+        "items": {
+          "type": "integer"
+        },
+        "type": "array"
+      },
+      "ProblemID": {
+        "type": "string"
+      },
+      "ProblemTitle": {
+        "type": "string",
+      },
+      "State": {
+        "type": "string"
+      },
+      "Tags": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "project": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "labels": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+### Example
+<details><summary>Example of sh.keptn.event.action.triggered</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.event.action.triggered",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/remediation-service",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "contenttype": "application/json",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {    
+    "action": {
+      "name": "Feature toggeling",
+      "action": "toggle-feature",
+      "description": "toggles a feature",
+      "value": {
+        "EnableItemCache": "on"
+      }
+    },
+    "problem": {
+      "ImpactedEntity": "carts-primary",
+      "PID": "93a5-3fas-a09d-8ckf",
+      "ProblemDetails": "Pod name",
+      "ProblemID": "762",
+      "ProblemTitle": "cpu_usage_sockshop_carts",
+      "State": "OPEN",
+    },
+    "project": "sockshop",
+    "stage": "staging",
+    "service": "carts",
+    "labels": {
+      "testid": "12345",
+      "buildnr": "build17",
+      "runby": "JohnDoe"
+    },
+  }
+}
+```
+
+</p>
+</details>
+
+([&uarr; up to index](#keptn-cloud-events))
+
+## Action Started
+
+The *action.started* event is sent when a remediation action is started by the action provider.
+
+### type
+```json
+"type": "sh.keptn.event.action.started"
+```
+
+### data
+```json
+"ActionStartedEventData": {
+  "required": [
+    "action",
+    "project",
+    "stage",
+    "service",
+  ],
+  "properties": {
+    "action": {
+      "type": "object"
+    },
+    "project": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "labels": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+### Example
+<details><summary>Example of sh.keptn.event.action.started</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.event.action.started",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/unleash-service",
+  "id": "ggb878d3-03c0-4e8f-bc3f-454bc1b3d888",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "contenttype": "application/json",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "triggeredid": "2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "data": {
+    "action": {
+    },
+    "project": "sockshop",
+    "stage": "staging",
+    "service": "carts",
+    "labels": {
+      "testid": "12345",
+      "buildnr": "build17",
+      "runby": "JohnDoe"
+    },
+  }
+}
+```
+
+</p>
+</details>
+
+([&uarr; up to index](#keptn-cloud-events))
+
+## Action Finished
+
+The *action.finished* event is sent when a remediation action is finished.
+
+### type
+```json
+"type": "sh.keptn.event.action.finished"
+```
+
+### data
+```json
+"ActionFinishedEventData": {
+  "required": [
+    "action",
+    "problem",
+    "project",
+    "stage",
+    "service",
+  ],
+  "properties": {
+    "action": {
+      "required": [
+        "result",
+        "status",
+      ],
+      "result": { // Enum: pass , failed 
+        "type": "string" 
+      },
+      "status": { // Enum: succeeded, errored, unknown
+        "type": "string" 
+      },
+      "type": "object"
+    },
+    "problem": {
+      "required": [
+        "PID",
+        "ProblemDetails",
+        "ProblemID",
+        "ProblemTitle"
+      ],
+      "ImpactedEntities": {
+        "type": "string",
+      },
+      "PID": {
+        "type": "string",
+      },
+      "ProblemDetails": {
+        "items": {
+          "type": "integer"
+        },
+        "type": "array"
+      },
+      "ProblemID": {
+        "type": "string"
+      },
+      "ProblemTitle": {
+        "type": "string",
+      },
+      "State": {
+        "type": "string"
+      },
+      "Tags": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "project": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "labels": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+### Example
+<details><summary>Example of sh.keptn.event.action.finished</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.event.action.finished",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/unleash-service",
+  "id": "ggb878d3-03c0-4e8f-bc3f-454bc1b3d888",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "contenttype": "application/json",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "triggeredid": "2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "data": {
+    "action": {
+      "result": "pass",
+      "status": "succeeded"
+    },
+    "problem": {
+      "ImpactedEntity": "carts-primary",
+      "PID": "93a5-3fas-a09d-8ckf",
+      "ProblemDetails": "Pod name",
+      "ProblemID": "762",
+      "ProblemTitle": "cpu_usage_sockshop_carts",
+      "State": "OPEN",
+    },
+    "project": "sockshop",
+    "stage": "staging",
+    "service": "carts",
+    "labels": {
+      "testid": "12345",
+      "buildnr": "build17",
+      "runby": "JohnDoe"
+    },
   }
 }
 ```

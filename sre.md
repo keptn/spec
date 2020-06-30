@@ -3,7 +3,7 @@
 To support site reliability engineering with Keptn and to enable the self-healing use case, Keptn relies on three configurations:
 * [Service Level Indicators (SLI)](#service-level-indicators-sli-configuration)
 * [Service Level Objectives (SLO)](#service-level-objectives-slo-configuration)
-* [Remediation Action](#remediation-action)
+* [Remediation](#remediation)
 
 ---
 
@@ -312,56 +312,107 @@ total_score:
 
 ([&uarr; up to index](#specifications-for-site-reliability-engineering-with-keptn))
 
-## Remediation Action
-The *Remediation Action* configuration defines remediation actions to execute in response to a problem. This action is interpreted by Keptn to trigger the proper remediation. 
+## Remediation
+The *Remediation* configuration defines remediation actions to execute in response to a problem. This configuration is interpreted by Keptn to trigger the proper remediation actions. 
+
+To specify the problem, either the problem name or a generic selector for any kind of problem can be used: 
+- Problem name, declared as **string**
+- Generic selector, declared as: **\"*\"** for the problem name
 
 ### Specification
 ```json
-"Remediations": {
+"Remediation": {
   "required": [
-    "remediations"
+    "apiVersion",
+    "kind",
+    "metadata",
+    "spec"
+  ],
+  "properties": {
+    "apiVersion": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string"
+    },
+    "metadata": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+        }
+      }
+    },
+    "spec": {
+      "$ref": "#/definitions/Spec"
+    },
+  },
+  "additionalProperties": false,
+  "type": "object"
+},
+
+"Spec": {
+  "required": [
+    "remediations",
   ],
   "properties": {
     "remediations": {
       "items": {
-        "$ref": "#/definitions/Remediation"
-      },
-      "type": "array"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-},
-"Remediation": {
-  "required": [
-    "name",
-    "actions"
-  ],
-  "properties": {
-    "actions": {
-      "items": {
-        "$ref": "#/definitions/RemediationAction"
+        "$ref": "#/definitions/Remediations"
       },
       "type": "array"
     },
-    "name": {
-      "type": "string"
-    }
   },
   "additionalProperties": false,
   "type": "object"
 },
-"RemediationAction": {
+
+"Remediations": {
   "required": [
+    "problemType",
+    "actionsOnOpen"
+  ],
+  "properties": {
+    "problemType": {
+      "type": "string"
+    },
+    "actionsOnOpen": {
+      "items": {
+        "$ref": "#/definitions/Action"
+      },
+      "type": "array"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+
+"Action": {
+  "required": [
+    "name",
     "action",
+    "description",
     "value"
   ],
   "properties": {
+    "name": {
+      "type": "string"
+    },
     "action": {
       "type": "string"
     },
-    "value": {
+    "hook": {
       "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "value": {      
+      "type": ["object", "string"],
     }
   },
   "additionalProperties": false,
@@ -369,18 +420,28 @@ The *Remediation Action* configuration defines remediation actions to execute in
 }
 ```
 
-### Example of a Remediation Action configuration (in yaml)
+### Example of a Remediation configuration (in yaml)
 
 ```yaml
-remediations:
-- name: "Response time degradation"
-  actions:
-  - action: scaling
-    value: +1
-- name: "Failure rate increase"
-  actions:
-  - action: featuretoggle
-    value: EnablePromotion:off
+apiVersion: spec.keptn.sh/0.1.4
+kind: Remediation
+metadata:
+  name: remediation-configuration
+spec:
+  remediations: 
+  - problemType: "Response time degradation"
+    actionsOnOpen:
+    - name: Toogle feature flag
+      action: togglefeature
+      description: Toggle feature flag EnablePromotion from ON to OFF
+      value:
+        EnablePromotion: off
+  - problemType: default
+    actionsOnOpen:
+    - name:
+      action: escalate
+      description: Escalate the problem
+      hook: https://my-slack-workspace.com/problem-channel
 ```
 
 ([&uarr; up to index](#specifications-for-site-reliability-engineering-with-keptn))
