@@ -423,7 +423,7 @@ To specify the problem, either the problem name or a generic selector for any ki
 ### Example of a Remediation configuration (in yaml)
 
 ```yaml
-apiVersion: 0.2.0
+apiVersion: spec.keptn.sh/0.1.4
 kind: Remediation
 metadata:
   name: remediation-configuration
