@@ -413,7 +413,7 @@ The *problem type* maps a problem to a remediation by a matching problem title (
       "type": "string"
     },
     "value": {      
-      "type": ["object"]
+      "type": ["object", "string"]
     }
   },
   "additionalProperties": false,

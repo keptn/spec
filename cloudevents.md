@@ -1019,13 +1019,13 @@ The generic *problem* event is sent when a problem activity related to a monitor
   ],
   "properties": {
     "ImpactedEntities": {
-      "type": "string",
+      "type": "string"
     },
     "ImpactedEntity": {
-      "type": "string",
+      "type": "string"
     },
     "PID": {
-      "type": "string",
+      "type": "string"
     },
     "ProblemDetails": {
       "patternProperties": {
@@ -1039,10 +1039,10 @@ The generic *problem* event is sent when a problem activity related to a monitor
       "type": "string"
     },
     "ProblemTitle": {
-      "type": "string",
+      "type": "string"
     },
     "ProblemURL": {
-      "type": "string",
+      "type": "string"
     },
     "project": {
       "type": "string"
@@ -1163,10 +1163,10 @@ The *problem open* event is sent when a monitored service causes any problem **a
   ],
   "properties": {
     "ImpactedEntity": {
-      "type": "string",
+      "type": "string"
     },
     "PID": {
-      "type": "string",
+      "type": "string"
     },
     "ProblemDetails": {
       "patternProperties": {
@@ -1180,10 +1180,10 @@ The *problem open* event is sent when a monitored service causes any problem **a
       "type": "string"
     },
     "ProblemTitle": {
-      "type": "string",
+      "type": "string"
     },
     "ProblemURL": {
-      "type": "string",
+      "type": "string"
     },
     "project": {
       "type": "string"
@@ -1195,7 +1195,7 @@ The *problem open* event is sent when a monitored service causes any problem **a
       "type": "string"
     },
     "State": {
-      "type": "string",
+      "type": "string"
       "default": "OPEN"
     },
     "Tags": {
@@ -1840,10 +1840,10 @@ The *remediation.triggered* event indicates the start of following remediation a
         "ProblemTitle"
       ],
       "ImpactedEntities": {
-        "type": "string",
+        "type": "string"
       },
       "PID": {
-        "type": "string",
+        "type": "string"
       },
       "ProblemDetails": {
         "items": {
@@ -1855,10 +1855,10 @@ The *remediation.triggered* event indicates the start of following remediation a
         "type": "string"
       },
       "ProblemTitle": {
-        "type": "string",
+        "type": "string"
       },
       "ProblemURL": {
-        "type": "string",
+        "type": "string"
       },
       "State": {
         "type": "string"
@@ -2142,10 +2142,10 @@ The *remediation.finished* event is sent when a remediation action is finished.
         "ProblemTitle"
       ],
       "ImpactedEntities": {
-        "type": "string",
+        "type": "string"
       },
       "PID": {
-        "type": "string",
+        "type": "string"
       },
       "ProblemDetails": {
         "items": {
@@ -2157,10 +2157,10 @@ The *remediation.finished* event is sent when a remediation action is finished.
         "type": "string"
       },
       "ProblemTitle": {
-        "type": "string",
+        "type": "string"
       },
       "ProblemURL": {
-        "type": "string",
+        "type": "string"
       },
       "State": {
         "type": "string"
@@ -2288,7 +2288,7 @@ The *action.triggered* event triggers a remediation action.
         "type": "string"
       },
       "value": {
-        "type": "object"
+        "type": ["object", "string"]
       },
       "type": "object"
     },
@@ -2300,10 +2300,10 @@ The *action.triggered* event triggers a remediation action.
         "ProblemTitle"
       ],
       "ImpactedEntities": {
-        "type": "string",
+        "type": "string"
       },
       "PID": {
-        "type": "string",
+        "type": "string"
       },
       "ProblemDetails": {
         "items": {
@@ -2315,10 +2315,10 @@ The *action.triggered* event triggers a remediation action.
         "type": "string"
       },
       "ProblemTitle": {
-        "type": "string",
+        "type": "string"
       },
       "ProblemURL": {
-        "type": "string",
+        "type": "string"
       },
       "State": {
         "type": "string"
