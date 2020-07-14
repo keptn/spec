@@ -26,7 +26,7 @@ A shipyard file can consist of any number of stages. A stage has the following p
   
 * **Remediation Strategy**: The remediation strategy specifies whether remediation actions are enabled or not. To enable remediation actions, the `remediation_strategy` property has to be set to `automated`. The actions are specified in the *Remediation* configuration as described [here](./sre.md/#remediation).
 
-## Example of a shipyard.yml file
+## Example of a Shipyard (in yaml)
 
 ```yaml
 stages:

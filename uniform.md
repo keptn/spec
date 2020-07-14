@@ -1,8 +1,8 @@
-# Uniform (DRAFT - not implemented)
+# Uniform (DRAFT)
 
-A `uniform` describes the services that listen to Keptn channels for events, i.e., it defines which service subscribes to which channel. Configuration parameters can be passed either as environment variable or references to config maps.
+> **Important Note: This spec is not implemented yet. Consider it as a proposal.**
 
-Ultimately, the `uniform` will be a custom Kubernetes resource, as suggested below. The `uniform` controller then will take care of managing subscribed services and subscriptions. This enables Keptn users to change their continuous delivery services and version with ease, because the `uniform` is the one central location where this information is stored.
+A `uniform` describes the services that listen to Keptn channels for events, i.e., it defines which service subscribes to which channel. Configuration parameters can be passed either a environment variable or references to config maps.
 
 ```yaml
 ---
@@ -17,7 +17,7 @@ spec:
     image: keptn/slack-service:0.1.2
     env:
     - name: SLACK_WEBHOOK
-      value: "https://hooks.slack.com/services/TXXXXXXXX/BXXXXXXX/WXXXXXXXXXXXXXXXXX"
+      value: "https://hooks.slack.com/services/xyz
     subscribedchannels:
     - new-artifact
     - configuration-changed

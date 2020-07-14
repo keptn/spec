@@ -1,6 +1,7 @@
 # Specifications for Site Reliability Engineering with Keptn
 
 To support site reliability engineering with Keptn and to enable the self-healing use case, Keptn relies on three configurations:
+
 * [Service Level Indicators (SLI)](#service-level-indicators-sli-configuration)
 * [Service Level Objectives (SLO)](#service-level-objectives-slo-configuration)
 * [Remediation](#remediation)
@@ -18,13 +19,10 @@ An indicator is a key-value pair with the SLI name as key and the provider-speci
 ```json
 "ServiceLevelIndicators": {
   "required": [
+    "indicators",
     "spec_version"
-    "indicators"
   ],
   "properties": {
-    "spec_version": {
-      "type": "string"
-    },
     "indicators": {
       "patternProperties": {
         ".*": {
@@ -32,6 +30,9 @@ An indicator is a key-value pair with the SLI name as key and the provider-speci
         }
       },
       "type": "object"
+    },
+    "spec_version": {
+      "type": "string"
     }
   },
   "additionalProperties": false,
@@ -171,14 +172,14 @@ The pass and warning criteria for the `total_score` use the logical operator ">=
 ```json
 "ServiceLevelObjectives": {
   "required": [
-    "spec_version",
     "comparison",
     "objectives",
+    "spec_version",
     "total_score"
   ],
   "properties": {
-    "spec_version": {
-      "type": "string"
+    "comparison": {
+      "$ref": "#/definitions/Comparison"
     },
     "filter": {
       "patternProperties": {
@@ -188,14 +189,14 @@ The pass and warning criteria for the `total_score` use the logical operator ">=
       },
       "type": "object"
     },
-    "comparison": {
-      "$ref": "#/definitions/Comparison"
-    },
     "objectives": {
       "items": {
         "$ref": "#/definitions/Objective"
       },
       "type": "array"
+    },
+    "spec_version": {
+      "type": "string"
     },
     "total_score": {
       "$ref": "#/definitions/Score"
@@ -227,8 +228,8 @@ The pass and warning criteria for the `total_score` use the logical operator ">=
 },
 "Objective": {
   "required": [
-    "sli",
-    "pass"
+    "pass",
+    "sli"
   ],
   "properties": {
     "key_sli": {
@@ -325,6 +326,7 @@ The *problem type* maps a problem to a remediation by a matching problem title (
 * For the case of triggering a remediation based on an unknown problem, the problem type `default` is supported.
 
 ### Specification
+
 ```json
 "Remediation": {
   "required": [
@@ -341,16 +343,16 @@ The *problem type* maps a problem to a remediation by a matching problem title (
       "type": "string"
     },
     "metadata": {
-      "type": "object",
       "required": [
         "name"
       ],
-      "additionalProperties": false,
       "properties": {
         "name": {
-          "type": "string",
+          "type": "string"
         }
-      }
+      },
+      "additionalProperties": false,
+      "type": "object"
     },
     "spec": {
       "$ref": "#/definitions/Spec"
@@ -359,10 +361,9 @@ The *problem type* maps a problem to a remediation by a matching problem title (
   "additionalProperties": false,
   "type": "object"
 },
-
 "Spec": {
   "required": [
-    "remediations",
+    "remediations"
   ],
   "properties": {
     "remediations": {
@@ -375,46 +376,44 @@ The *problem type* maps a problem to a remediation by a matching problem title (
   "additionalProperties": false,
   "type": "object"
 },
-
 "Remediations": {
   "required": [
-    "problemType",
-    "actionsOnOpen"
+    "actionsOnOpen",
+    "problemType"
   ],
   "properties": {
-    "problemType": {
-      "type": "string"
-    },
     "actionsOnOpen": {
       "items": {
         "$ref": "#/definitions/Action"
       },
       "type": "array"
+    },
+    "problemType": {
+      "type": "string"
     }
   },
   "additionalProperties": false,
   "type": "object"
 }
-
 "Action": {
   "required": [
-    "name",
     "action",
     "description",
+    "name",
     "value"
   ],
   "properties": {
-    "name": {
-      "type": "string"
-    },
     "action": {
       "type": "string"
     },
     "description": {
       "type": "string"
     },
+    "name": {
+      "type": "string"
+    },
     "value": {      
-      "type": ["object", "string"],
+      "type": ["object"]
     }
   },
   "additionalProperties": false,
@@ -438,7 +437,7 @@ spec:
       description: Toggle feature flag EnablePromotion from ON to OFF
       value:
         EnablePromotion: off
-  - problemType: default
+  - problemType: "default"
     actionsOnOpen:
     - name: Escalate problem
       action: escalate
