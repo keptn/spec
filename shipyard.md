@@ -14,7 +14,7 @@ A shipyard file can consist of any number of stages. A stage has the following p
   * `automatic`: The artifact is deployed automatically.
   * `manual`: Keptn asks for an approval before deploying. 
   
-Per default, an `automatic` approval strategy is used for evaluation result `pass` and `warning`.
+  > **Note:** Per default, an `automatic` approval strategy is used for evaluation result `pass` and `warning`.
 
 * **Deployment Strategy**: Defines the deployment strategy used to deploy a new version of a service. Keptn supports deployment strategies of type: 
   * `direct`: Deploys a new version of a service by replacing the old version of the service.
@@ -24,7 +24,7 @@ Per default, an `automatic` approval strategy is used for evaluation result `pas
   * `functional` 
   * `performance` 
   
-* **Remediation Strategy**: The remediation strategy specifies whether remediation actions are enabled or not. To enable remediation actions, the `remediation_strategy` property has to be set to `automated`. The actions are specified in the *Remediation Action* configuration as described [here](./sre.md/#remediation-action).
+* **Remediation Strategy**: The remediation strategy specifies whether remediation actions are enabled or not. To enable remediation actions, the `remediation_strategy` property has to be set to `automated`. The actions are specified in the *Remediation* configuration as described [here](./sre.md/#remediation).
 
 ## Example of a shipyard.yml file
 
@@ -40,6 +40,9 @@ stages:
     deployment_strategy: "blue_green_service"
     test_strategy: "performance"
   - name: "production"
+    approval_strategy: 
+      pass: "manual"
+      warning: "manual"
     deployment_strategy: "blue_green_service"
     remediation_strategy: "automated"
 ```

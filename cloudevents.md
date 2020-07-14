@@ -27,10 +27,10 @@
 
 ## Keptn Cloud Event
 
-All Keptn events conform to CloudEvents - [Version 0.2](https://github.com/cloudevents/spec/blob/v0.2/spec.md).  CloudEvents is a vendor-neutral specification for defining the format of event data.
+All Keptn events conform to CloudEvents [Version 0.2](https://github.com/cloudevents/spec/blob/v0.2/spec.md).  CloudEvents is a vendor-neutral specification for defining the format of event data.
 
-Events of type `approval.finished`, `action.started`, and `action.finished` 
-will have a payload structure as follows (i.e. contain a `triggeredid` as attribute):
+Events of type `approval.finished`, `action.started`, and `action.finished` have a payload structure as follows (*Note:* contain a `triggeredid` as attribute):
+
 ```json
 "sh.keptn.event": {
   "required": [
@@ -38,10 +38,10 @@ will have a payload structure as follows (i.e. contain a `triggeredid` as attrib
     "data",
     "id",
     "shkeptncontext",
-    "triggeredid",
     "source",
     "specversion",
     "time",
+    "triggeredid",
     "type",
   ],
   "properties": {
@@ -57,17 +57,12 @@ will have a payload structure as follows (i.e. contain a `triggeredid` as attrib
     "id": {
       "type": "string",
       "minLength": 1,
-      "description": "Unique UUID for the Keptn event"
+      "description": "Unique UUID of the Keptn event"
     },
     "shkeptncontext": {
       "format": "uuid",
       "type": "string",
       "description": "Unique UUID value that connects various events together"
-    },
-    "triggeredid": {
-      "format": "uuid",
-      "type": "string",
-      "description": "The id which has triggered the step"
     },
     "source": {
       "format": "uri-reference",
@@ -78,7 +73,7 @@ will have a payload structure as follows (i.e. contain a `triggeredid` as attrib
     "specversion": {
       "type": "string",
       "minLength": 1,
-      "description": "The version of the CloudEvents specification which the event uses",
+      "description": "The version of the CloudEvents specification",
       "value": "0.2"
     },
     "time": {
@@ -86,10 +81,15 @@ will have a payload structure as follows (i.e. contain a `triggeredid` as attrib
       "type": "string",
       "description": "Timestamp of when the event happened"
     },
+    "triggeredid": {
+      "format": "uuid",
+      "type": "string",
+      "description": "The event ID that has triggered the step"
+    },
     "type": {
       "type": "string",
       "minLength": 1,
-      "description": "Keptn event name"
+      "description": "Type of the Keptn event"
     }
   },
   "additionalProperties": false,
@@ -98,6 +98,7 @@ will have a payload structure as follows (i.e. contain a `triggeredid` as attrib
 ```
 
 All other events will have a payload structure as follows:
+
 ```json
 "sh.keptn.event": {
   "required": [
@@ -123,7 +124,7 @@ All other events will have a payload structure as follows:
     "id": {
       "type": "string",
       "minLength": 1,
-      "description": "Unique UUID for the Keptn event"
+      "description": "Unique UUID of the Keptn event"
     },
     "shkeptncontext": {
       "format": "uuid",
@@ -139,7 +140,7 @@ All other events will have a payload structure as follows:
     "specversion": {
       "type": "string",
       "minLength": 1,
-      "description": "The version of the CloudEvents specification which the event uses",
+      "description": "The version of the CloudEvents specification",
       "value": "0.2"
     },
     "time": {
@@ -150,7 +151,7 @@ All other events will have a payload structure as follows:
     "type": {
       "type": "string",
       "minLength": 1,
-      "description": "Keptn event name"
+      "description": "Type of the Keptn event"
     }
   },
   "additionalProperties": false,
@@ -469,9 +470,9 @@ The *configuration change* event is sent when a desired state for a service is a
       "image": "docker.io/keptnexamples/carts:0.9.1"
     },
     "labels": {
-      "testid": "12345",
-      "buildnr": "build17",
-      "runby": "JohnDoe"
+      "testId": "4711",
+      "buildId": "build-17",
+      "owner": "JohnDoe"
     }
   }
 }
@@ -495,20 +496,34 @@ The *deployment-finished* event is sent when a desired state of a service is dep
 ```json
 "DeploymentFinishedEventData": {
   "required": [
-    "project",
-    "stage",
-    "service",
-    "teststrategy",
     "deploymentstrategy",
+    "image",
+    "project",
+    "service",
+    "stage",
     "tag",
-    "image"
+    "teststrategy"
   ],
   "properties": {
     "deploymentstrategy": {
       "type": "string"
     },
+    "deploymentURILocal": {
+      "type": "string"
+    },
+    "deploymentURIPublic": {
+      "type": "string"
+    },
     "image": {
       "type": "string"
+    },
+    "labels": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
     },
     "project": {
       "type": "string"
@@ -523,20 +538,6 @@ The *deployment-finished* event is sent when a desired state of a service is dep
       "type": "string"
     },
     "teststrategy": {
-      "type": "string"
-    },
-    "labels": {
-      "patternProperties": {
-        ".*": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    },
-    "deploymentURILocal": {
-      "type": "string"
-    },
-    "deploymentURIPublic": {
       "type": "string"
     }
   },
@@ -562,16 +563,16 @@ The *deployment-finished* event is sent when a desired state of a service is dep
     "project": "sockshop",
     "stage": "staging",
     "service": "carts",
-    "testStrategy": "performance",
-    "deploymentStrategy": "direct",
+    "teststrategy": "performance",
+    "deploymentstrategy": "direct",
     "tag": "0.9.1",
     "image": "docker.io/keptnexamples/carts",
+    "deploymentURILocal": "http://carts.sockshop-staging.svc.cluster.local",
     "labels": {
-      "testid": "12345",
-      "buildnr": "build17",
-      "runby": "JohnDoe"
-    },
-    "deploymentURILocal": "http://carts.sockshop-staging.svc.cluster.local"
+      "testId": "4711",
+      "buildId": "build-17",
+      "owner": "JohnDoe"
+    }
   }
 }
 ```
@@ -594,14 +595,14 @@ The *tests-finished* event is sent when the tests for a service in a stage are f
 ```json
 "TestsFinishedEventData": {
   "required": [
+    "deploymentstrategy",
+    "end",
     "project",
+    "result",
     "service",
     "stage",
-    "teststrategy",
-    "deploymentstrategy",
     "start",
-    "end",
-    "result"
+    "teststrategy"
   ],
   "properties": {
     "deploymentstrategy": {
@@ -610,7 +611,18 @@ The *tests-finished* event is sent when the tests for a service in a stage are f
     "end": {
       "type": "string"
     },
+    "labels": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+     },
     "project": {
+      "type": "string"
+    },
+    "result": {
       "type": "string"
     },
     "service": {
@@ -623,17 +635,6 @@ The *tests-finished* event is sent when the tests for a service in a stage are f
       "type": "string"
     },
     "teststrategy": {
-      "type": "string"
-    },
-    "labels": {
-      "patternProperties": {
-        ".*": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-     },
-    "result": {
       "type": "string"
     }
   },
@@ -659,16 +660,16 @@ The *tests-finished* event is sent when the tests for a service in a stage are f
     "project": "sockshop",
     "stage": "staging",
     "service": "carts",
-    "testStrategy": "performance",
-    "deploymentStrategy": "direct",
+    "teststrategy": "performance",
+    "deploymentstrategy": "direct",
     "start": "2019-09-01 12:00:00",
     "end": "2019-09-01 12:05:00",
+    "result": "pass",
     "labels": {
-      "testid": "12345",
-      "buildnr": "build17",
-      "runby": "JohnDoe"
-    },
-    "result": "pass"
+      "testId": "4711",
+      "buildId": "build-17",
+      "owner": "JohnDoe"
+    }
   }
 }
 ```
@@ -690,13 +691,13 @@ The *start-evaluation* event is sent when the evaluation of a test run should be
 ```json
 "StartEvaluationEventData": {
   "required": [
+    "deploymentstrategy",
+    "end",
     "project",
     "service",
     "stage",
-    "teststrategy",
-    "deploymentstrategy",
     "start",
-    "end"
+    "teststrategy"
   ],
   "properties": {
     "deploymentstrategy": {
@@ -756,9 +757,9 @@ The *start-evaluation* event is sent when the evaluation of a test run should be
     "start": "2019-09-01 12:00:00",
     "end": "2019-09-01 12:05:00",
     "labels": {
-      "testid": "12345",
-      "buildnr": "build17",
-      "runby": "JohnDoe"
+      "testId": "4711",
+      "buildId": "build-17",
+      "owner": "JohnDoe"
     }
   }
 }
@@ -781,13 +782,13 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
 ```json
 "EvaluationDoneEventData": {
   "required": [
+    "deploymentstrategy",
     "evaluationdetails",
-    "result",
     "project",
-    "stage",
+    "result",
     "service",
-    "teststrategy",
-    "deploymentstrategy"
+    "stage",
+    "teststrategy"
   ],
   "properties": {
     "deploymentstrategy": {
@@ -825,12 +826,12 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
 },
 "EvaluationDetails": {
   "required": [
-    "timeStart",
-    "timeEnd",
+    "indicatorResults"
     "result",
     "score",
     "sloFileContent",
-    "indicatorResults"
+    "timeEnd",
+    "timeStart"
   ],
   "properties": {
     "indicatorResults": {
@@ -861,9 +862,9 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
 "SLIEvaluationResult": {
   "required": [
     "score",
-    "value",
-    "targets",
     "status"
+    "value",
+    "targets"
   ],
   "properties": {
     "score": {
@@ -888,8 +889,8 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
 "SLIResult": {
   "required": [
     "metric",
-    "value",
-    "success"
+    "success",
+    "value"
   ],
   "properties": {
     "message": {
@@ -936,7 +937,13 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
 
 ```json
 {
+   "type":"sh.keptn.events.evaluation-done",
+   "specversion":"0.2",
+   "source":"lighthouse-service",
+   "id":"1b7cd584-320e-4ef0-8522-8a817263fdab",
+   "time":"2019-11-18T11:30:45.340Z",
    "contenttype":"application/json",
+   "shkeptncontext":"60077081-f902-4407-bc15-7c70be41a836",
    "data":{
       "deploymentstrategy":"blue_green_service",
       "evaluationdetails":{
@@ -980,17 +987,11 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
       "stage":"staging",
       "teststrategy":"performance",
       "labels": {
-        "testid": "12345",
-        "buildnr": "build17",
-        "runby": "JohnDoe"
+        "testId": "4711",
+        "buildId": "build-17",
+        "owner": "JohnDoe"
       }
-   },
-   "id":"1b7cd584-320e-4ef0-8522-8a817263fdab",
-   "source":"lighthouse-service",
-   "specversion":"0.2",
-   "time":"2019-11-18T11:30:45.340Z",
-   "type":"sh.keptn.events.evaluation-done",
-   "shkeptncontext":"60077081-f902-4407-bc15-7c70be41a836"
+   }
 }
 ```
 </p>
@@ -1017,13 +1018,13 @@ The generic *problem* event is sent when a problem activity related to a monitor
     "ProblemTitle"
   ],
   "properties": {
-    "PID": {
+    "ImpactedEntities": {
       "type": "string",
     },
-    "ProblemID": {
-      "type": "string"
+    "ImpactedEntity": {
+      "type": "string",
     },
-    "ProblemTitle": {
+    "PID": {
       "type": "string",
     },
     "ProblemDetails": {
@@ -1034,28 +1035,28 @@ The generic *problem* event is sent when a problem activity related to a monitor
       },
       "type": "object"
     },
+    "ProblemID": {
+      "type": "string"
+    },
+    "ProblemTitle": {
+      "type": "string",
+    },
     "ProblemURL": {
-      "type": "string",
-    },
-    "State": {
-      "type": "string"
-    },
-    "Tags": {
-      "type": "string"
-    },
-    "ImpactedEntities": {
-      "type": "string",
-    },
-    "ImpactedEntity": {
       "type": "string",
     },
     "project": {
       "type": "string"
     },
+    "service": {
+      "type": "string"
+    },
     "stage": {
       "type": "string"
     },
-    "service": {
+    "State": {
+      "type": "string"
+    },
+    "Tags": {
       "type": "string"
     }
   },
@@ -1078,9 +1079,8 @@ The generic *problem* event is sent when a problem activity related to a monitor
   "contenttype": "application/json",
   "shkeptncontext": "08635340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
+    "ImpactedEntity": "carts-primary",
     "PID": "93a5-3fas-a09d-8ckf",
-    "ProblemID": "762",
-    "ProblemTitle": "Response time degradation",
     "ProblemDetails": {
       "displayName": "641",
       "endTime": -1,
@@ -1091,8 +1091,9 @@ The generic *problem* event is sent when a problem activity related to a monitor
       "startTime": 1587624420000,
       "status": "OPEN"
     },
+    "ProblemID": "762",
+    "ProblemTitle": "Response time degradation",
     "ProblemURL": "https://.../#problems/problemdetails;pid=93a5-3fas-a09d-8ckf",
-    "ImpactedEntity": "carts-primary",
     "State": "OPEN",
     "Tags": "keptn_project:sockshop,keptn_stage:production,keptn_service:carts"
   }
@@ -1115,9 +1116,8 @@ The generic *problem* event is sent when a problem activity related to a monitor
   "contenttype": "application/json",
   "shkeptncontext": "08635340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
+    "ImpactedEntity": "carts-primary",
     "PID": "93a5-3fas-a09d-8ckf",
-    "ProblemID": "762",
-    "ProblemTitle": "Response time degradation",
     "ProblemDetails": {
       "displayName": "641",
       "endTime": -1,
@@ -1128,8 +1128,9 @@ The generic *problem* event is sent when a problem activity related to a monitor
       "startTime": 1587624420000,
       "status": "OPEN"
     },
+    "ProblemID": "762",
+    "ProblemTitle": "Response time degradation",
     "ProblemURL": "https://.../#problems/problemdetails;pid=93a5-3fas-a09d-8ckf",
-    "ImpactedEntity": "carts-primary",
     "State": "OPEN",
     "project": "sockshop",
     "stage": "production",
@@ -1161,13 +1162,10 @@ The *problem open* event is sent when a monitored service causes any problem **a
     "ProblemTitle"
   ],
   "properties": {
-    "PID": {
+    "ImpactedEntity": {
       "type": "string",
     },
-    "ProblemID": {
-      "type": "string"
-    },
-    "ProblemTitle": {
+    "PID": {
       "type": "string",
     },
     "ProblemDetails": {
@@ -1178,26 +1176,29 @@ The *problem open* event is sent when a monitored service causes any problem **a
       },
       "type": "object"
     },
+    "ProblemID": {
+      "type": "string"
+    },
+    "ProblemTitle": {
+      "type": "string",
+    },
     "ProblemURL": {
       "type": "string",
     },
-    "ImpactedEntity": {
-      "type": "string",
+    "project": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
     },
     "State": {
       "type": "string",
       "default": "OPEN"
     },
     "Tags": {
-      "type": "string"
-    },
-    "project": {
-      "type": "string"
-    },
-    "stage": {
-      "type": "string"
-    },
-    "service": {
       "type": "string"
     },
     "labels": {
@@ -1229,14 +1230,14 @@ The *problem open* event is sent when a monitored service causes any problem **a
   "contenttype": "application/json",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
-    "State": "OPEN",
+    "ImpactedEntity": "carts-primary",
     "PID": "",
-    "ProblemID": "762",
-    "ProblemTitle": "cpu_usage_sockshop_carts",
     "ProblemDetails": {
       "problemDetails":"Pod name"
     },
-    "ImpactedEntity": "carts-primary",
+    "ProblemID": "762",
+    "ProblemTitle": "cpu_usage_sockshop_carts",
+    "State": "OPEN",
     "project": "sockshop",
     "stage": "production", 
     "service": "service"
@@ -1259,10 +1260,8 @@ The *problem open* event is sent when a monitored service causes any problem **a
   "contenttype": "application/json",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
-    "State": "OPEN",
+    "ImpactedEntity": "carts-primary",
     "PID": "93a5-3fas-a09d-8ckf",
-    "ProblemID": "ab81-941c-f198",
-    "ProblemTitle": "Response time degradation",
     "ProblemDetails": {
       "displayName": "641",
       "endTime": -1,
@@ -1273,8 +1272,10 @@ The *problem open* event is sent when a monitored service causes any problem **a
       "startTime": 1587624420000,
       "status": "OPEN"
     },
+    "ProblemID": "ab81-941c-f198",
+    "ProblemTitle": "Response time degradation",
     "ProblemURL": "https://.../#problems/problemdetails;pid=93a5-3fas-a09d-8ckf",
-    "ImpactedEntity": "carts-primary",
+    "State": "OPEN",
     "project": "sockshop",
     "stage": "production", 
     "service": "service"
@@ -1357,17 +1358,17 @@ The *get-sli* event is sent when a SLI provider must be triggered for gathering 
 ```json
 "InternalGetSLIEventData": {
   "required": [
-    "sliProvider",
-    "project",
-    "stage",
-    "service",
-    "start",
-    "end",
-    "teststrategy",
-    "deploymentstrategy",
+    "customFilters",
     "deployment",
+    "deploymentstrategy",
+    "end",
     "indicators",
-    "customFilters"
+    "project",
+    "service",
+    "sliProvider",
+    "stage",
+    "start",
+    "teststrategy"
   ],
   "properties": {
     "customFilters": {
@@ -1375,6 +1376,12 @@ The *get-sli* event is sent when a SLI provider must be triggered for gathering 
         "$ref": "#/definitions/SLIFilter"
       },
       "type": "array"
+    },
+    "deployment": {
+      "type": "string"
+    },
+    "deploymentstrategy": {
+      "type": "string"
     },
     "end": {
       "type": "string"
@@ -1410,12 +1417,6 @@ The *get-sli* event is sent when a SLI provider must be triggered for gathering 
         }
       },
       "type": "object"
-    },
-    "deploymentstrategy": {
-      "type": "string"
-    },
-    "deployment": {
-      "type": "string"
     }
   },
   "additionalProperties": false,
@@ -1453,24 +1454,24 @@ The *get-sli* event is sent when a SLI provider must be triggered for gathering 
   "contenttype": "application/json",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
-    "sliProvider": "dynatrace",
+    "customFilters": [
+      { "key" : "dynatraceEntityName", "value": "HealthCheckController" },
+      { "key" : "tags", "value": "test-subject:true" }
+    ],
+    "deployment": "direct",
+    "deploymentstrategy": "direct",
+    "indicators": ["throughput", "error_rate", "request_latency_p95"],
     "project": "sockshop",
     "service": "carts",
     "stage": "dev",
     "start": "2019-10-28T15:44:27.152330783Z",
     "end": "2019-10-28T15:54:27.152330783Z",
-    "deployment": "direct",
-    "deploymentstrategy": "direct",
+    "sliProvider": "dynatrace",
     "teststrategy":"manual",
-    "indicators": ["throughput", "error_rate", "request_latency_p95"],
-    "customFilters": [
-      { "key" : "dynatraceEntityName", "value": "HealthCheckController" },
-      { "key" : "tags", "value": "test-subject:true" }
-    ],
     "labels": {
-      "testid": "12345",
-      "buildnr": "build17",
-      "runby": "JohnDoe"
+      "testId": "4711",
+      "buildId": "build-17",
+      "owner": "JohnDoe"
     }
   }
 }
@@ -1481,7 +1482,7 @@ The *get-sli* event is sent when a SLI provider must be triggered for gathering 
 ([&uarr; up to index](#keptn-cloud-events))
 
 ## Get SLI Done
-The *get-sli done* event is sent when the data gathering by a SLI provider is done.
+The *get-sli.done* event is sent when the data gathering by a SLI provider is done.
 
 ### type
 ```json
@@ -1492,17 +1493,23 @@ The *get-sli done* event is sent when the data gathering by a SLI provider is do
 ```json
 "InternalGetSLIDoneEventData": {
   "required": [
-    "project",
-    "stage",
-    "service",
-    "start",
-    "end",
-    "teststrategy",
-    "deploymentstrategy",
     "deployment",
-    "indicatorValues"
+    "deploymentstrategy",
+    "end",
+    "indicatorValues",
+    "project",
+    "service",
+    "stage",
+    "start",
+    "teststrategy"
   ],
   "properties": {
+    "deployment": {
+      "type": "string"
+    },
+    "deploymentstrategy": {
+      "type": "string"
+    },
     "end": {
       "type": "string"
     },
@@ -1542,8 +1549,8 @@ The *get-sli done* event is sent when the data gathering by a SLI provider is do
 "SLIResult": {
   "required": [
     "metric",
-    "value",
-    "success"
+    "success",
+    "value"
   ],
   "properties": {
     "message": {
@@ -1581,11 +1588,11 @@ The *get-sli done* event is sent when the data gathering by a SLI provider is do
     "project": "sockshop",
     "stage": "staging",
     "service": "carts",
-    "start": "2019-11-05T16:30:27.152Z",
-    "end": "2019-11-05T16:35:27.152Z",
     "teststrategy": "manual",
     "deploymentstrategy": "direct",
     "deployment": "direct",
+    "start": "2019-11-05T16:30:27.152Z",
+    "end": "2019-11-05T16:35:27.152Z",
     "indicatorValues": [
       {
         "metric":"request_latency_p95",
@@ -1599,9 +1606,9 @@ The *get-sli done* event is sent when the data gathering by a SLI provider is do
       }
     ],
     "labels": {
-      "testid": "12345",
-      "buildnr": "build17",
-      "runby": "JohnDoe"
+      "testId": "4711",
+      "buildId": "build-17",
+      "owner": "JohnDoe"
     }
   }
 }
@@ -1612,7 +1619,7 @@ The *get-sli done* event is sent when the data gathering by a SLI provider is do
 ## Approval Triggered
 
 The *approval.triggered* event is sent when an approval is required before executing the next step 
-(e.g. a configuration-change for the next stage).
+(e.g., a configuration-change event for the next stage).
 
 ### type
 ```json
@@ -1623,18 +1630,22 @@ The *approval.triggered* event is sent when an approval is required before execu
 ```json
 "ApprovalTriggeredEventData": {
   "required": [
-    "approval",
     "project",
+    "result",
     "stage",
-    "service",
-    "image",
-    "tag"
+    "service"
   ],
   "properties": {
-    "approval": {
-      "type": "object"
+    "deploymentstrategy": {
+      "type": "string"
+    },
+    "image": {
+      "type": "string"
     },
     "project": {
+      "type": "string"
+    },
+    "result": {
       "type": "string"
     },
     "stage": {
@@ -1643,10 +1654,10 @@ The *approval.triggered* event is sent when an approval is required before execu
     "service": {
       "type": "string"
     },
-    "image": {
+    "tag": {
       "type": "string"
     },
-    "tag": {
+    "teststrategy": {
       "type": "string"
     },
     "labels": {
@@ -1656,12 +1667,6 @@ The *approval.triggered* event is sent when an approval is required before execu
         }
       },
       "type": "object"
-    },
-    "deploymentURILocal": {
-      "type": "string"
-    },
-    "deploymentURIPublic": {
-      "type": "string"
     }
   },
   "additionalProperties": false,
@@ -1683,19 +1688,17 @@ The *approval.triggered* event is sent when an approval is required before execu
   "contenttype": "application/json",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {    
-    "approval": {
-    },
     "project": "sockshop",
     "stage": "staging",
     "service": "carts",
     "image": "docker.io/keptnexamples/carts",
     "tag": "0.9.1",
+    "result": "pass",
     "labels": {
-      "testid": "12345",
-      "buildnr": "build17",
-      "runby": "JohnDoe"
-    },
-    "deploymentURILocal": "http://carts.sockshop-staging.svc.cluster.local"
+      "testId": "4711",
+      "buildId": "build-17",
+      "owner": "JohnDoe"
+    }
   }
 }
 ```
@@ -1706,8 +1709,7 @@ The *approval.triggered* event is sent when an approval is required before execu
 
 ## Approval Finished
 
-The *approval.finished* event is sent for responding an *approval.triggered* event.
-This *approval.finished* event contains the result of the approval.
+The *approval.finished* event is sent for responding an *approval.triggered* event. This *approval.finished* event contains the result of the approval.
 
 ### type
 ```json
@@ -1721,9 +1723,7 @@ This *approval.finished* event contains the result of the approval.
     "approval",
     "project",
     "stage",
-    "service",
-    "image",
-    "tag"
+    "service"
   ],
   "properties": {
     "approval": {
@@ -1739,19 +1739,25 @@ This *approval.finished* event contains the result of the approval.
       },
       "type": "object"
     },
-    "project": {
-      "type": "string"
-    },
-    "stage": {
-      "type": "string"
-    },
-    "service": {
+    "deploymentstrategy": {
       "type": "string"
     },
     "image": {
       "type": "string"
     },
+    "project": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
     "tag": {
+      "type": "string"
+    },
+    "teststrategy": {
       "type": "string"
     },
     "labels": {
@@ -1793,11 +1799,10 @@ This *approval.finished* event contains the result of the approval.
     "image": "docker.io/keptnexamples/carts",
     "tag": "0.9.1",
     "labels": {
-      "testid": "12345",
-      "buildnr": "build17",
-      "runby": "JohnDoe"
-    },
-    "deploymentURILocal": "http://carts.sockshop-staging.svc.cluster.local"
+      "testId": "4711",
+      "buildId": "build-17",
+      "owner": "JohnDoe"
+    }
   }
 }
 ```
@@ -1820,16 +1825,13 @@ The *remediation.triggered* event indicates the start of following remediation a
 ```json
 "RemediationTriggeredEventData": {
   "required": [
-    "remediation",
     "problem",
     "project",
+    "remediation",
     "stage",
     "service"
   ],
   "properties": {
-    "remediation": {
-      "type": "object"
-    },
     "problem": {
       "required": [
         "PID",
@@ -1855,6 +1857,9 @@ The *remediation.triggered* event indicates the start of following remediation a
       "ProblemTitle": {
         "type": "string",
       },
+      "ProblemURL": {
+        "type": "string",
+      },
       "State": {
         "type": "string"
       },
@@ -1866,10 +1871,13 @@ The *remediation.triggered* event indicates the start of following remediation a
     "project": {
       "type": "string"
     },
-    "stage": {
-      "type": "string"
+    "remediation": {
+      "type": "object"
     },
     "service": {
+      "type": "string"
+    },
+    "stage": {
       "type": "string"
     },
     "labels": {
@@ -1900,8 +1908,6 @@ The *remediation.triggered* event indicates the start of following remediation a
   "contenttype": "application/json",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {    
-    "remediation": {
-    },
     "problem": {
       "ImpactedEntity": "carts-primary",
       "PID": "93a5-3fas-a09d-8ckf",
@@ -1911,13 +1917,15 @@ The *remediation.triggered* event indicates the start of following remediation a
       "State": "OPEN",
     },
     "project": "sockshop",
+    "remediation": {
+    },
     "stage": "staging",
     "service": "carts",
     "labels": {
-      "testid": "12345",
-      "buildnr": "build17",
-      "runby": "JohnDoe"
-    },
+      "testId": "4711",
+      "buildId": "build-17",
+      "owner": "JohnDoe"
+    }
   }
 }
 ```
@@ -1939,22 +1947,22 @@ The *remediation.started* event is sent when a remediation workflow is started.
 ```json
 "RemediationStartedEventData": {
   "required": [
-    "remediation",
     "project",
-    "stage",
+    "remediation",
     "service",
+    "stage"
   ],
   "properties": {
-    "remediation": {
-      "type": "object"
-    },
     "project": {
       "type": "string"
     },
-    "stage": {
-      "type": "string"
+    "remediation": {
+      "type": "object"
     },
     "service": {
+      "type": "string"
+    },
+    "stage": {
       "type": "string"
     },
     "labels": {
@@ -1985,16 +1993,16 @@ The *remediation.started* event is sent when a remediation workflow is started.
   "contenttype": "application/json",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
+    "project": "sockshop",
     "remediation": {
     },
-    "project": "sockshop",
     "stage": "staging",
     "service": "carts",
     "labels": {
-      "testid": "12345",
-      "buildnr": "build17",
-      "runby": "JohnDoe"
-    },
+      "testId": "4711",
+      "buildId": "build-17",
+      "owner": "JohnDoe"
+    }
   }
 }
 ```
@@ -2017,12 +2025,15 @@ The *remediation.status.changed* event is sent when a remediation action was tri
 ```json
 "RemediationStatusChangedEventData": {
   "required": [
-    "remediation",
     "project",
-    "stage",
+    "remediation",
     "service",
+    "stage"
   ],
   "properties": {
+    "project": {
+      "type": "string"
+    },
     "remediation": {
       "required": [
         "status",
@@ -2045,13 +2056,10 @@ The *remediation.status.changed* event is sent when a remediation action was tri
       },
       "type": "object"
     },
-    "project": {
+    "service": {
       "type": "string"
     },
     "stage": {
-      "type": "string"
-    },
-    "service": {
       "type": "string"
     },
     "labels": {
@@ -2082,6 +2090,7 @@ The *remediation.status.changed* event is sent when a remediation action was tri
   "contenttype": "application/json",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
+    "project": "sockshop",
     "remediation": {
       "status": "succeeded",
       "result": {
@@ -2089,13 +2098,12 @@ The *remediation.status.changed* event is sent when a remediation action was tri
         "actionName": "scaling",
       }
     },
-    "project": "sockshop",
-    "stage": "staging",
     "service": "carts",
+    "stage": "staging",
     "labels": {
-      "testid": "12345",
-      "buildnr": "build17",
-      "runby": "JohnDoe"
+      "testId": "4711",
+      "buildId": "build-17",
+      "owner": "JohnDoe"
     },
   }
 }
@@ -2108,7 +2116,7 @@ The *remediation.status.changed* event is sent when a remediation action was tri
 
 ## Remediation Finished
 
-The *remediation.finished* event is sent when a remediation action is finished
+The *remediation.finished* event is sent when a remediation action is finished.
 
 ### type
 ```json
@@ -2119,12 +2127,52 @@ The *remediation.finished* event is sent when a remediation action is finished
 ```json
 "RemediationFinishedEventData": {
   "required": [
-    "remediation",
+    "problem",
     "project",
-    "stage",
+    "remediation",
     "service",
+    "stage"
   ],
   "properties": {
+    "problem": {
+      "required": [
+        "PID",
+        "ProblemDetails",
+        "ProblemID",
+        "ProblemTitle"
+      ],
+      "ImpactedEntities": {
+        "type": "string",
+      },
+      "PID": {
+        "type": "string",
+      },
+      "ProblemDetails": {
+        "items": {
+          "type": "integer"
+        },
+        "type": "array"
+      },
+      "ProblemID": {
+        "type": "string"
+      },
+      "ProblemTitle": {
+        "type": "string",
+      },
+      "ProblemURL": {
+        "type": "string",
+      },
+      "State": {
+        "type": "string"
+      },
+      "Tags": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "project": {
+      "type": "string"
+    },
     "remediation": {
       "required": [
         "status",
@@ -2134,20 +2182,17 @@ The *remediation.finished* event is sent when a remediation action is finished
         "type": "string" 
       },
       "result": {
-        "type": "string"  // Enum: Pass or failed
+        "type": "string"  // Enum: pass, failed
       },
       "message": {
         "type": "string"
       },
       "type": "object"
     },
-    "project": {
+    "service": {
       "type": "string"
     },
     "stage": {
-      "type": "string"
-    },
-    "service": {
       "type": "string"
     },
     "labels": {
@@ -2178,10 +2223,6 @@ The *remediation.finished* event is sent when a remediation action is finished
   "contenttype": "application/json",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
-    "remediation": {
-      "status": "succeeded",
-      "result": "pass"
-    },
     "problem": {
       "ImpactedEntity": "carts-primary",
       "PID": "93a5-3fas-a09d-8ckf",
@@ -2191,12 +2232,16 @@ The *remediation.finished* event is sent when a remediation action is finished
       "State": "OPEN",
     },
     "project": "sockshop",
-    "stage": "staging",
+    "remediation": {
+      "status": "succeeded",
+      "result": "pass"
+    },
     "service": "carts",
+    "stage": "staging",
     "labels": {
-      "testid": "12345",
-      "buildnr": "build17",
-      "runby": "JohnDoe"
+      "testId": "4711",
+      "buildId": "build-17",
+      "owner": "JohnDoe"
     },
   }
 }
@@ -2223,14 +2268,15 @@ The *action.triggered* event triggers a remediation action.
     "action",
     "problem",
     "project",
-    "stage",
-    "service"
+    "service",
+    "stage"
   ],
   "properties": {
     "action": {
       "required": [
         "name",
         "action",
+        "description"
       ],     
       "name": {
         "type": "string"
@@ -2242,7 +2288,7 @@ The *action.triggered* event triggers a remediation action.
         "type": "string"
       },
       "value": {
-        "type": ["object", "string"]
+        "type": "object"
       },
       "type": "object"
     },
@@ -2271,6 +2317,9 @@ The *action.triggered* event triggers a remediation action.
       "ProblemTitle": {
         "type": "string",
       },
+      "ProblemURL": {
+        "type": "string",
+      },
       "State": {
         "type": "string"
       },
@@ -2282,10 +2331,10 @@ The *action.triggered* event triggers a remediation action.
     "project": {
       "type": "string"
     },
-    "stage": {
+    "service": {
       "type": "string"
     },
-    "service": {
+    "stage": {
       "type": "string"
     },
     "labels": {
@@ -2319,7 +2368,7 @@ The *action.triggered* event triggers a remediation action.
     "action": {
       "name": "Feature toggeling",
       "action": "toggle-feature",
-      "description": "toggles a feature",
+      "description": "Toggles a feature flage",
       "value": {
         "EnableItemCache": "on"
       }
@@ -2333,12 +2382,12 @@ The *action.triggered* event triggers a remediation action.
       "State": "OPEN",
     },
     "project": "sockshop",
-    "stage": "staging",
     "service": "carts",
+    "stage": "staging",
     "labels": {
-      "testid": "12345",
-      "buildnr": "build17",
-      "runby": "JohnDoe"
+      "testId": "4711",
+      "buildId": "build-17",
+      "owner": "JohnDoe"
     },
   }
 }
@@ -2362,22 +2411,18 @@ The *action.started* event is sent when a remediation action is started by the a
 ```json
 "ActionStartedEventData": {
   "required": [
-    "action",
     "project",
-    "stage",
     "service",
+    "stage"
   ],
   "properties": {
-    "action": {
-      "type": "object"
-    },
     "project": {
       "type": "string"
     },
-    "stage": {
+    "service": {
       "type": "string"
     },
-    "service": {
+    "stage": {
       "type": "string"
     },
     "labels": {
@@ -2409,15 +2454,13 @@ The *action.started* event is sent when a remediation action is started by the a
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "triggeredid": "2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "data": {
-    "action": {
-    },
     "project": "sockshop",
-    "stage": "staging",
     "service": "carts",
+    "stage": "staging",
     "labels": {
-      "testid": "12345",
-      "buildnr": "build17",
-      "runby": "JohnDoe"
+      "testId": "4711",
+      "buildId": "build-17",
+      "owner": "JohnDoe"
     },
   }
 }
@@ -2442,10 +2485,9 @@ The *action.finished* event is sent when a remediation action is finished.
 "ActionFinishedEventData": {
   "required": [
     "action",
-    "problem",
     "project",
-    "stage",
     "service",
+    "stage"
   ],
   "properties": {
     "action": {
@@ -2461,46 +2503,13 @@ The *action.finished* event is sent when a remediation action is finished.
       },
       "type": "object"
     },
-    "problem": {
-      "required": [
-        "PID",
-        "ProblemDetails",
-        "ProblemID",
-        "ProblemTitle"
-      ],
-      "ImpactedEntities": {
-        "type": "string",
-      },
-      "PID": {
-        "type": "string",
-      },
-      "ProblemDetails": {
-        "items": {
-          "type": "integer"
-        },
-        "type": "array"
-      },
-      "ProblemID": {
-        "type": "string"
-      },
-      "ProblemTitle": {
-        "type": "string",
-      },
-      "State": {
-        "type": "string"
-      },
-      "Tags": {
-        "type": "string"
-      },
-      "type": "object"
-    },
     "project": {
       "type": "string"
     },
-    "stage": {
+    "service": {
       "type": "string"
     },
-    "service": {
+    "stage": {
       "type": "string"
     },
     "labels": {
@@ -2536,21 +2545,13 @@ The *action.finished* event is sent when a remediation action is finished.
       "result": "pass",
       "status": "succeeded"
     },
-    "problem": {
-      "ImpactedEntity": "carts-primary",
-      "PID": "93a5-3fas-a09d-8ckf",
-      "ProblemDetails": "Pod name",
-      "ProblemID": "762",
-      "ProblemTitle": "cpu_usage_sockshop_carts",
-      "State": "OPEN",
-    },
     "project": "sockshop",
-    "stage": "staging",
     "service": "carts",
+    "stage": "staging",
     "labels": {
-      "testid": "12345",
-      "buildnr": "build17",
-      "runby": "JohnDoe"
+      "testId": "4711",
+      "buildId": "build-17",
+      "owner": "JohnDoe"
     },
   }
 }

@@ -1,6 +1,6 @@
-# Uniform (DRAFT)
+# Uniform (DRAFT - not implemented)
 
-A `uniform` describes the services that listen to Keptn channels for events and defines to which service subscribes to which channel. Configuration parameters can be passed either as environment variable or references to config maps.
+A `uniform` describes the services that listen to Keptn channels for events, i.e., it defines which service subscribes to which channel. Configuration parameters can be passed either as environment variable or references to config maps.
 
 Ultimately, the `uniform` will be a custom Kubernetes resource, as suggested below. The `uniform` controller then will take care of managing subscribed services and subscriptions. This enables Keptn users to change their continuous delivery services and version with ease, because the `uniform` is the one central location where this information is stored.
 

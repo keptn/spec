@@ -9,7 +9,7 @@ To support site reliability engineering with Keptn and to enable the self-healin
 
 ## Service Level Indicators (SLI) Configuration
 
-A Service Level Indicator (SLI) is a defined quantitative measure of some aspects of the service level. The query for an SLI is provider (tool) dependent. This is the reason why each SLI-provider relies on an individual SLI configuration. This SLI configuration lists those SLIs that are supported by the SLI-provider by their name and query whereas the query is provider specific. 
+A *Service Level Indicator* (SLI) is a defined quantitative measure of some aspects of the service level. The query for an SLI is provider (tool) dependent. This is the reason why each SLI-provider relies on an individual SLI configuration. This SLI configuration lists those SLIs that are supported by the SLI-provider by their name and query whereas the query is provider specific. 
 
 #### Indicators
 An indicator is a key-value pair with the SLI name as key and the provider-specific query as value.
@@ -56,7 +56,7 @@ indicators:
 
 ## Service Level Objectives (SLO) Configuration
 
-The *Service Level Objectives (SLO)* configuration specifies a target value or range of values for a service level that is measured by [Service Level Indicators (SLI)](#service-level-indicators-sli-configuration). An SLO is defined per service and consists of a filter that uniquely identifies a deployment of a service, and objectives that depends on the selected comparison strategy. Here is an example of a minimal SLO configuration - the details to each configuration item are described below.
+The *Service Level Objective* (SLO) configuration specifies a target value or range of values for a service level that is measured by [Service Level Indicators (SLIs)](#service-level-indicators-sli-configuration). An SLO is defined per service and consists of a filter that uniquely identifies a deployment of a service, and objectives that depend on the selected comparison strategy. Here is an example of a minimal SLO configuration - the details to each configuration item are described below.
 
 ```yaml
 spec_version: '1.0'
@@ -82,6 +82,7 @@ total_score:
 ```
 
 #### Filter
+
 This property allows a list of key-value pairs that are used to uniquely identify a deployment of a service. This means that the key of a filter can be used as a placeholder in an SLI query. For example, the filter `svc_id: "a14b-cd87-0d51"` specifies a unique identifier of the deployment of a service. Consequently, the key of the filter (i.e., `svc_id`) can be referenced in an SLI query by `$svc_id`. The filters *project*, *stage*, *service*, and *deployment* can be inferred from the Keptn configuration by using `$PROJECT`, `$STAGE`, `$SERVICE`, and `$DEPLOYMENT` in SLI queries respectively. These values can also be overwritten in the configuration. The default filters are:
 * project
 * stage
@@ -106,6 +107,7 @@ indicators:
 ```
 
 #### Comparison
+
 By default, Keptn compares with the previous values of the SLIs. The **compare_with** configuration parameter controls how many previous results are compared: *single_result* or *several_results*. The **include_result_with_score** configuration parameter controls which of the previous results are included in the comparison: *pass*, *pass_or_warn*, or *all* (*all* is the default, also used if not specified). 
 
 *1. Example:*
@@ -133,6 +135,7 @@ comparison:
 This comparison configuration means that the current result is compared to the average of the three previous results that had pass or warning as a result.
 
 #### Objectives
+
 An objective consists of a **sli**, a **pass** criteria, an optional **warning** criteria, an optional **weight** criteria and an optional **key_sli** flag. `pass` represents the upper limit up to which an evaluation is successful. `warning`, if defined, describes the border where the result is not pass and not fail, and a manual approval might be needed to decide. `weight` can be used to emphasize the importance of one SLI over the others. By default, `weight` is 1 for all SLIs and can be overwritten. The weight is important for calculating the score later. The `key_sli` flag can be set to true meaning that the objective is not met if this SLI fails.
 
 The following example demonstrates how the objectives work. Assume the following comparison strategy and SLI objective.
@@ -156,6 +159,7 @@ Further assume, that in the previous evaluation error_rate was 5%. The upper lim
 *   fail: > 5.5%
 
 #### Scoring
+
 An evaluation for *pass* counts for one point, an evaluation for *warning* half a point, and an evaluation for *fail* zero points. The default weight of an SLI is 1 and can be overwritten. The maximum score is the sum of the weights of all SLIs.
 
 The actual evaluation result is divided by the maximum score and gives the `total_score` in percent. For example, the maximum score is 92 and the evaluation result is 85 - the `total_score` is 92.39% (85/92*100).
@@ -163,6 +167,7 @@ The actual evaluation result is divided by the maximum score and gives the `tota
 The pass and warning criteria for the `total_score` use the logical operator ">=" by default.
 
 ### Specification
+
 ```json
 "ServiceLevelObjectives": {
   "required": [
@@ -315,9 +320,9 @@ total_score:
 ## Remediation
 The *Remediation* configuration defines remediation actions to execute in response to a problem. This configuration is interpreted by Keptn to trigger the proper remediation actions. 
 
-To specify the problem, either the problem name or a generic selector for any kind of problem can be used: 
-- Problem name, declared as **string**
-- Generic selector, declared as: **\"*\"** for the problem name
+The *problem type* maps a problem to a remediation by a matching problem title (implemented as string match).
+* It is possible to declare multiple problem types for a remediation.
+* For the case of triggering a remediation based on an unknown problem, the problem type `default` is supported.
 
 ### Specification
 ```json
@@ -405,9 +410,6 @@ To specify the problem, either the problem name or a generic selector for any ki
     "action": {
       "type": "string"
     },
-    "hook": {
-      "type": "string"
-    },
     "description": {
       "type": "string"
     },
@@ -438,10 +440,10 @@ spec:
         EnablePromotion: off
   - problemType: default
     actionsOnOpen:
-    - name:
+    - name: Escalate problem
       action: escalate
-      description: Escalate the problem
-      hook: https://my-slack-workspace.com/problem-channel
+      description: Escalate the problem using a SlackBot
+      value:
 ```
 
 ([&uarr; up to index](#specifications-for-site-reliability-engineering-with-keptn))
