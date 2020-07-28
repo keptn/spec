@@ -36,61 +36,6 @@ A workflow consists of any number of tasks. A tasks has the properties:
 * `name`: A unique name of the task
 * `properties` *(optional)*: Task properties as individual `key:value` pairs. These properties precise the task and are consumed by the unit that executes the task.
 
-# Reserved Keptn key tasks
-
-Reserved Keptn tasks are: **approval**, **deployment**, **evaluate**, **remediation**, **release**, **test**
-
-### approval
-
-Defines the kind of approval, which is required before deploying an artifact in this stage. The approval strategy can be defined based on the evaluation result `pass` and `warning`. Keptn supports the approval strategies for the evaluation results `pass` and `warning`:
-  * `automatic`: Workflow continues without requesting approval.
-  * `manual`:  Workflow requests for approval before continuing.
-  
-  > **Note:** Per default, an `automatic` approval strategy is used for evaluation result `pass` and `warning`.
-
-*Example:*
-
-```yaml
-- approval: 
-    pass: automatic
-    warning: manual
-```
-
-### deployment
-
-Defines the deployment strategy used to deploy a new version of a service. Keptn supports the deployment `strategy` set to: 
-  * `direct`: Deploys a new version of a service by replacing the old version of the service.
-  * `blue_green_service`: Deploys a new version of a service next to the old one. After a successful validation of this new version, it replaces the old one and is marked as stable.
-
-*Example:*
-
-```yaml
-- deployment: 
-    strategy: blue_green_service
-```
-
-### evaluate
-
-### remediation
-
-### release
-
-The remediation strategy specifies whether remediation actions are enabled or not. To enable remediation actions, the `remediation_strategy` property has to be set to `automated`. The actions are specified in the *Remediation* configuration as described [here](./sre.md/#remediation).
-
-### test
-
-Defines the test strategy used to validate a deployment. Failed tests result in an automatic roll-back of the latest deployment in case of a blue/green deployment strategy. Keptn supports the test `kind` property set to:
-  * `functional` 
-  * `performance` 
-
-*Example:*
-
-```yaml
-- test: 
-    strategy: blue_green_service
-```
-
-
 # JSON schema
 
 ```json
@@ -219,6 +164,60 @@ Defines the test strategy used to validate a deployment. Failed tests result in 
 }
 ```
 
+# Reserved Keptn key tasks
+
+Reserved Keptn tasks are: **approval**, **deployment**, **evaluate**, **remediation**, **release**, **test**
+
+## approval
+
+Defines the kind of approval, which is required before deploying an artifact in this stage. The approval strategy can be defined based on the evaluation result `pass` and `warning`. Keptn supports the approval strategies for the evaluation results `pass` and `warning`:
+  * `automatic`: Workflow continues without requesting approval.
+  * `manual`:  Workflow requests for approval before continuing.
+  
+  > **Note:** Per default, an `automatic` approval strategy is used for evaluation result `pass` and `warning`.
+
+*Example:*
+
+```yaml
+- approval: 
+    pass: automatic
+    warning: manual
+```
+
+## deployment
+
+Defines the deployment strategy used to deploy a new version of a service. Keptn supports the deployment `strategy` set to: 
+  * `direct`: Deploys a new version of a service by replacing the old version of the service.
+  * `blue_green_service`: Deploys a new version of a service next to the old one. After a successful validation of this new version, it replaces the old one and is marked as stable.
+
+*Example:*
+
+```yaml
+- deployment: 
+    strategy: blue_green_service
+```
+
+## evaluate
+
+## remediation
+
+## release
+
+The remediation strategy specifies whether remediation actions are enabled or not. To enable remediation actions, the `remediation_strategy` property has to be set to `automated`. The actions are specified in the *Remediation* configuration as described [here](./sre.md/#remediation).
+
+## test
+
+Defines the test strategy used to validate a deployment. Failed tests result in an automatic roll-back of the latest deployment in case of a blue/green deployment strategy. Keptn supports the test `kind` property set to:
+  * `functional` 
+  * `performance` 
+
+*Example:*
+
+```yaml
+- test: 
+    strategy: blue_green_service
+```
+
 
 # Example of a Shipyard
 
@@ -254,7 +253,6 @@ spec:
       - evaluation:
       - release:
         
-  
   - name: production
     workflows:
     - name: artifact-delivery 
