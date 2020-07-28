@@ -31,8 +31,14 @@ A stage consists of any number of workflows. A workflow has the properties:
 
 ## Definition of Task:
 
-* Reserved key tasks are: **approval**, **deployment**, **evaluate**, **remediation**, **release**, **test**
-* labels *(optional)*: Task properties as individual `key:value` pairs. These labels precise the task and are consumed by the unit that executes the task.
+A workflow consists of any number of tasks. A tasks has the properties:
+
+* `name`: A unique name of the task
+* `properties` *(optional)*: Task properties as individual `key:value` pairs. These properties precise the task and are consumed by the unit that executes the task.
+
+# Reserved Keptn key tasks
+
+Reserved Keptn tasks are: **approval**, **deployment**, **evaluate**, **remediation**, **release**, **test**
 
 ### approval
 
@@ -87,7 +93,131 @@ Defines the test strategy used to validate a deployment. Failed tests result in 
 
 # JSON schema
 
+```json
+{
+  "$ref": "#/definitions/Shipyard",
+  "definitions": {
+    "Shipyard": {
+      "required": [
+        "apiVersion",
+        "kind",
+        "metadata",
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "metadata": {
+          "$ref": "#/definitions/ShipyardMetadata"
+        },
+        "spec": {
+          "$ref": "#/definitions/ShipyardSpec"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
 
+    "ShipyardMetadata": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+
+    "ShipyardSpec": {
+      "required": [
+        "stages"
+      ],
+      "properties": {
+        "stages": {
+          "items": {
+            "$ref": "#/definitions/Stage"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+
+    "Stage": {
+      "required": [
+        "name",
+        "workflow"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "workflow": {
+          "items": {
+            "$ref": "#/definitions/Workflow"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+
+    "Task": {
+      "required": [
+        "name",
+        "properties"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "properties": {
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+
+    "Workflow": {
+      "required": [
+        "name",
+        "listen",
+        "tasks"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "listen": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "tasks": {
+          "items": {
+            "$ref": "#/definitions/Task"
+          },
+          "type": "array"
+        }
+      },
+
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
 
 
 # Example of a Shipyard
@@ -116,7 +246,8 @@ spec:
       listen:
       - dev.artifact-delivery.finished
       tasks:
-      - deployment:
+      - name: deployment
+        properties: 
           strategy: blue_green_service
       - test:
           kind: performance
