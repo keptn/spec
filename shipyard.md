@@ -219,12 +219,12 @@ spec:
 # Reserved Keptn Tasks
 
 Reserved Keptn tasks are explained below:
-* **approval**
-* **deployment**
-* **evaluate**
-* **remediation**
-* **release**
-* **test**
+* [**approval**](#approval)
+* [**deployment**](#deployment)
+* [**evaluate**](#evaluate)
+* [**release**](#release)
+* [**remediation**](#remediation)
+* [**test**](#test)
 
 ## approval
 
