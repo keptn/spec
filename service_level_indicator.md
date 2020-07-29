@@ -12,7 +12,7 @@
 
 * `indicators`: A map of key-value pairs with the SLI name as key and the provider-specific query as value.
 
-### Specification
+# Specification
 
 ```json
 "ServiceLevelIndicators": {
@@ -38,7 +38,7 @@
 }
 ```
 
-### Example of a Service Level Indicators (SLI) configuration (in yaml)
+# Example of a Service Level Indicators (SLI) configuration (in yaml)
 
 ```yaml
 spec_version: "1.0"
