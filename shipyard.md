@@ -221,7 +221,7 @@ spec:
 Reserved Keptn tasks are explained below:
 * [**approval**](#approval)
 * [**deployment**](#deployment)
-* [**evaluate**](#evaluate)
+* [**evaluation**](#evaluation)
 * [**release**](#release)
 * [**remediation**](#remediation)
 * [**test**](#test)
@@ -255,13 +255,13 @@ Defines the deployment strategy used to deploy a new version of a service. Keptn
     strategy: blue_green_service
 ```
 
-## evaluate
+## evaluation
 
 Defines the quality evaluation that is executed to verify the quality of a deplyoment based on its SLOs/SLIs. 
 
 *Usage:*
 ```yaml
-- name: evaluate
+- name: evaluation
 ```
 
 ## release
