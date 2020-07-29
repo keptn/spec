@@ -14,14 +14,14 @@
 
 ## Stage
 
-A Shipyard consists of any number of stages. A stage has the properties:
+A Shipyard consists of a list of stages. A stage has the properties:
 
 * `name`: A unique name of the stage.
 * `workflows`: An array of workflows declared by name, listen, and tasks.
 
 ## Workflow
 
-A stage consists of any number of workflows. A workflow has the properties:
+A stage consists of of a list of workflows. A workflow has the properties:
 
 * `name`: A unique name of the workflow
 * `listen` *(optional)*: An array of events that trigger the workflow.
@@ -29,7 +29,7 @@ A stage consists of any number of workflows. A workflow has the properties:
 
 ## Task
 
-A workflow consists of any number of tasks. A tasks has the properties:
+A workflow consists of a list of tasks. A task has the properties:
 
 * `name`: A unique name of the task
 * `properties` *(optional)*: Task properties as individual `key:value` pairs. These properties precise the task and are consumed by the unit that executes the task.
@@ -37,128 +37,122 @@ A workflow consists of any number of tasks. A tasks has the properties:
 # Specification
 
 ```json
-{
-  "$ref": "#/definitions/Shipyard",
-  "definitions": {
-    "Shipyard": {
-      "required": [
-        "apiVersion",
-        "kind",
-        "metadata",
-        "spec"
-      ],
-      "properties": {
-        "apiVersion": {
-          "type": "string"
-        },
-        "kind": {
-          "type": "string"
-        },
-        "metadata": {
-          "$ref": "#/definitions/ShipyardMetadata"
-        },
-        "spec": {
-          "$ref": "#/definitions/ShipyardSpec"
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
+"Shipyard": {
+  "required": [
+    "apiVersion",
+    "kind",
+    "metadata",
+    "spec"
+  ],
+  "properties": {
+    "apiVersion": {
+      "type": "string"
     },
-
-    "ShipyardMetadata": {
-      "required": [
-        "name"
-      ],
-      "properties": {
-        "name": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
+    "kind": {
+      "type": "string"
     },
-
-    "ShipyardSpec": {
-      "required": [
-        "stages"
-      ],
-      "properties": {
-        "stages": {
-          "items": {
-            "$ref": "#/definitions/Stage"
-          },
-          "type": "array"
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
+    "metadata": {
+      "$ref": "#/definitions/ShipyardMetadata"
     },
-
-    "Stage": {
-      "required": [
-        "name",
-        "workflow"
-      ],
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "workflow": {
-          "items": {
-            "$ref": "#/definitions/Workflow"
-          },
-          "type": "array"
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-
-    "Task": {
-      "required": [
-        "name",
-        "properties"
-      ],
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "properties": {
-          "additionalProperties": true
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-
-    "Workflow": {
-      "required": [
-        "name",
-        "listen",
-        "tasks"
-      ],
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "listen": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        },
-        "tasks": {
-          "items": {
-            "$ref": "#/definitions/Task"
-          },
-          "type": "array"
-        }
-      },
-
-      "additionalProperties": false,
-      "type": "object"
+    "spec": {
+      "$ref": "#/definitions/ShipyardSpec"
     }
-  }
+  },
+  "additionalProperties": false,
+  "type": "object"
+},
+
+"ShipyardMetadata": {
+  "required": [
+    "name"
+  ],
+  "properties": {
+    "name": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+},
+
+"ShipyardSpec": {
+  "required": [
+    "stages"
+  ],
+  "properties": {
+    "stages": {
+      "items": {
+        "$ref": "#/definitions/Stage"
+      },
+      "type": "array"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+},
+
+"Stage": {
+  "required": [
+    "name",
+    "workflow"
+  ],
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "workflow": {
+      "items": {
+        "$ref": "#/definitions/Workflow"
+      },
+      "type": "array"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+},
+
+"Task": {
+  "required": [
+    "name",
+    "properties"
+  ],
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "properties": {
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+},
+
+"Workflow": {
+  "required": [
+    "name",
+    "listen",
+    "tasks"
+  ],
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "listen": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "tasks": {
+      "items": {
+        "$ref": "#/definitions/Task"
+      },
+      "type": "array"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
 }
 ```
 
@@ -268,7 +262,6 @@ Defines the quality evaluation that is executed to verify the quality of a deply
 
 Defines the releasing task that is executed after a successful deployment happened. 
 
-
 *Usage:*
 ```yaml
 - name: release
@@ -276,13 +269,18 @@ Defines the releasing task that is executed after a successful deployment happen
 
 ## remediation
 
-The remediation strategy specifies whether remediation actions are enabled or not. To enable remediation actions, the `remediation_strategy` property has to be set to `automated`. The actions are specified in the *Remediation* configuration as described [here](./sre.md/#remediation).
+Defines whether remediation actions are enabled or not.
+
+*Usage:*
+```yaml
+- name: remediation
+```
 
 ## test
 
 Defines the test strategy used to validate a deployment. Failed tests result in an automatic roll-back of the latest deployment in case of a blue/green deployment strategy. Keptn supports the test `strategy` set to:
-  * `functional` 
-  * `performance` 
+  * `functional`: Test a deployment based on functional tests. 
+  * `performance`: Test a deployment based on performance/load tests.
 
 *Usage:*
 ```yaml
