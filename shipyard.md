@@ -232,8 +232,6 @@ Defines the kind of approval, which is required before deploying an artifact in 
   * `automatic`: Workflow continues without requesting approval.
   * `manual`:  Workflow requests for approval before continuing.
   
-  > **Note:** Per default, an `automatic` approval strategy is used for evaluation result `pass` and `warning`.
-
 *Usage:*
 ```yaml
 - name: approval
@@ -241,6 +239,8 @@ Defines the kind of approval, which is required before deploying an artifact in 
     pass: automatic
     warning: manual
 ```
+
+  > **Note:** Per default, an `automatic` approval strategy is used for evaluation result `pass` and `warning`.
 
 ## deployment
 
@@ -288,6 +288,6 @@ Defines the test strategy used to validate a deployment. Failed tests result in 
 ```yaml
 - name: test
   properties: 
-    strategy: blue_green_service
+    strategy: functional
 ```
 
