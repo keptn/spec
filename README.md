@@ -16,5 +16,6 @@ Please use [issues](https://github.com/keptn/spec/issues) to suggest changes or 
 
 * [Specification of Keptn Cloud Events](cloudevents.md)
 * [Specification of Shipyard](shipyard.md)
-* [Specification of Uniform](uniform.md)
-* [Specifications for Site Reliability Engineering (SRE) with Keptn](sre.md)
+* [Specification of Remediation](remediation.md)
+* [Specification of Service Level Indicator](service_level_indicator.md)
+* [Specification of Service Level Objective](service_level_objective.md)
