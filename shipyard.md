@@ -1,10 +1,8 @@
 # Shipyard
 
-* The Shipyard defines the stages each deployment has to go through as well as the events that are sent out in each stage. 
-
+* The Shipyard defines the stages an artifact has to go through
+* The Shipyard defines the events that are sent out in each stage 
 * A Shipyard is defined at the level of a project. This means that all services in a project share the same Shipyard configuration. 
-
-# Specification of a Shipyard
 
 ## Meta-data
 
@@ -14,14 +12,14 @@
 * `spec`: Consists of the property stages.
   * `stages`: An array of stages and each stage consists of the properties name and workflows.
 
-## Definition of Stage:
+## Stage
 
 A Shipyard consists of any number of stages. A stage has the properties:
 
 * `name`: A unique name of the stage.
 * `workflows`: An array of workflows declared by name, listen, and tasks.
 
-## Defintion of Workflow:
+## Workflow
 
 A stage consists of any number of workflows. A workflow has the properties:
 
@@ -29,14 +27,14 @@ A stage consists of any number of workflows. A workflow has the properties:
 * `listen` *(optional)*: An array of events that trigger the workflow.
 * `tasks`: An array of tasks executed by the workflow in the declared order.
 
-## Definition of Task:
+## Task
 
 A workflow consists of any number of tasks. A tasks has the properties:
 
 * `name`: A unique name of the task
 * `properties` *(optional)*: Task properties as individual `key:value` pairs. These properties precise the task and are consumed by the unit that executes the task.
 
-# JSON schema
+# Specification
 
 ```json
 {
@@ -164,9 +162,69 @@ A workflow consists of any number of tasks. A tasks has the properties:
 }
 ```
 
-# Reserved Keptn key tasks
+# Example of a Shipyard (in yaml)
 
-Reserved Keptn tasks are: **approval**, **deployment**, **evaluate**, **remediation**, **release**, **test**
+```yaml
+apiVersion: spec.keptn.sh/0.2.0
+kind: Shipyard
+metadata:
+  name: shipyard-sockshop
+spec:
+  stages:
+  - name: dev
+    workflows:
+    - name: artifact-delivery
+      tasks:
+      - name: deployment
+        properties:  
+          strategy: direct
+      - name: test
+        properties:
+          kind: functional
+      - name: evaluation 
+      - name: release 
+
+  - name: hardening
+    workflows:
+    - name: artifact-delivery
+      listen:
+      - dev.artifact-delivery.finished
+      tasks:
+      - name: deployment
+        properties: 
+          strategy: blue_green_service
+      - name: test
+        properties:  
+          kind: performance
+      - name: evaluation
+      - name: release
+        
+  - name: production
+    workflows:
+    - name: artifact-delivery 
+      listen:
+      - hardening.artifact-delivery.finished
+      tasks:
+      - name: deployment
+        properties:
+          strategy: blue_green
+      - name: release
+      
+    - name: remediation
+      tasks:
+      - name: remediation
+      - name: evaluation
+```
+
+# Reserved Keptn Tasks
+
+Reserved Keptn tasks are explained below:
+* **approval**
+* **deployment**
+* **evaluate**
+* **remediation**
+* **release**
+* **test**
 
 ## approval
 
@@ -179,7 +237,8 @@ Defines the kind of approval, which is required before deploying an artifact in 
 *Example:*
 
 ```yaml
-- approval: 
+- name: approval
+  properties: 
     pass: automatic
     warning: manual
 ```
@@ -193,7 +252,8 @@ Defines the deployment strategy used to deploy a new version of a service. Keptn
 *Example:*
 
 ```yaml
-- deployment: 
+- name: deployment
+  properties: 
     strategy: blue_green_service
 ```
 
@@ -214,57 +274,8 @@ Defines the test strategy used to validate a deployment. Failed tests result in 
 *Example:*
 
 ```yaml
-- test: 
+- name: test
+  properties: 
     strategy: blue_green_service
 ```
 
-
-# Example of a Shipyard
-
-```yaml
-apiVersion: spec.keptn.sh/0.2.0
-kind: Shipyard
-metadata:
-  name: shipyard-sockshop
-spec:
-  stages:
-  - name: dev
-    workflows:
-    - name: artifact-delivery
-      tasks:
-      - deployment:
-          strategy: direct
-      - test:
-          kind: functional
-      - evaluation: 
-      - release: 
-
-  - name: hardening
-    workflows:
-    - name: artifact-delivery
-      listen:
-      - dev.artifact-delivery.finished
-      tasks:
-      - name: deployment
-        properties: 
-          strategy: blue_green_service
-      - test:
-          kind: performance
-      - evaluation:
-      - release:
-        
-  - name: production
-    workflows:
-    - name: artifact-delivery 
-      listen:
-      - hardening.artifact-delivery.finished
-      tasks:
-      - deployment:
-          strategy: blue_green
-      - release:
-      
-    - name: remediation
-      tasks:
-      - remediation:
-      - evaluation:
-```
