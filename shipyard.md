@@ -17,14 +17,14 @@
 A Shipyard consists of a list of stages. A stage has the properties:
 
 * `name`: A unique name of the stage.
-* `workflows`: An array of workflows declared by name, listen, and tasks.
+* `workflows`: An array of workflows declared by name, triggers, and tasks.
 
 ## Workflow
 
 A stage consists of of a list of workflows. A workflow has the properties:
 
 * `name`: A unique name of the workflow
-* `listen` *(optional)*: An array of events that trigger the workflow.
+* `triggers` *(optional)*: An array of events that trigger the workflow.
 * `tasks`: An array of tasks executed by the workflow in the declared order.
 
 ## Task
@@ -131,14 +131,14 @@ A workflow consists of a list of tasks. A task has the properties:
 "Workflow": {
   "required": [
     "name",
-    "listen",
+    "triggers",
     "tasks"
   ],
   "properties": {
     "name": {
       "type": "string"
     },
-    "listen": {
+    "triggers": {
       "items": {
         "type": "string"
       },
@@ -181,7 +181,7 @@ spec:
   - name: hardening
     workflows:
     - name: artifact-delivery
-      listen:
+      triggers:
       - dev.artifact-delivery.finished
       tasks:
       - name: deployment
@@ -196,7 +196,7 @@ spec:
   - name: production
     workflows:
     - name: artifact-delivery 
-      listen:
+      triggers:
       - hardening.artifact-delivery.finished
       tasks:
       - name: deployment
