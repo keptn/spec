@@ -111,23 +111,6 @@ A sequence consists of a list of tasks. A task has the properties:
   "type": "object"
 },
 
-"Task": {
-  "required": [
-    "name",
-    "properties"
-  ],
-  "properties": {
-    "name": {
-      "type": "string"
-    },
-    "properties": {
-      "additionalProperties": true
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-},
-
 "Sequence": {
   "required": [
     "name",
@@ -149,6 +132,23 @@ A sequence consists of a list of tasks. A task has the properties:
         "$ref": "#/definitions/Task"
       },
       "type": "array"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+},
+
+"Task": {
+  "required": [
+    "name",
+    "properties"
+  ],
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "properties": {
+      "additionalProperties": true
     }
   },
   "additionalProperties": false,
