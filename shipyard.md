@@ -10,26 +10,26 @@
 * `kind`: is `Shipyard`
 * `metadata`: Contains at least the property name, which declares a unique name for the Shipyard.
 * `spec`: Consists of the property stages.
-  * `stages`: An array of stages and each stage consists of the properties name and workflows.
+  * `stages`: An array of stages and each stage consists of the properties name and task sequences.
 
 ## Stage
 
 A Shipyard consists of a list of stages. A stage has the properties:
 
 * `name`: A unique name of the stage.
-* `workflows`: An array of workflows declared by name, triggers, and tasks.
+* `sequences`: An array of sequences declared by name, triggers, and tasks.
 
-## Workflow
+## Sequence
 
-A stage consists of of a list of workflows. A workflow has the properties:
+A stage consists of of a list of sequences. A sequence has the properties:
 
-* `name`: A unique name of the workflow
-* `triggers` *(optional)*: An array of events that trigger the workflow.
-* `tasks`: An array of tasks executed by the workflow in the declared order.
+* `name`: A unique name of the sequence
+* `triggers` *(optional)*: An array of events that trigger the sequence.
+* `tasks`: An array of tasks executed by the sequence in the declared order.
 
 ## Task
 
-A workflow consists of a list of tasks. A task has the properties:
+A sequence consists of a list of tasks. A task has the properties:
 
 * `name`: A unique name of the task
 * `properties` *(optional)*: Task properties as individual `key:value` pairs. These properties precise the task and are consumed by the unit that executes the task.
@@ -94,15 +94,15 @@ A workflow consists of a list of tasks. A task has the properties:
 "Stage": {
   "required": [
     "name",
-    "workflow"
+    "sequence"
   ],
   "properties": {
     "name": {
       "type": "string"
     },
-    "workflow": {
+    "sequence": {
       "items": {
-        "$ref": "#/definitions/Workflow"
+        "$ref": "#/definitions/Sequence"
       },
       "type": "array"
     }
@@ -128,7 +128,7 @@ A workflow consists of a list of tasks. A task has the properties:
   "type": "object"
 },
 
-"Workflow": {
+"Sequence": {
   "required": [
     "name",
     "triggers",
@@ -166,7 +166,7 @@ metadata:
 spec:
   stages:
   - name: dev
-    workflows:
+    sequences:
     - name: artifact-delivery
       tasks:
       - name: deployment
@@ -179,7 +179,7 @@ spec:
       - name: release 
 
   - name: hardening
-    workflows:
+    sequences:
     - name: artifact-delivery
       triggers:
       - dev.artifact-delivery.finished
@@ -194,7 +194,7 @@ spec:
       - name: release
         
   - name: production
-    workflows:
+    sequences:
     - name: artifact-delivery 
       triggers:
       - hardening.artifact-delivery.finished
@@ -223,8 +223,8 @@ Reserved Keptn tasks are explained below:
 ## approval
 
 Defines the kind of approval, which is required before deploying an artifact in a stage. The approval strategy can be defined based on the evaluation result `pass` and `warning`. Keptn supports the approval strategies for the evaluation results `pass` and `warning` set to:
-  * `automatic`: Workflow continues without requesting approval.
-  * `manual`:  Workflow requests for approval before continuing.
+  * `automatic`: Task sequence continues without requesting approval.
+  * `manual`:  Task sequence requests for approval before continuing.
   
 *Usage:*
 ```yaml
