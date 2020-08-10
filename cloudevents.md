@@ -1687,6 +1687,7 @@ The *approval.triggered* event is sent when an approval is required before execu
   "time": "2019-06-07T07:02:15.64489Z",
   "contenttype": "application/json",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "triggeredid" : "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "data": {    
     "project": "sockshop",
     "stage": "staging",
