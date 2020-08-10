@@ -62,7 +62,7 @@ A sequence consists of a list of tasks. A task has the properties:
   "type": "object"
 },
 
-"ShipyardMetadata": {
+"Metadata": {
   "required": [
     "name"
   ],
