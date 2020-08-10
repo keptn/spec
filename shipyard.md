@@ -52,7 +52,7 @@ A sequence consists of a list of tasks. A task has the properties:
       "type": "string"
     },
     "metadata": {
-      "$ref": "#/definitions/ShipyardMetadata"
+      "$ref": "#/definitions/Metadata"
     },
     "spec": {
       "$ref": "#/definitions/ShipyardSpec"
