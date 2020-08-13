@@ -34,10 +34,10 @@ indicators:
 
 ## Comparison
 
-* `comparison`: By default, Keptn compares with the previous values of the SLIs. This property allows configuring the comparison strategy based on:
-  * `compare_with`: Defines how many previous results are compared: *single_result* or *several_results*. 
-  * `include_result_with_score`: Controls which of the previous results are included in the comparison: *pass*, *pass_or_warn*, or *all* (*all* is the default, also used if not specified). 
-  * `number_of_comparison_results`: Defines the exact number of previous results to consider.
+* `comparison`: This property allows configuring the used comparison strategy. By default, Keptn compares with the previous evaluation regardless of its score. This comparison strategy can be configured with::
+  * `compare_with`: Defines how many previous results are considered for the comparision: *single_result* or *several_results* (*single_result* is the default and is used if not specified)
+  * `include_result_with_score`: Controls which of the previous results are included in the comparison: *pass*, *pass_or_warn*, or *all* (*all* is the default and is used if not specified)
+  * `number_of_comparison_results`: Defines the exact number of previous results to consider (1 is the default and is used if not specified)
   * `aggregate_function` *(optional)*: Allows overriding the default aggregation function which is `avg`. 
 
 *1. Example:*
