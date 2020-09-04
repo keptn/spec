@@ -1,7 +1,7 @@
 # Shipyard
 
-* The Shipyard defines the stages an artifact has to go through
-* The Shipyard defines the events that are sent out in each stage 
+* The Shipyard defines the stages an artifact has to go through.
+* The Shipyard defines the events that are sent out in each stage.
 * A Shipyard is defined at the level of a project. This means that all services in a project share the same Shipyard configuration. 
 
 ## Meta-data
@@ -21,7 +21,7 @@ A Shipyard consists of a list of stages. A stage has the properties:
 
 ## Sequence
 
-A stage consists of of a list of sequences. A sequence has the properties:
+A stage consists of a list of sequences whereby a sequence is an ordered list of tasks that are triggered sequentially. A sequence has the properties:
 
 * `name`: A unique name of the sequence
 * `triggers` *(optional)*: An array of events that trigger the sequence.
@@ -94,13 +94,13 @@ A sequence consists of a list of tasks. A task has the properties:
 "Stage": {
   "required": [
     "name",
-    "sequence"
+    "sequences"
   ],
   "properties": {
     "name": {
       "type": "string"
     },
-    "sequence": {
+    "sequences": {
       "items": {
         "$ref": "#/definitions/Sequence"
       },
