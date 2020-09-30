@@ -840,6 +840,12 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
       },
       "type": "array"
     },
+    "comparedEvents": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
     "result": {
       "type": "string"
     },
@@ -947,6 +953,7 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
    "data":{
       "deploymentstrategy":"blue_green_service",
       "evaluationdetails":{
+         "comparedEvents": ["event-id-1", "event-id-2"],
          "indicatorResults":[
             {
                "score":0,
