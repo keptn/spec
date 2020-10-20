@@ -238,7 +238,7 @@ Defines the kind of approval, which is required before deploying an artifact in 
 
 ## deployment
 
-Defines the deployment strategy used to deploy a new version of a service. Keptn supports the deployment `strategy` set to: 
+Defines the deployment strategy used to deploy a new version of a service. For example, the *helm-service* supports the deployment `strategy` set to: 
   * `direct`: Deploys a new version of a service by replacing the old version of the service.
   * `blue_green_service`: Deploys a new version of a service next to the old one. After a successful validation of this new version, it replaces the old one and is marked as stable.
 
@@ -278,7 +278,7 @@ Defines whether remediation actions are enabled or not.
 
 ## test
 
-Defines the test strategy used to validate a deployment. Failed tests result in an automatic roll-back of the latest deployment in case of a blue/green deployment strategy. Keptn supports the test `strategy` set to:
+Defines the test strategy used to validate a deployment. Failed tests result in an automatic roll-back of the latest deployment in case of a blue/green deployment strategy. For example, the *jmeter-service* supports the test `strategy` set to:
   * `functional`: Test a deployment based on functional tests. 
   * `performance`: Test a deployment based on performance/load tests.
 
