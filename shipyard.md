@@ -29,7 +29,7 @@ A stage consists of a list of sequences whereby a sequence is an ordered list of
 
 ## Task
 
-A sequence consists of a list of tasks. A task has the properties:
+A sequence consists of a list of tasks whereby a single task is the smallest executable unit. A task has the properties:
 
 * `name`: A unique name of the task
 * `properties` *(optional)*: Task properties as individual `key:value` pairs. These properties precise the task and are consumed by the unit that executes the task.
