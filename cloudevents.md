@@ -680,6 +680,148 @@ This is an example of a data block for a `sh.keptn.event.deployment.finished` ev
 </p>
 </details>
 
+## Evaluation 
+([&uarr; up to index](#keptn-cloud-events))
+
+### Evaluation Triggered
+
+
+#### Type
+
+```json
+"type": "sh.keptn.event.evaluation.triggered"
+```
+
+### Data
+
+```json
+
+```
+
+### Example
+<details><summary>Example of sh.keptn.event.evaluation.triggered</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.event.evaluation.triggered",
+  "specversion": "1.0",
+  "source": "https://github.com/keptn/keptn/shipyard-controller",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {
+    "evaluation": {
+    },   
+    "labels": null,
+    "message": "",
+    "project": "sockshop",
+    "result": "pass",
+    "service": "carts",
+    "stage": "dev",
+    "status": "succeeded"
+  }
+}
+```
+
+</p>
+</details>
+
+### Evaluation Started
+
+
+#### Type
+
+```json
+"type": "sh.keptn.event.evaluation.started"
+```
+
+### Data
+
+```json
+
+```
+
+### Example
+<details><summary>Example of sh.keptn.event.evaluation.started</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.event.evaluation.started",
+  "specversion": "1.0",
+  "source": "https://github.com/keptn/keptn/lighthouse-service",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {    
+    "evaluation": {
+    },
+    "labels": null,
+    "message": "",
+    "project": "sockshop",
+    "result": "pass",
+    "service": "carts",
+    "stage": "dev",
+    "status": "succeeded"
+  }
+}
+```
+
+</p>
+</details>
+
+### Evaluation Finished
+
+
+#### Type
+
+```json
+"type": "sh.keptn.event.evaluation.finished"
+```
+
+### Data
+
+```json
+
+```
+
+### Example
+<details><summary>Example of sh.keptn.event.evaluation.finished</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.event.evaluation.finished",
+  "specversion": "1.0",
+  "source": "https://github.com/keptn/keptn/lighthouse-service",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {
+    "evaluation": {
+      "gitCommit": "",
+      "indicatorResults": null,
+      "result": "pass",
+      "score": 0,
+      "sloFileContent": "",
+      "timeEnd": "",
+      "timeStart": ""
+    },    
+    "labels": null,
+    "message": "",
+    "project": "sockshop",
+    "result": "pass",
+    "service": "carts",
+    "stage": "dev",
+    "status": "succeeded"
+  }
+}
+```
+
+</p>
+</details>
+
 <!-- 
 
 ## Create Project
