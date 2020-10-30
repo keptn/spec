@@ -253,7 +253,7 @@ This is an example of a data block for a `sh.keptn.event.deployment.finished` ev
     "deploymentNames": [ "carts" ],
     "deploymentURIsLocal": [ "carts.svc.cluster.local" ],
     "deploymentURIsPublic": [ "carts.dev.xyz" ],
-    "gitCommit": "aaa6c32e817b9435a4b3f6078b4826fd1aefbccc",
+    "gitCommit": "aaa6c32e817b9435a4b3f6078b4826fd1aefbccc"
   },
   "labels": null,
   "message": "",
@@ -335,7 +335,7 @@ This is an example of a data block for a `sh.keptn.event.deployment.finished` ev
 {
   "type": "sh.keptn.event.approval.started",
   "specversion": "1.0",
-  "source": "https://github.com/keptn/keptn/shipyard-controller",
+  "source": "https://github.com/keptn/keptn/bridge",
   "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "time": "2019-06-07T07:02:15.64489Z",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
@@ -379,7 +379,7 @@ This is an example of a data block for a `sh.keptn.event.deployment.finished` ev
 {
   "type": "sh.keptn.event.approval.finished",
   "specversion": "1.0",
-  "source": "https://github.com/keptn/keptn/shipyard-controller",
+  "source": "https://github.com/keptn/keptn/bridge",
   "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
   "time": "2019-06-07T07:02:15.64489Z",
   "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
@@ -393,6 +393,286 @@ This is an example of a data block for a `sh.keptn.event.deployment.finished` ev
     "service": "carts",
     "stage": "dev",
     "status": "succeeded"
+  }
+}
+```
+
+</p>
+</details>
+
+## Deployment ([&uarr; up to index](#keptn-cloud-events))
+
+
+### Deployment Triggered
+
+
+#### Type
+
+```json
+"type": "sh.keptn.event.deployment.triggered"
+```
+
+### Data
+
+```json
+
+```
+
+### Example
+<details><summary>Example of sh.keptn.event.deployment.triggered</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.event.deployment.triggered",
+  "specversion": "1.0",
+  "source": "https://github.com/keptn/keptn/shipyard-controller",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {    
+    "deployment": {
+      "strategy": "direct"
+    },
+    "labels": null,
+    "message": "",
+    "project": "sockshop",
+    "result": "pass",
+    "service": "carts",
+    "stage": "dev",
+    "status": "succeeded"
+  }
+}
+```
+
+</p>
+</details>
+
+### Deployment Started
+
+
+#### Type
+
+```json
+"type": "sh.keptn.event.deployment.started"
+```
+
+### Data
+
+```json
+
+```
+
+### Example
+<details><summary>Example of sh.keptn.event.deployment.started</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.event.deployment.started",
+  "specversion": "1.0",
+  "source": "https://github.com/keptn/keptn/helm-service",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {    
+    "deployment": {
+    },
+    "labels": null,
+    "message": "",
+    "project": "sockshop",
+    "result": "pass",
+    "service": "carts",
+    "stage": "dev",
+    "status": "succeeded"
+  }
+}
+```
+
+</p>
+</details>
+
+### Deployment Finished
+
+
+#### Type
+
+```json
+"type": "sh.keptn.event.deployment.finished"
+```
+
+### Data
+
+```json
+
+```
+
+### Example
+<details><summary>Example of sh.keptn.event.deployment.finished</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.event.deployment.finished",
+  "specversion": "1.0",
+  "source": "https://github.com/keptn/keptn/helm-service",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {    
+    "deployment": {
+      "deploymentNames": [ "carts" ],
+      "deploymentURIsLocal": [ "carts.svc.cluster.local" ],
+      "deploymentURIsPublic": [ "carts.dev.xyz" ],
+      "gitCommit": "aaa6c32e817b9435a4b3f6078b4826fd1aefbccc"
+    },
+    "labels": null,
+    "message": "",
+    "project": "sockshop",
+    "result": "pass",
+    "service": "carts",
+    "stage": "dev",
+    "status": "succeeded"
+  }
+}
+```
+
+</p>
+</details>
+
+
+## Test ([&uarr; up to index](#keptn-cloud-events))
+
+
+### Test Triggered
+
+
+#### Type
+
+```json
+"type": "sh.keptn.event.test.triggered"
+```
+
+### Data
+
+```json
+
+```
+
+### Example
+<details><summary>Example of sh.keptn.event.test.triggered</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.event.test.triggered",
+  "specversion": "1.0",
+  "source": "https://github.com/keptn/keptn/shipyard-controller",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {    
+    "labels": null,
+    "message": "",
+    "project": "sockshop",
+    "result": "pass",
+    "service": "carts",
+    "stage": "dev",
+    "status": "succeeded",
+    "test": {
+      "kind": "functional"
+    }
+  }
+}
+```
+
+</p>
+</details>
+
+### Test Started
+
+
+#### Type
+
+```json
+"type": "sh.keptn.event.test.started"
+```
+
+### Data
+
+```json
+
+```
+
+### Example
+<details><summary>Example of sh.keptn.event.test.started</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.event.test.started",
+  "specversion": "1.0",
+  "source": "https://github.com/keptn/keptn/helm-service",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {    
+    "labels": null,
+    "message": "",
+    "project": "sockshop",
+    "result": "pass",
+    "service": "carts",
+    "stage": "dev",
+    "status": "succeeded",
+    "test": {
+    }
+  }
+}
+```
+
+</p>
+</details>
+
+### Test Finished
+
+
+#### Type
+
+```json
+"type": "sh.keptn.event.test.finished"
+```
+
+### Data
+
+```json
+
+```
+
+### Example
+<details><summary>Example of sh.keptn.event.test.finished</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.event.test.finished",
+  "specversion": "1.0",
+  "source": "https://github.com/keptn/keptn/helm-service",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {    
+    "labels": null,
+    "message": "",
+    "project": "sockshop",
+    "result": "pass",
+    "service": "carts",
+    "stage": "dev",
+    "status": "succeeded",
+    "test": {
+      "end": "2019-06-07T07:02:15.64489Z",
+      "gitCommit": "",
+      "start": "2019-06-07T07:02:15.64489Z"
+    }
   }
 }
 ```
