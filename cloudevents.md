@@ -1,5 +1,6 @@
 # Keptn Cloud Events
 
+<!-- 
 * [Create Project](#create-project)
 * [Delete Project](#delete-project)
 * [Create Service](#create-service)
@@ -22,19 +23,27 @@
 * [Action Triggered](#action-triggered)
 * [Action Started](#action-started)
 * [Action Finished](#action-finished)
+--> 
+
+* [Approval](#approval)
+* [Deployment](#deployment)
+* [Test](#test)
+* [Evaluation](#evaluation)
+* [Release](#release)
+* [Remediation](#remediation)
+* [Action](#action)
 
 ---
 
-## Keptn Cloud Event
+## Keptn CloudEvents
 
-All Keptn events conform to CloudEvents [Version 0.2](https://github.com/cloudevents/spec/blob/v0.2/spec.md).  CloudEvents is a vendor-neutral specification for defining the format of event data.
+All Keptn events conform to the CloudEvents spec in [version 1.0](https://github.com/cloudevents/spec/blob/v1.0/spec.md). The CloudEvents specification is a vendor-neutral specification for defining the format of event data.
 
-Events of type `approval.finished`, `action.started`, and `action.finished` have a payload structure as follows (*Note:* contain a `triggeredid` as attribute):
+In Keptn, events of type `approval.finished`, `action.started`, and `action.finished` have a payload structure as follows (*Note:* contain a `triggeredid` as attribute):
 
 ```json
 "sh.keptn.event": {
   "required": [
-    "contenttype",
     "data",
     "id",
     "shkeptncontext",
@@ -42,17 +51,12 @@ Events of type `approval.finished`, `action.started`, and `action.finished` have
     "specversion",
     "time",
     "triggeredid",
-    "type",
+    "type"
   ],
   "properties": {
-    "contenttype": {
-      "type": "string",
-      "description":"Content type of the data attribute value",
-      "value": "application/json"
-    },
     "data": {
       "type": ["object", "string"],
-      "description": "The Keptn event payload. The payload depends on the event type."
+      "description": "The Keptn event payload depending on the type."
     },
     "id": {
       "type": "string",
@@ -74,7 +78,7 @@ Events of type `approval.finished`, `action.started`, and `action.finished` have
       "type": "string",
       "minLength": 1,
       "description": "The version of the CloudEvents specification",
-      "value": "0.2"
+      "value": "1.0"
     },
     "time": {
       "format": "date-time",
@@ -97,29 +101,23 @@ Events of type `approval.finished`, `action.started`, and `action.finished` have
 }
 ```
 
-All other events will have a payload structure as follows:
+In Keptn, all other events will have a payload structure as follows:
 
 ```json
 "sh.keptn.event": {
   "required": [
-    "contenttype",
     "data",
     "id",
     "shkeptncontext",
     "source",
     "specversion",
     "time",
-    "type",
+    "type"
   ],
   "properties": {
-    "contenttype": {
-      "type": "string",
-      "description":"Content type of the data attribute value",
-      "value": "application/json"
-    },
     "data": {
       "type": ["object", "string"],
-      "description": "The Keptn event payload. The payload depends on the event type."
+      "description": "The Keptn event payload depending on the type."
     },
     "id": {
       "type": "string",
@@ -158,6 +156,251 @@ All other events will have a payload structure as follows:
   "type": "object"
 }
 ```
+
+### Type
+
+The event type of a Keptn CloudEvent has the format: 
+
+* `sh.keptn.event.[task].[event status]`
+
+As indicated by the brackets, the event type is defined by a **task** and the **event status**. 
+* The task is declared in the [Shipyard]() of a project. For example, a Shipyard can contain tasks like: `deployment`, `test`, or `evaluation`. Consequently, the event type for a `deployment` task would be `sh.keptn.event.deployment.[event status]`.
+* The kinds of event states are defined with: `triggered`, `started`, `status.changed`*, and `finished`. (* is optional)
+
+By combining the *task* and *event status* for the `deployment` task, the event types are:
+
+- `sh.keptn.event.deployment.triggered`
+- `sh.keptn.event.deployment.started`
+- `sh.keptn.event.deployment.status.changed`
+- `sh.keptn.event.deployment.finished`
+
+### Data
+
+The data block of a Keptn CloudEvent is structured as follows:
+
+```json
+"data": {
+  "required": [
+    "labels",
+    "message",
+    "project",
+    "result",
+    "service",
+    "stage",
+    "status",
+    "[task]"
+  ],
+  "properties": {
+    "labels": {
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "message": {
+      "type": "string",
+      "description": "A message from the last task"
+    },
+    "project": {
+      "type": "string",
+      "description": "The name of the project"
+    },
+    "result": {
+      "type": "string",
+      "description": "The result of the last task"
+    },
+    "service": {
+      "type": "string",
+      "description": "The name of the service"
+    },
+    "stage": {
+      "type": "string",
+      "description": "The name of the stage"
+    },
+    "status": {
+      "type": "string",
+      "description": "The status of the last task"
+    },
+    "[task]": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+The data block of a Keptn CloudEvent contains the properties: 
+- labels
+- message
+- project
+- result
+- service
+- stage
+- status
+- *[task]*
+
+Like the task property in the event type, the task property in the data block depends on the task declaration in the Shipyard. Based on the example of a `deployment` task, the data block contains a `deployment` property of type object. Hence, any payload can be added to this `deployment` property.
+
+
+This is an example of a data block for a `sh.keptn.event.deployment.finished` event:
+
+```
+"data": {
+  "deployment": {
+    "deploymentNames": [ "carts" ],
+    "deploymentURIsLocal": [ "carts.svc.cluster.local" ],
+    "deploymentURIsPublic": [ "carts.dev.xyz" ],
+    "gitCommit": "aaa6c32e817b9435a4b3f6078b4826fd1aefbccc",
+  },
+  "labels": null,
+  "message": "",
+  "project": "sockshop",
+  "result": "pass",
+  "service": "carts",
+  "stage": "dev",
+  "status": "succeeded"
+}
+```
+
+## Approval ([&uarr; up to index](#keptn-cloud-events))
+
+
+### Approval Triggered
+
+
+#### Type
+
+```json
+"type": "sh.keptn.event.approval.triggered"
+```
+
+### Data
+
+```json
+
+```
+
+### Example
+<details><summary>Example of sh.keptn.event.approval.triggered</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.event.approval.triggered",
+  "specversion": "1.0",
+  "source": "https://github.com/keptn/keptn/shipyard-controller",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {    
+    "approval": {
+    },
+    "labels": null,
+    "message": "",
+    "project": "sockshop",
+    "result": "pass",
+    "service": "carts",
+    "stage": "dev",
+    "status": "succeeded"
+  }
+}
+```
+
+</p>
+</details>
+
+### Approval Started
+
+
+#### Type
+
+```json
+"type": "sh.keptn.event.approval.started"
+```
+
+### Data
+
+```json
+
+```
+
+### Example
+<details><summary>Example of sh.keptn.event.approval.started</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.event.approval.started",
+  "specversion": "1.0",
+  "source": "https://github.com/keptn/keptn/shipyard-controller",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {    
+    "approval": {
+    },
+    "labels": null,
+    "message": "",
+    "project": "sockshop",
+    "result": "pass",
+    "service": "carts",
+    "stage": "dev",
+    "status": "succeeded"
+  }
+}
+```
+
+</p>
+</details>
+
+### Approval Finished
+
+
+#### Type
+
+```json
+"type": "sh.keptn.event.approval.finished"
+```
+
+### Data
+
+```json
+
+```
+
+### Example
+<details><summary>Example of sh.keptn.event.approval.finished</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.event.approval.finished",
+  "specversion": "1.0",
+  "source": "https://github.com/keptn/keptn/shipyard-controller",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "time": "2019-06-07T07:02:15.64489Z",
+  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
+  "data": {    
+    "approval": {
+    },
+    "labels": null,
+    "message": "",
+    "project": "sockshop",
+    "result": "pass",
+    "service": "carts",
+    "stage": "dev",
+    "status": "succeeded"
+  }
+}
+```
+
+</p>
+</details>
+
+<!-- 
 
 ## Create Project
 
@@ -1623,96 +1866,6 @@ The *get-sli.done* event is sent when the data gathering by a SLI provider is do
 </p>
 </details>
 
-## Approval Triggered
-
-The *approval.triggered* event is sent when an approval is required before executing the next step 
-(e.g., a configuration-change event for the next stage).
-
-### type
-```json
-"type": "sh.keptn.event.approval.triggered"
-```
-
-### data
-```json
-"ApprovalTriggeredEventData": {
-  "required": [
-    "project",
-    "result",
-    "stage",
-    "service"
-  ],
-  "properties": {
-    "deploymentstrategy": {
-      "type": "string"
-    },
-    "image": {
-      "type": "string"
-    },
-    "project": {
-      "type": "string"
-    },
-    "result": {
-      "type": "string"
-    },
-    "stage": {
-      "type": "string"
-    },
-    "service": {
-      "type": "string"
-    },
-    "tag": {
-      "type": "string"
-    },
-    "teststrategy": {
-      "type": "string"
-    },
-    "labels": {
-      "patternProperties": {
-        ".*": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-```
-
-### Example
-<details><summary>Example of sh.keptn.event.approval.triggered</summary>
-<p>
-
-```json
-{
-  "type": "sh.keptn.event.approval.triggered",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/gatekeeper-service",
-  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "data": {    
-    "project": "sockshop",
-    "stage": "staging",
-    "service": "carts",
-    "image": "docker.io/keptnexamples/carts",
-    "tag": "0.9.1",
-    "result": "pass",
-    "labels": {
-      "testId": "4711",
-      "buildId": "build-17",
-      "owner": "JohnDoe"
-    }
-  }
-}
-```
-
-</p>
-</details>
-([&uarr; up to index](#keptn-cloud-events))
 
 ## Approval Finished
 
@@ -2568,3 +2721,6 @@ The *action.finished* event is sent when a remediation action is finished.
 </details>
 
 ([&uarr; up to index](#keptn-cloud-events))
+
+
+-->
