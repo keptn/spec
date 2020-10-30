@@ -265,8 +265,8 @@ This is an example of a data block for a `sh.keptn.event.deployment.finished` ev
 }
 ```
 
-## Approval ([&uarr; up to index](#keptn-cloud-events))
-
+## Approval 
+([&uarr; up to index](#keptn-cloud-events))
 
 ### Approval Triggered
 
@@ -400,8 +400,8 @@ This is an example of a data block for a `sh.keptn.event.deployment.finished` ev
 </p>
 </details>
 
-## Deployment ([&uarr; up to index](#keptn-cloud-events))
-
+## Deployment 
+([&uarr; up to index](#keptn-cloud-events))
 
 ### Deployment Triggered
 
@@ -541,8 +541,8 @@ This is an example of a data block for a `sh.keptn.event.deployment.finished` ev
 </details>
 
 
-## Test ([&uarr; up to index](#keptn-cloud-events))
-
+## Test 
+([&uarr; up to index](#keptn-cloud-events))
 
 ### Test Triggered
 
