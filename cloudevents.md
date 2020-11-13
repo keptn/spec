@@ -920,7 +920,8 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
   "required": [
     "criteria",
     "targetValue",
-    "violated"
+    "violated",
+    "criteriaType"
   ],
   "properties": {
     "criteria": {
@@ -931,6 +932,9 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
     },
     "violated": {
       "type": "boolean"
+    },
+    "criteriaType": {
+      "type": "string"
     }
   },
   "additionalProperties": false,
