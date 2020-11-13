@@ -8,6 +8,7 @@
 * [Tests Finished](#tests-finished)
 * [Start Evaluation](#start-evaluation)
 * [Evaluation Done](#evaluation-done)
+* [Evaluation Invalidated](#evaluation-invalidated)
 * [Problem Open](#problem-open)
 * [Problem](#problem)
 * [Configure Monitoring](#configure-monitoring)
@@ -1001,6 +1002,63 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
    }
 }
 ```
+</p>
+</details>
+
+([&uarr; up to index](#keptn-cloud-events))
+
+## Evaluation Invalidated
+
+The *evaluation-invalidated* event is sent when a previous evaluation-done event should be marked as invalid. The `triggeredid` property of the CloudEvent context references the ID of the evaluation-done event that should be invalidated.
+
+### type
+```json
+"type": "sh.keptn.events.evaluation.invalidated"
+```
+
+### data
+```json
+"EvaluationInvalidatedEventData": {
+  "properties": {
+    "project": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+### Example
+
+<details><summary>Example of sh.keptn.events.evaluation.invalidated event</summary>
+<p>
+
+```json
+{
+  "type": "sh.keptn.events.evaluation.invalidated",
+  "specversion": "0.2",
+  "source": "https://github.com/keptn/keptn/cli",
+  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
+  "time": "2019-07-09T09:03:25.437Z",
+  "contenttype": "application/json",
+  "shkeptncontext": "08635340-6f9e-4b32-97ff-3b6c292bc509",
+  "triggeredid": "1b7cd584-320e-4ef0-8522-8a817263fdab",
+  "data": {
+    "project": "sockshop",
+    "stage": "production",
+    "service": "carts"
+  }
+}
+```
+
+Sending this event would result in the corresponding evaluation-done event with the id `1b7cd584-320e-4ef0-8522-8a817263fdab` to be invalidated, since this ID is referenced by the `triggeredid` field.
 </p>
 </details>
 
