@@ -967,17 +967,20 @@ The *evaluation-done* event is sent when the evaluation of the test execution is
                   {
                      "criteria":"<=800",
                      "targetValue":800,
-                     "violated":true
+                     "violated":true,
+                     "criteriaType": "pass"
                   },
                   {
                      "criteria":"<=+10%",
                      "targetValue":549.1967956487127,
-                     "violated":true
+                     "violated":true,
+                     "criteriaType": "pass"
                   },
                   {
                      "criteria":"<600",
                      "targetValue":600,
-                     "violated":true
+                     "violated":true,
+                     "criteriaType": "warning"
                   }
                ],
                "value":{
