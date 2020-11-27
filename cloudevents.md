@@ -1084,7 +1084,33 @@ This is an example of a data block for a `sh.keptn.event.deployment.finished` ev
 #### Data
 
 ```json
-
+"data": {
+  "action": {
+    "name": "",
+    "action": "",
+    "description": "",
+    "value": { }
+  },
+  "problem": {
+    "ImpactedEntity": "carts-primary",
+    "PID": "93a5-3fas-a09d-8ckf",
+    "ProblemDetails": {
+      "displayName": "641",
+      "endTime": -1,
+      "hasRootCause": false,
+      "id": "1234_5678V2",
+      "impactLevel": "SERVICE",
+      "severityLevel": "PERFORMANCE",
+      "startTime": 1587624420000,
+      "status": "OPEN"
+    },
+    "ProblemID": "ab81-941c-f198",
+    "ProblemTitle": "Response time degradation",
+    "ProblemURL": "https://.../#problems/problemdetails;pid=93a5-3fas-a09d-8ckf",
+    "State": "OPEN",
+    "Tags": ""
+  }
+}
 ```
 
 #### Example
