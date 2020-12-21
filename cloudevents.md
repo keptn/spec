@@ -228,27 +228,20 @@ sh.keptn.event.project.create.triggered
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.project.create.triggered</summary>
-<p>
-
 ```json
 {
   "data": {
     "projectName": "sockshop",
     "gitRemoteURL": "https://github.com/project/repository",
-    "shipyard": "c3RhZ2VzOg0KICAtIG5hbWU6ICJkZXYiDQogICAgZGVwbG95bWVudF9zdHJhdGVneTogImRpcmVjdCINCiAgICB0ZXN0X3N0cmF0ZWd5OiAiZnVuY3Rpb25hbCINCiAgLSBuYW1lOiAic3RhZ2luZyINCiAgICBkZXBsb3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHRlc3Rfc3RyYXRlZ3k6ICJwZXJmb3JtYW5jZSINCiAgLSBuYW1lOiAicHJvZHVjdGlvbiINCiAgICBkZXBsb3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHJlbWVkaWF0aW9uX3N0cmF0ZWd5OiAiYX
-V0b21hdGVkIg0K"
+    "shipyard": "c3RhZ2VzOg0KICAtIG5hbWU6ICJkZXYiDQogICAgZGVwbG95bWVudF9zdHJhdGVneTogImRpcmVjdCINCiAgICB0ZXN0X3N0cmF0ZWd5OiAiZnVuY3Rpb25hbCINCiAgLSBuYW1lOiAic3RhZ2luZyINCiAgICBkZXBsb3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHRlc3Rfc3RyYXRlZ3k6ICJwZXJmb3JtYW5jZSINCiAgLSBuYW1lOiAicHJvZHVjdGlvbiINCiAgICBkZXBsb3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHJlbWVkaWF0aW9uX3N0cmF0ZWd5OiAiYXV0b21hdGVkIg0K"
   },
   "datacontenttype": "application/json",
-  "id": "8b97a065-061e-4631-b44c-db69fc23fa35",
+  "id": "ffe7adf0-36ca-4201-89cc-bb9ca3f09911",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.project.create.triggered"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Project Create Started
@@ -293,13 +286,13 @@ sh.keptn.event.project.create.started
           "type": "object"
         },
         "status": {
-
-
-
-
-
-
-
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -312,9 +305,6 @@ sh.keptn.event.project.create.started
 </details>
 
 #### Example
-
-<details><summary>Example of sh.keptn.event.project.create.started</summary>
-<p>
 
 ```json
 {
@@ -330,15 +320,12 @@ sh.keptn.event.project.create.started
     "message": "a message"
   },
   "datacontenttype": "application/json",
-  "id": "fb908031-3a18-4274-9a4d-a2f1af40a5bc",
+  "id": "8c5b659a-c90e-4644-80cd-a332ab421e60",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.project.create.started"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Project Create Finished
@@ -428,9 +415,6 @@ sh.keptn.event.project.create.finished
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.project.create.finished</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -450,15 +434,12 @@ sh.keptn.event.project.create.finished
     }
   },
   "datacontenttype": "application/json",
-  "id": "32dea22d-a836-4b69-9354-9df3e6e336ef",
+  "id": "7aea8df6-4d1e-4d52-81f6-d20a0c6f6858",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.project.create.finished"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ## Service
@@ -524,9 +505,6 @@ sh.keptn.event.service.create.started
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.service.create.started</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -541,15 +519,12 @@ sh.keptn.event.service.create.started
     "message": "a message"
   },
   "datacontenttype": "application/json",
-  "id": "6d18a98d-3ccb-4138-886c-611b278e2ce4",
+  "id": "e78c00fc-e8ac-4f68-a684-cb2e3cfc12cf",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.service.create.started"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Service Create Status Changed
@@ -614,9 +589,6 @@ sh.keptn.event.service.create.status.changed
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.service.create.status.changed</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -631,15 +603,12 @@ sh.keptn.event.service.create.status.changed
     "message": "a message"
   },
   "datacontenttype": "application/json",
-  "id": "b5284fd9-32df-4585-857b-4116ab64eb81",
+  "id": "531a6cb0-78ae-418b-8a8b-22bea147f676",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.service.create.status.changed"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Service Create Finished
@@ -721,9 +690,6 @@ sh.keptn.event.service.create.finished
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.service.create.finished</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -741,15 +707,12 @@ sh.keptn.event.service.create.finished
     }
   },
   "datacontenttype": "application/json",
-  "id": "e67fc53a-e6f4-4416-9c17-0318977201a4",
+  "id": "4eba820a-3b97-44e4-aeff-97120140b65b",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.service.create.finished"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ## Approval
@@ -836,9 +799,6 @@ sh.keptn.event.approval.triggered
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.approval.triggered</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -857,15 +817,12 @@ sh.keptn.event.approval.triggered
     }
   },
   "datacontenttype": "application/json",
-  "id": "94b2c06a-1e2e-46d4-ab94-611ae1297404",
+  "id": "41552f2e-7851-4fad-8f98-07b8be6b63ac",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.approval.triggered"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Approval Started
@@ -930,9 +887,6 @@ sh.keptn.event.approval.started
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.approval.started</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -947,15 +901,12 @@ sh.keptn.event.approval.started
     "message": "a message"
   },
   "datacontenttype": "application/json",
-  "id": "5da9a935-1616-44e4-b275-81e72a781056",
+  "id": "3e3699a5-f134-40e1-b7af-2940fde60d78",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.approval.started"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Approval Status Changed
@@ -1020,9 +971,6 @@ sh.keptn.event.approval.status.changed
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.approval.status.changed</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -1037,15 +985,12 @@ sh.keptn.event.approval.status.changed
     "message": "a message"
   },
   "datacontenttype": "application/json",
-  "id": "99467ede-db00-42d5-ade9-06911824b561",
+  "id": "31d8334d-7d64-45b0-a939-84828329fe9a",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.approval.status.changed"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Approval Finished
@@ -1110,9 +1055,6 @@ sh.keptn.event.approval.finished
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.approval.finished</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -1127,15 +1069,12 @@ sh.keptn.event.approval.finished
     "message": "a message"
   },
   "datacontenttype": "application/json",
-  "id": "356e852c-6181-4ead-bbe6-39684a30a6b0",
+  "id": "448c1800-7439-4fd9-90bb-e5cfacfefa24",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.approval.finished"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ## Deployment
@@ -1237,9 +1176,6 @@ sh.keptn.event.deployment.triggered
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.deployment.triggered</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -1262,15 +1198,12 @@ sh.keptn.event.deployment.triggered
     }
   },
   "datacontenttype": "application/json",
-  "id": "c0d9ae2b-b090-4060-88e4-b8cb16313cd4",
+  "id": "28e72586-fa9b-4b8f-a7c6-480e1606f63b",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.deployment.triggered"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Deployment Started
@@ -1335,9 +1268,6 @@ sh.keptn.event.deployment.started
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.deployment.started</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -1352,15 +1282,12 @@ sh.keptn.event.deployment.started
     "message": "a message"
   },
   "datacontenttype": "application/json",
-  "id": "bac7d26f-43f5-41fe-89bb-ad7d5473369e",
+  "id": "ac072ee3-cbc2-4a0b-b97a-6fca4eaf4572",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.deployment.started"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Deployment Status Changed
@@ -1425,9 +1352,6 @@ sh.keptn.event.deployment.status.changed
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.deployment.status.changed</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -1442,15 +1366,12 @@ sh.keptn.event.deployment.status.changed
     "message": "a message"
   },
   "datacontenttype": "application/json",
-  "id": "87598ea6-b57c-4eae-9b3a-830a645af19e",
+  "id": "eff44e95-1746-49b3-9e42-1f8ea32f2842",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.deployment.status.changed"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Deployment Finished
@@ -1554,9 +1475,6 @@ sh.keptn.event.deployment.finished
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.deployment.finished</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -1584,15 +1502,12 @@ sh.keptn.event.deployment.finished
     }
   },
   "datacontenttype": "application/json",
-  "id": "a95e8b32-9bef-42c4-a61e-e135e5093fc0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.deployment.finished"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ## Test
@@ -1679,9 +1594,6 @@ sh.keptn.event.test.triggered
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.test.triggered</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -1707,15 +1619,12 @@ sh.keptn.event.test.triggered
     }
   },
   "datacontenttype": "application/json",
-  "id": "d916d821-103e-4a9e-8650-b214e455b3eb",
+  "id": "321f428b-ac72-4beb-8841-60dd2af53fae",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.test.triggered"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Test Started
@@ -1780,9 +1689,6 @@ sh.keptn.event.test.started
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.test.started</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -1797,15 +1703,12 @@ sh.keptn.event.test.started
     "message": "a message"
   },
   "datacontenttype": "application/json",
-  "id": "30d7b943-a059-49c7-bc71-f576787869b6",
+  "id": "39780468-9055-4327-bbaa-580e5a57cbef",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.test.started"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Test Status Changed
@@ -1870,9 +1773,6 @@ sh.keptn.event.test.triggered
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.test.triggered</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -1887,15 +1787,12 @@ sh.keptn.event.test.triggered
     "message": "a message"
   },
   "datacontenttype": "application/json",
-  "id": "3558f9d4-a9ee-4a83-97ee-588d59b48931",
+  "id": "fa211ed9-30a7-412f-8dc6-3aa789d53239",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.test.triggered"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Test Finished
@@ -1985,9 +1882,6 @@ sh.keptn.event.test.finished
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.test.finished</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -2007,15 +1901,12 @@ sh.keptn.event.test.finished
     }
   },
   "datacontenttype": "application/json",
-  "id": "7e80b778-0099-4ffc-a633-6c14e86a47f7",
+  "id": "441c3674-f38c-4993-b58e-d250abd5c407",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.test.finished"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ## Evaluation
@@ -2110,9 +2001,6 @@ sh.keptn.event.evaluation.triggered
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.evaluation.triggered</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -2138,15 +2026,12 @@ sh.keptn.event.evaluation.triggered
     }
   },
   "datacontenttype": "application/json",
-  "id": "59604e56-1768-4a83-823d-1d4881bff1cd",
+  "id": "e2203413-79fd-4ac2-b4c8-12049a72a8d6",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.evaluation.triggered"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Evaluation Started
@@ -2211,9 +2096,6 @@ sh.keptn.event.evaluation.started
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.evaluation.started</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -2228,15 +2110,12 @@ sh.keptn.event.evaluation.started
     "message": "a message"
   },
   "datacontenttype": "application/json",
-  "id": "226acf2b-3813-4346-8bea-b705e87a3d00",
+  "id": "30941fe4-bf08-4b03-9b52-07de2c00a239",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.evaluation.started"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Evaluation Status Changed
@@ -2301,9 +2180,6 @@ sh.keptn.event.evaluation.status.changed
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.evaluation.status.changed</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -2318,15 +2194,12 @@ sh.keptn.event.evaluation.status.changed
     "message": "a message"
   },
   "datacontenttype": "application/json",
-  "id": "ae3729b6-25f7-4ce3-a6ec-7867665284c7",
+  "id": "000742aa-2689-47ed-a3ed-96f70c2238f8",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.evaluation.status.changed"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Evaluation Finished
@@ -2515,9 +2388,6 @@ sh.keptn.event.evaluation.finished
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.evaluation.finished</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -2563,15 +2433,12 @@ sh.keptn.event.evaluation.finished
     }
   },
   "datacontenttype": "application/json",
-  "id": "9fe19aed-4893-4eb0-949c-1b1115b1de2f",
+  "id": "2e5efe40-6612-4ff7-bf11-2f2c29db88af",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.evaluation.finished"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ## Release
@@ -2651,9 +2518,6 @@ sh.keptn.event.release.triggered
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.release.triggered</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -2671,15 +2535,12 @@ sh.keptn.event.release.triggered
     }
   },
   "datacontenttype": "application/json",
-  "id": "113690ae-bec9-4642-8e02-b87ec2f2599c",
+  "id": "f5dd3404-8ff5-4eb1-841b-01df053ef52d",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.release.triggered"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Release Started
@@ -2744,9 +2605,6 @@ sh.keptn.event.release.started
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.release.started</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -2761,15 +2619,12 @@ sh.keptn.event.release.started
     "message": "a message"
   },
   "datacontenttype": "application/json",
-  "id": "0cacd8e5-6134-454d-a281-bdef96b1fe5d",
+  "id": "7d4cb894-eafb-479a-8b64-74a9df188ab2",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.release.started"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Release Status Changed
@@ -2834,9 +2689,6 @@ sh.keptn.event.release.status.changed
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.release.status.changed</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -2851,15 +2703,12 @@ sh.keptn.event.release.status.changed
     "message": "a message"
   },
   "datacontenttype": "application/json",
-  "id": "75f3ae2e-3b69-479c-99e5-9d110843325f",
+  "id": "ef887ba9-34f2-4dc4-954b-9f4ed6e4fbe5",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.release.status.changed"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Release Finished
@@ -2941,9 +2790,6 @@ sh.keptn.event.release.finished
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.release.finished</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -2961,15 +2807,12 @@ sh.keptn.event.release.finished
     }
   },
   "datacontenttype": "application/json",
-  "id": "000d96f0-9583-4458-b7ae-e18c23d30ccb",
+  "id": "764fdc21-ba7e-4937-8480-da75eb0bfb08",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.release.finished"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ## Remediation
@@ -3079,21 +2922,15 @@ sh.keptn.event.remediation.triggered
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.remediation.triggered</summary>
-<p>
-
 ```json
 {
   "datacontenttype": "application/json",
-  "id": "47b16942-7566-411b-9c46-23799936f957",
+  "id": "0abd7e21-7106-4dd6-99f1-61f08da17a9b",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.remediation.triggered"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Remediation Started
@@ -3158,9 +2995,6 @@ sh.keptn.event.remediation.started
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.remediation.started</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -3175,15 +3009,12 @@ sh.keptn.event.remediation.started
     "message": "a message"
   },
   "datacontenttype": "application/json",
-  "id": "0a3e0992-8680-44a8-856d-8cad3e647034",
+  "id": "c8a1c19e-9bef-4ee0-9af1-867e03d480ff",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.remediation.started"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Remediation Status Changed
@@ -3269,9 +3100,6 @@ sh.keptn.event.remediation.status.changed
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.remediation.status.changed</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -3290,15 +3118,12 @@ sh.keptn.event.remediation.status.changed
     }
   },
   "datacontenttype": "application/json",
-  "id": "d34ff33e-aa92-4072-b30c-cdf69d23e90d",
+  "id": "0edd5d02-c4c7-4423-bef6-87343d8c627d",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.remediation.status.changed"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Remediation Finished
@@ -3363,9 +3188,6 @@ sh.keptn.event.remediation.finished
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.remediation.finished</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -3380,15 +3202,12 @@ sh.keptn.event.remediation.finished
     "message": "a message"
   },
   "datacontenttype": "application/json",
-  "id": "f4536da6-2d60-4706-8575-6607876eec09",
+  "id": "c2dd585c-ab35-4510-81bc-e96640218ae7",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.remediation.finished"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ## Action
@@ -3526,9 +3345,6 @@ sh.keptn.event.action.triggered
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.action.triggered</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -3558,15 +3374,12 @@ sh.keptn.event.action.triggered
     }
   },
   "datacontenttype": "application/json",
-  "id": "89d743a9-79a0-4fb4-9ad6-321ad16acf3b",
+  "id": "fe50c4f9-5d7e-47f2-bb9a-520bcae39cdb",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.action.triggered"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Action Started
@@ -3631,9 +3444,6 @@ sh.keptn.event.action.started
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.action.started</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -3648,15 +3458,12 @@ sh.keptn.event.action.started
     "message": "a message"
   },
   "datacontenttype": "application/json",
-  "id": "1d6b591d-0a3d-4674-8e19-230740826ed7",
+  "id": "33954420-cc31-48d8-a0b5-8d286f96c66d",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.action.started"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Action Finished
@@ -3738,9 +3545,6 @@ sh.keptn.event.action.finished
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.action.finished</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -3756,15 +3560,12 @@ sh.keptn.event.action.finished
     }
   },
   "datacontenttype": "application/json",
-  "id": "6e345ec2-9e75-4b3e-93c2-a1f0a2013d69",
+  "id": "bceff094-8966-46d3-8826-8a685f7da810",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.action.finished"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ## Get SLI
@@ -3863,9 +3664,6 @@ sh.keptn.event.get-sli.triggered
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.get-sli.triggered</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -3898,15 +3696,12 @@ sh.keptn.event.get-sli.triggered
     }
   },
   "datacontenttype": "application/json",
-  "id": "4e4dc800-4d8a-460c-b7b3-7a920f6f222f",
+  "id": "0da05b3c-a1fa-470c-987c-37c524d4bb4d",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.get-sli.triggered"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Get SLI Started
@@ -3971,9 +3766,6 @@ sh.keptn.event.get-sli.started
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.get-sli.started</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -3988,15 +3780,12 @@ sh.keptn.event.get-sli.started
     "message": "a message"
   },
   "datacontenttype": "application/json",
-  "id": "aa09d05c-583a-48d3-8c48-2c95b50d40b9",
+  "id": "f63a9d94-1cd6-487f-bfb3-13c8efa04a14",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.get-sli.started"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Get SLI Finished
@@ -4086,9 +3875,6 @@ sh.keptn.event.get-sli.finished
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.get-sli.finished</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -4112,15 +3898,12 @@ sh.keptn.event.get-sli.finished
     }
   },
   "datacontenttype": "application/json",
-  "id": "0ecbf241-2fa8-452d-aa1a-02084465e0f2",
+  "id": "f8bd3560-b84e-4205-9d5e-e381cb2f9b79",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.get-sli.finished"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ## Monitoring
@@ -4203,9 +3986,6 @@ sh.keptn.event.configure-monitoring.triggered
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.configure-monitoring.triggered</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -4221,15 +4001,12 @@ sh.keptn.event.configure-monitoring.triggered
     }
   },
   "datacontenttype": "application/json",
-  "id": "d030b40b-91f0-4780-8029-87a53b863dac",
+  "id": "80c38596-d607-4586-b69e-c26584288614",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.configure-monitoring.triggered"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Configure Monitoring Started
@@ -4294,9 +4071,6 @@ sh.keptn.event.configure-monitoring.started
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.configure-monitoring.started</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -4311,15 +4085,12 @@ sh.keptn.event.configure-monitoring.started
     "message": "a message"
   },
   "datacontenttype": "application/json",
-  "id": "24c82623-b6c9-468d-bb18-0781be1915ba",
+  "id": "effe5be5-11c8-4369-b1a1-2088aac411a8",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.configure-monitoring.started"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Configure Monitoring Finished
@@ -4384,9 +4155,6 @@ sh.keptn.event.configure-monitoring.finished
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.configure-monitoring.finished</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -4401,15 +4169,12 @@ sh.keptn.event.configure-monitoring.finished
     "message": "a message"
   },
   "datacontenttype": "application/json",
-  "id": "a518df30-c537-4303-8201-ce6d63698edf",
+  "id": "9ff5c763-b352-462e-b8b5-fbc9583a8053",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.configure-monitoring.finished"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
 ## Problem
@@ -4491,9 +4256,6 @@ sh.keptn.event.problem.open
 
 #### Example
 
-<details><summary>Example of sh.keptn.event.problem.open</summary>
-<p>
-
 ```json
 {
   "data": {
@@ -4519,14 +4281,11 @@ sh.keptn.event.problem.open
     "labels": null
   },
   "datacontenttype": "application/json",
-  "id": "1e39dd8f-d954-4438-bd15-6dbed715d210",
+  "id": "6cdf8ec1-b31b-4401-b5d0-9a6471d740e2",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.problem.open"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
