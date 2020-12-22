@@ -1,41 +1,27 @@
 # Keptn Cloud Events
 
-* [Create Project](#create-project)
-* [Delete Project](#delete-project)
-* [Create Service](#create-service)
-* [Configuration Change](#configuration-change)
-* [Deployment Finished](#deployment-finished)
-* [Tests Finished](#tests-finished)
-* [Start Evaluation](#start-evaluation)
-* [Evaluation Done](#evaluation-done)
-* [Evaluation Invalidated](#evaluation-invalidated)
-* [Problem Open](#problem-open)
+* [Project](#project)
+* [Service](#service)
+* [Approval](#approval)
+* [Deployment](#deployment)
+* [Test](#test)
+* [Evaluation](#evaluation)
+* [Release](#release)
+* [Remediation](#remediation)
+* [Action](#action)
+* [Get-SLI](#get-sli)
 * [Problem](#problem)
-* [Configure Monitoring](#configure-monitoring)
-* [Get SLI](#get-sli)
-* [Get SLI Done](#get-sli-done)
-* [Approval Triggered](#approval-triggered)
-* [Approval Finished](#approval-finished)
-* [Remediation Triggered](#remediation-triggered)
-* [Remediation Started](#remediation-started)
-* [Remediation Status Changed](#remediation-status-changed)
-* [Remediation Finished](#remediation-finished)
-* [Action Triggered](#action-triggered)
-* [Action Started](#action-started)
-* [Action Finished](#action-finished)
-
 ---
 
-## Keptn Cloud Event
+## Keptn CloudEvents
 
-All Keptn events conform to CloudEvents [Version 0.2](https://github.com/cloudevents/spec/blob/v0.2/spec.md).  CloudEvents is a vendor-neutral specification for defining the format of event data.
+All Keptn events conform to the CloudEvents spec in [version 1.0](https://github.com/cloudevents/spec/blob/v1.0/spec.md). The CloudEvents specification is a vendor-neutral specification for defining the format of event data.
 
-Events of type `approval.finished`, `action.started`, and `action.finished` have a payload structure as follows (*Note:* contain a `triggeredid` as attribute):
+In Keptn, events have a payload structure as follows (*Note:* The `triggeredid` is not contained in events of type `triggered` mentioned below):
 
 ```json
 "sh.keptn.event": {
   "required": [
-    "contenttype",
     "data",
     "id",
     "shkeptncontext",
@@ -43,17 +29,12 @@ Events of type `approval.finished`, `action.started`, and `action.finished` have
     "specversion",
     "time",
     "triggeredid",
-    "type",
+    "type"
   ],
   "properties": {
-    "contenttype": {
-      "type": "string",
-      "description":"Content type of the data attribute value",
-      "value": "application/json"
-    },
     "data": {
       "type": ["object", "string"],
-      "description": "The Keptn event payload. The payload depends on the event type."
+      "description": "The Keptn event payload depending on the type."
     },
     "id": {
       "type": "string",
@@ -75,7 +56,7 @@ Events of type `approval.finished`, `action.started`, and `action.finished` have
       "type": "string",
       "minLength": 1,
       "description": "The version of the CloudEvents specification",
-      "value": "0.2"
+      "value": "1.0"
     },
     "time": {
       "format": "date-time",
@@ -98,2531 +79,4216 @@ Events of type `approval.finished`, `action.started`, and `action.finished` have
 }
 ```
 
-All other events will have a payload structure as follows:
+### Type
+
+The event type of a Keptn CloudEvent has the format: 
+
+* `sh.keptn.event.[task].[event status]`
+
+As indicated by the brackets, the event type is defined by a **task** and the **event status**. 
+* The task is declared in the [Shipyard](https://github.com/keptn/spec/blob/master/shipyard.md) of a project. For example, a Shipyard can contain tasks like: `deployment`, `test`, or `evaluation`. Consequently, the event type for a `deployment` task would be `sh.keptn.event.deployment.[event status]`
+* The kinds of event states are defined with: `triggered`, `started`, `status.changed`*, and `finished` (* is optional)
+
+By combining the *task* and *event status* for the `deployment` task, the event types are:
+
+- `sh.keptn.event.deployment.triggered`
+- `sh.keptn.event.deployment.started`
+- `sh.keptn.event.deployment.status.changed`
+- `sh.keptn.event.deployment.finished`
+
+### Data
+
+The data block of a Keptn CloudEvent is structured as follows:
 
 ```json
-"sh.keptn.event": {
+"data": {
   "required": [
-    "contenttype",
-    "data",
-    "id",
-    "shkeptncontext",
-    "source",
-    "specversion",
-    "time",
-    "type",
-  ],
-  "properties": {
-    "contenttype": {
-      "type": "string",
-      "description":"Content type of the data attribute value",
-      "value": "application/json"
-    },
-    "data": {
-      "type": ["object", "string"],
-      "description": "The Keptn event payload. The payload depends on the event type."
-    },
-    "id": {
-      "type": "string",
-      "minLength": 1,
-      "description": "Unique UUID of the Keptn event"
-    },
-    "shkeptncontext": {
-      "format": "uuid",
-      "type": "string",
-      "description": "Unique UUID value that connects various events together"
-    },
-    "source": {
-      "format": "uri-reference",
-      "type": "string",
-      "minLength": 1,
-      "description": "URL to service implementation in Keptn code repo"
-    },
-    "specversion": {
-      "type": "string",
-      "minLength": 1,
-      "description": "The version of the CloudEvents specification",
-      "value": "0.2"
-    },
-    "time": {
-      "format": "date-time",
-      "type": "string",
-      "description": "Timestamp of when the event happened"
-    },
-    "type": {
-      "type": "string",
-      "minLength": 1,
-      "description": "Type of the Keptn event"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-```
-
-## Create Project
-
-The *project create* event is sent when a new project should be created.
-
-### type
-```json
-"type": "sh.keptn.internal.event.project.create"
-```
-
-### data
-```json
-"ProjectCreateEventData": {
-  "required": [
+    "labels",
+    "message",
     "project",
-    "shipyard"
-  ],
-  "properties": {
-    "gitRemoteURL": {
-      "type": "string"
-    },
-    "gitToken": {
-      "type": "string"
-    },
-    "gitUser": {
-      "type": "string"
-    },
-    "project": {
-      "type": "string"
-    },
-    "shipyard": {
-      "type": "string",
-      "format": "base64 encoded"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-```
-
-### Example
-<details><summary>Example of sh.keptn.internal.event.project.create</summary>
-<p>
-
-```json
-{
-  "type": "sh.keptn.internal.event.project.create",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/api",
-  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "data": {
-    "project": "sockshop",
-    "gitUser": "scott",
-    "gitToken": "token",
-    "gitRemoteURL": "https://github.com/project/repository",
-    "shipyard": "c3RhZ2VzOg0KICAtIG5hbWU6ICJkZXYiDQogICAgZGVwbG95bWVudF9zdHJhdGVneTogImRpcmVj
-                dCINCiAgICB0ZXN0X3N0cmF0ZWd5OiAiZnVuY3Rpb25hbCINCiAgLSBuYW1lOiAic3RhZ2luZyIN
-                CiAgICBkZXBsb3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHRlc3Rf
-                c3RyYXRlZ3k6ICJwZXJmb3JtYW5jZSINCiAgLSBuYW1lOiAicHJvZHVjdGlvbiINCiAgICBkZXBs
-                b3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHJlbWVkaWF0aW9uX3N0
-                cmF0ZWd5OiAiYXV0b21hdGVkIg0K"
-  }
-}
-
-```
-</p>
-</details>
-
-([&uarr; up to index](#keptn-cloud-events))
-
-## Delete Project
-
-The *project delete* event is sent when a project should be deleted.
-
-### type
-```json
-"type": "sh.keptn.internal.event.project.delete"
-```
-
-### data
-```json
-"ProjectDeleteEventData": {
-  "required": [
-    "project",
-  ],
-  "properties": {
-    "project": {
-      "type": "string"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-```
-
-### Example
-<details><summary>Example of sh.keptn.internal.event.project.delete</summary>
-<p>
-
-```json
-{
-  "type": "sh.keptn.internal.event.project.delete",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/api",
-  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "data": {
-    "project": "sockshop"
-  }
-}
-
-```
-</p>
-</details>
-
-([&uarr; up to index](#keptn-cloud-events))
-
-## Create Service
-
-The *service create* event is sent when a new service should be created.
-
-### type
-```json
-"type": "sh.keptn.internal.event.service.create"
-```
-
-### data
-```json
-"ServiceCreateEventData": {
-  "required": [
-    "project",
+    "result",
     "service",
-    "helmChart",
-    "deploymentStrategies"
+    "stage",
+    "status",
+    "[task]"
   ],
   "properties": {
-    "deploymentStrategies": {
+    "labels": {
       "patternProperties": {
         ".*": {
-          "type": "integer"
+          "type": "string"
         }
       },
       "type": "object"
     },
-    "helmChart": {
+    "message": {
       "type": "string",
-      "format": "base64 encoded"
+      "description": "A message from the last task"
     },
     "project": {
-      "type": "string"
+      "type": "string",
+      "description": "The name of the project"
+    },
+    "result": {
+      "type": "string",
+      "description": "The result of the last task"
     },
     "service": {
-      "type": "string"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-```
-
-### Example
-<details><summary>Example of sh.keptn.internal.event.service.create</summary>
-<p>
-
-```json
-{
-  "type": "sh.keptn.internal.event.service.create",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/api",
-  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "data": {
-    "project": "sockshop",
-    "service": "carts",
-    "helmChart": "c3RhZ2VzOg0KICAtIG5hbWU6ICJkZXYiDQogICAgZGVwbG95bWVudF9zdHJhdGVneTogImRpcmVj
-                dCINCiAgICB0ZXN0X3N0cmF0ZWd5OiAiZnVuY3Rpb25hbCINCiAgLSBuYW1lOiAic3RhZ2luZyIN
-                CiAgICBkZXBsb3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHRlc3Rf
-                c3RyYXRlZ3k6ICJwZXJmb3JtYW5jZSINCiAgLSBuYW1lOiAicHJvZHVjdGlvbiINCiAgICBkZXBs
-                b3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHJlbWVkaWF0aW9uX3N0
-                cmF0ZWd5OiAiYXV0b21hdGVkIg0K",
-    "deploymentStrategies": {
-      "*": 0
-    }
-  }
-}
-
-```
-</p>
-</details>
-
-([&uarr; up to index](#keptn-cloud-events))
-
-## Configuration Change
-
-The *configuration change* event is sent when a desired state for a service is available and has to be updated in its configuration.
-
-### type
-```json
-"type": "sh.keptn.event.configuration.change"
-```
-
-### data
-```json
-"ConfigurationChangeEventData": {
-  "required": [
-    "project",
-    "service",
-    "stage"
-  ],
-  "properties": {
-    "canary": {
-      "$ref": "#/definitions/Canary"
-    },
-    "fileChangesGeneratedChart": {
-      "patternProperties": {
-        ".*": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    },
-    "fileChangesUmbreallaChart": {
-      "patternProperties": {
-        ".*": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    },
-    "fileChangesUserChart": {
-      "patternProperties": {
-        ".*": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    },
-    "project": {
-      "type": "string"
-    },
-    "service": {
-      "type": "string"
+      "type": "string",
+      "description": "The name of the service"
     },
     "stage": {
-      "type": "string"
+      "type": "string",
+      "description": "The name of the stage"
     },
-    "valuesCanary": {
-      "patternProperties": {
-        ".*": {
-          "additionalProperties": true,
+    "status": {
+      "type": "string",
+      "description": "The status of the last task"
+    },
+    "[task]": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+
+The data block of a Keptn CloudEvent contains the properties: 
+- labels
+- message
+- project
+- result
+- service
+- stage
+- status
+- *[task]*
+
+Like the task property in the event type, the task property in the data block depends on the task declaration in the Shipyard. Based on the example of a `deployment` task, the data block contains a `deployment` property of type object. Hence, any payload can be added to this `deployment` property.
+
+This is an example of a data block for a `sh.keptn.event.deployment.finished` event:
+
+```
+"data": {
+  "deployment": {
+    "deploymentNames": [ "carts" ],
+    "deploymentURIsLocal": [ "carts.svc.cluster.local" ],
+    "deploymentURIsPublic": [ "carts.dev.xyz" ],
+    "gitCommit": "aaa6c32e817b9435a4b3f6078b4826fd1aefbccc"
+  },
+  "labels": null,
+  "message": "",
+  "project": "sockshop",
+  "result": "pass",
+  "service": "carts",
+  "stage": "dev",
+  "status": "succeeded"
+}
+```
+
+## Project
+### Project Create Triggered
+#### Type
+sh.keptn.event.project.create.triggered
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.project.create.triggered</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/ProjectCreateData",
+  "definitions": {
+    "ProjectCreateData": {
+      "required": [
+        "projectName",
+        "gitRemoteURL",
+        "shipyard"
+      ],
+      "properties": {
+        "projectName": {
+          "type": "string"
+        },
+        "gitRemoteURL": {
+          "type": "string"
+        },
+        "shipyard": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "projectName": "sockshop",
+    "gitRemoteURL": "https://github.com/project/repository",
+    "shipyard": "c3RhZ2VzOg0KICAtIG5hbWU6ICJkZXYiDQogICAgZGVwbG95bWVudF9zdHJhdGVneTogImRpcmVjdCINCiAgICB0ZXN0X3N0cmF0ZWd5OiAiZnVuY3Rpb25hbCINCiAgLSBuYW1lOiAic3RhZ2luZyINCiAgICBkZXBsb3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHRlc3Rfc3RyYXRlZ3k6ICJwZXJmb3JtYW5jZSINCiAgLSBuYW1lOiAicHJvZHVjdGlvbiINCiAgICBkZXBsb3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHJlbWVkaWF0aW9uX3N0cmF0ZWd5OiAiYXV0b21hdGVkIg0K"
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.project.create.triggered"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+### Project Create Started
+#### Type
+sh.keptn.event.project.create.started
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.project.create.started</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/ProjectCreateStartedEventData",
+  "definitions": {
+    "ProjectCreateStartedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message"
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.project.create.started"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+### Project Create Finished
+#### Type
+sh.keptn.event.project.create.finished
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.project.create.finished</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/ProjectCreateFinishedEventData",
+  "definitions": {
+    "ProjectCreateData": {
+      "required": [
+        "projectName",
+        "gitRemoteURL",
+        "shipyard"
+      ],
+      "properties": {
+        "projectName": {
+          "type": "string"
+        },
+        "gitRemoteURL": {
+          "type": "string"
+        },
+        "shipyard": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "ProjectCreateFinishedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message",
+        "createdProject"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "createdProject": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ProjectCreateData"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message",
+    "createdProject": {
+      "projectName": "sockshop",
+      "gitRemoteURL": "https://github.com/project/repository",
+      "shipyard": "c3RhZ2VzOg0KICAtIG5hbWU6ICJkZXYiDQogICAgZGVwbG95bWVudF9zdHJhdGVneTogImRpcmVjdCINCiAgICB0ZXN0X3N0cmF0ZWd5OiAiZnVuY3Rpb25hbCINCiAgLSBuYW1lOiAic3RhZ2luZyINCiAgICBkZXBsb3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHRlc3Rfc3RyYXRlZ3k6ICJwZXJmb3JtYW5jZSINCiAgLSBuYW1lOiAicHJvZHVjdGlvbiINCiAgICBkZXBsb3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHJlbWVkaWF0aW9uX3N0cmF0ZWd5OiAiYXV0b21hdGVkIg0K"
+    }
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.project.create.finished"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+## Service
+### Service Create Started
+#### Type
+sh.keptn.event.service.create.started
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.service.create.started</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/ServiceCreateStartedEventData",
+  "definitions": {
+    "ServiceCreateStartedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message"
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.service.create.started"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+### Service Create Status Changed
+#### Type
+sh.keptn.event.service.create.status.changed
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.service.create.status.changed</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/ServiceCreateStatusChangedEventData",
+  "definitions": {
+    "ServiceCreateStatusChangedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message"
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.service.create.status.changed"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+### Service Create Finished
+#### Type
+sh.keptn.event.service.create.finished
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.service.create.finished</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/ServiceCreateFinishedEventData",
+  "definitions": {
+    "Helm": {
+      "required": [
+        "chart"
+      ],
+      "properties": {
+        "chart": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "ServiceCreateFinishedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message",
+        "helm"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "helm": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/Helm"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message",
+    "helm": {
+      "chart": "c3RhZ2VzOg0KICAtIG5hbWU6ICJkZXYiDQogICAgZGVwbG95bWVudF9zdHJhdGVneTogImRpcmVjdCINCiAgICB0ZXN0X3N0cmF0ZWd5OiAiZnVuY3Rpb25hbCINCiAgLSBuYW1lOiAic3RhZ2luZyINCiAgICBkZXBsb3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHRlc3Rfc3RyYXRlZ3k6ICJwZXJmb3JtYW5jZSINCiAgLSBuYW1lOiAicHJvZHVjdGlvbiINCiAgICBkZXBsb3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHJlbWVkaWF0aW9uX3N0cmF0ZWd5OiAiYXV0b21hdGVkIg0K\""
+    }
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.service.create.finished"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+## Approval
+### Approval Triggered
+#### Type
+sh.keptn.event.approval.triggered
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.approval.triggered</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/ApprovalTriggeredEventData",
+  "definitions": {
+    "": {
+      "required": [
+        "pass",
+        "warning"
+      ],
+      "properties": {
+        "pass": {
+          "type": "string"
+        },
+        "warning": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "ApprovalTriggeredEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message",
+        "approval"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "approval": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message",
+    "approval": {
+      "pass": "automatic",
+      "warning": "manual"
+    }
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.approval.triggered"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+### Approval Started
+#### Type
+sh.keptn.event.approval.started
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.approval.started</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/ApprovalStartedEventData",
+  "definitions": {
+    "ApprovalStartedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message"
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.approval.started"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+### Approval Status Changed
+#### Type
+sh.keptn.event.approval.status.changed
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.approval.status.changed</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/ApprovalStatusChangedEventData",
+  "definitions": {
+    "ApprovalStatusChangedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message"
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.approval.status.changed"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+### Approval Finished
+#### Type
+sh.keptn.event.approval.finished
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.approval.finished</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/ApprovalFinishedEventData",
+  "definitions": {
+    "ApprovalFinishedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message"
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.approval.finished"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+## Deployment
+### Deployment Triggered
+#### Type
+sh.keptn.event.deployment.triggered
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.deployment.triggered</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/DeploymentTriggeredEventData",
+  "definitions": {
+    "ConfigurationChange": {
+      "required": [
+        "values"
+      ],
+      "properties": {
+        "values": {
+          "patternProperties": {
+            ".*": {
+              "additionalProperties": true
+            }
+          },
           "type": "object"
         }
       },
+      "additionalProperties": false,
       "type": "object"
     },
-    "labels": {
-      "patternProperties": {
-        ".*": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-},
-"Canary": {
-  "required": [
-    "action"
-  ],
-  "properties": {
-    "action": {
-      "type": "integer"
-    },
-    "value": {
-      "type": "integer"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-```
-
-### Example
-<details><summary>Example of sh.keptn.event.configuration.change</summary>
-<p>
-
-```json
-{
-  "type": "sh.keptn.event.configuration.change",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/helm-service",
-  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "data": {
-    "project": "sockshop",
-    "stage": "staging",
-    "service": "carts",
-    "valuesCanary": {
-      "image": "docker.io/keptnexamples/carts:0.9.1"
-    },
-    "labels": {
-      "testId": "4711",
-      "buildId": "build-17",
-      "owner": "JohnDoe"
-    }
-  }
-}
-```
-
-</p>
-</details>
-
-([&uarr; up to index](#keptn-cloud-events))
-
-## Deployment Finished
-
-The *deployment-finished* event is sent when a desired state of a service is deployed in a stage.
-
-### type
-```json
-"type": "sh.keptn.events.deployment-finished"
-```
-
-### data
-```json
-"DeploymentFinishedEventData": {
-  "required": [
-    "deploymentstrategy",
-    "image",
-    "project",
-    "service",
-    "stage",
-    "tag",
-    "teststrategy"
-  ],
-  "properties": {
-    "deploymentstrategy": {
-      "type": "string"
-    },
-    "deploymentURILocal": {
-      "type": "string"
-    },
-    "deploymentURIPublic": {
-      "type": "string"
-    },
-    "image": {
-      "type": "string"
-    },
-    "labels": {
-      "patternProperties": {
-        ".*": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    },
-    "project": {
-      "type": "string"
-    },
-    "service": {
-      "type": "string"
-    },
-    "stage": {
-      "type": "string"
-    },
-    "tag": {
-      "type": "string"
-    },
-    "teststrategy": {
-      "type": "string"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-```
-
-### Example
-<details><summary>Example of sh.keptn.events.deployment-finished</summary>
-<p>
-
-```json
-{
-  "type": "sh.keptn.events.deployment-finished",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/helm-service",
-  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "data": {
-    "project": "sockshop",
-    "stage": "staging",
-    "service": "carts",
-    "teststrategy": "performance",
-    "deploymentstrategy": "direct",
-    "tag": "0.9.1",
-    "image": "docker.io/keptnexamples/carts",
-    "deploymentURILocal": "http://carts.sockshop-staging.svc.cluster.local",
-    "labels": {
-      "testId": "4711",
-      "buildId": "build-17",
-      "owner": "JohnDoe"
-    }
-  }
-}
-```
-
-</p>
-</details>
-
-([&uarr; up to index](#keptn-cloud-events))
-
-## Tests Finished
-
-The *tests-finished* event is sent when the tests for a service in a stage are finished.
-
-### type
-```json
-"type": "sh.keptn.events.tests-finished"
-```
-
-### data
-```json
-"TestsFinishedEventData": {
-  "required": [
-    "deploymentstrategy",
-    "end",
-    "project",
-    "result",
-    "service",
-    "stage",
-    "start",
-    "teststrategy"
-  ],
-  "properties": {
-    "deploymentstrategy": {
-      "type": "string"
-    },
-    "end": {
-      "type": "string"
-    },
-    "labels": {
-      "patternProperties": {
-        ".*": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-     },
-    "project": {
-      "type": "string"
-    },
-    "result": {
-      "type": "string"
-    },
-    "service": {
-      "type": "string"
-    },
-    "stage": {
-      "type": "string"
-    },
-    "start": {
-      "type": "string"
-    },
-    "teststrategy": {
-      "type": "string"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-```
-
-### Example
-<details><summary>Example of sh.keptn.events.tests-finished</summary>
-<p>
-
-```json
-{
-  "type": "sh.keptn.events.tests-finished",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/jmeter-service",
-  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "data": {
-    "project": "sockshop",
-    "stage": "staging",
-    "service": "carts",
-    "teststrategy": "performance",
-    "deploymentstrategy": "direct",
-    "start": "2019-09-01 12:00:00",
-    "end": "2019-09-01 12:05:00",
-    "result": "pass",
-    "labels": {
-      "testId": "4711",
-      "buildId": "build-17",
-      "owner": "JohnDoe"
-    }
-  }
-}
-```
-</p>
-</details>
-
-([&uarr; up to index](#keptn-cloud-events))
-
-## Start Evaluation
-
-The *start-evaluation* event is sent when the evaluation of a test run should be triggered.
-
-### type
-```json
-"type": "sh.keptn.event.start-evaluation"
-```
-
-### data
-```json
-"StartEvaluationEventData": {
-  "required": [
-    "deploymentstrategy",
-    "end",
-    "project",
-    "service",
-    "stage",
-    "start",
-    "teststrategy"
-  ],
-  "properties": {
-    "deploymentstrategy": {
-      "type": "string"
-    },
-    "end": {
-      "type": "string"
-    },
-    "project": {
-      "type": "string"
-    },
-    "service": {
-      "type": "string"
-    },
-    "stage": {
-      "type": "string"
-    },
-    "start": {
-      "type": "string"
-    },
-    "teststrategy": {
-      "type": "string"
-    },
-    "labels": {
-      "patternProperties": {
-        ".*": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-```
-
-### Example
-<details><summary>Example of sh.keptn.events.start-evaluation</summary>
-<p>
-
-```json
-{
-  "type": "sh.keptn.events.start-evaluation",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/api",
-  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "data": {
-    "project": "sockshop",
-    "stage": "staging",
-    "service": "carts",
-    "teststrategy": "performance",
-    "deploymentstrategy": "direct",
-    "start": "2019-09-01 12:00:00",
-    "end": "2019-09-01 12:05:00",
-    "labels": {
-      "testId": "4711",
-      "buildId": "build-17",
-      "owner": "JohnDoe"
-    }
-  }
-}
-```
-</p>
-</details>
-
-([&uarr; up to index](#keptn-cloud-events))
-
-## Evaluation Done
-
-The *evaluation-done* event is sent when the evaluation of the test execution is completed.
-
-### type
-```json
-"type": "sh.keptn.events.evaluation-done"
-```
-
-### data
-```json
-"EvaluationDoneEventData": {
-  "required": [
-    "deploymentstrategy",
-    "evaluationdetails",
-    "project",
-    "result",
-    "service",
-    "stage",
-    "teststrategy"
-  ],
-  "properties": {
-    "deploymentstrategy": {
-      "type": "string"
-    },
-    "evaluationdetails": {
-      "$ref": "#/definitions/EvaluationDetails"
-    },
-    "project": {
-      "type": "string"
-    },
-    "result": {
-      "type": "string"
-    },
-    "service": {
-      "type": "string"
-    },
-    "stage": {
-      "type": "string"
-    },
-    "teststrategy": {
-      "type": "string"
-    },
-    "labels": {
-      "patternProperties": {
-        ".*": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-},
-"EvaluationDetails": {
-  "required": [
-    "indicatorResults"
-    "result",
-    "score",
-    "sloFileContent",
-    "timeEnd",
-    "timeStart"
-  ],
-  "properties": {
-    "indicatorResults": {
-      "items": {
-        "$ref": "#/definitions/SLIEvaluationResult"
-      },
-      "type": "array"
-    },
-    "comparedEvents": {
-      "items": {
-        "type": "string"
-      },
-      "type": "array"
-    }
-    "result": {
-      "type": "string"
-    },
-    "score": {
-      "type": "number"
-    },
-    "sloFileContent": {
-      "type": "string"
-    },
-    "timeEnd": {
-      "type": "string"
-    },
-    "timeStart": {
-      "type": "string"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-},
-"SLIEvaluationResult": {
-  "required": [
-    "score",
-    "status"
-    "value",
-    "targets"
-  ],
-  "properties": {
-    "score": {
-      "type": "number"
-    },
-    "status": {
-      "type": "string"
-    },
-    "targets": {
-      "items": {
-        "$ref": "#/definitions/SLITarget"
-      },
-      "type": "array"
-    },
-    "value": {
-      "$ref": "#/definitions/SLIResult"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-},
-"SLIResult": {
-  "required": [
-    "metric",
-    "success",
-    "value"
-  ],
-  "properties": {
-    "message": {
-      "type": "string"
-    },
-    "metric": {
-      "type": "string"
-    },
-    "success": {
-      "type": "boolean"
-    },
-    "value": {
-      "type": "number"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-},
-"SLITarget": {
-  "required": [
-    "criteria",
-    "targetValue",
-    "violated"
-  ],
-  "properties": {
-    "criteria": {
-      "type": "string"
-    },
-    "targetValue": {
-      "type": "number"
-    },
-    "violated": {
-      "type": "boolean"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-```
-
-### Example
-<details><summary>Example of sh.keptn.events.evaluation-done</summary>
-<p>
-
-```json
-{
-   "type":"sh.keptn.events.evaluation-done",
-   "specversion":"0.2",
-   "source":"lighthouse-service",
-   "id":"1b7cd584-320e-4ef0-8522-8a817263fdab",
-   "time":"2019-11-18T11:30:45.340Z",
-   "contenttype":"application/json",
-   "shkeptncontext":"60077081-f902-4407-bc15-7c70be41a836",
-   "data":{
-      "deploymentstrategy":"blue_green_service",
-      "evaluationdetails":{
-         "comparedEvents": ["event-id-1", "event-id-2"],
-         "indicatorResults":[
-            {
-               "score":0,
-               "status":"failed",
-               "targets":[
-                  {
-                     "criteria":"<=800",
-                     "targetValue":800,
-                     "violated":true
-                  },
-                  {
-                     "criteria":"<=+10%",
-                     "targetValue":549.1967956487127,
-                     "violated":true
-                  },
-                  {
-                     "criteria":"<600",
-                     "targetValue":600,
-                     "violated":true
-                  }
-               ],
-               "value":{
-                  "metric":"response_time_p95",
-                  "success":true,
-                  "value":1002.6278552658177
-               }
-            }
-         ],
-         "result":"fail",
-         "score":0,
-         "sloFileContent":"LS0tDQpzcGVjX3ZlcnNpb246ICcxLjAnDQpjb21wYXJpc29uOg0KICBjb21wYXJlX3dpdGg6ICJzaW5nbGVfcmVzdWx0Ig0KICBpbmNsdWRlX3Jlc3VsdF93aXRoX3Njb3JlOiAicGFzcyINCiAgYWdncmVnYXRlX2Z1bmN0aW9uOiBhdmcNCm9iamVjdGl2ZXM6DQogIC0gc2xpOiByZXNwb25zZV90aW1lX3A5NQ0KICAgIHBhc3M6ICAgICAgICAjIHBhc3MgaWYgKHJlbGF0aXZlIGNoYW5nZSA8PSAxMCUgQU5EIGFic29sdXRlIHZhbHVlIGlzIDwgNTAwKQ0KICAgICAgLSBjcml0ZXJpYToNCiAgICAgICAgICAtICI8PSsxMCUiICMgcmVsYXRpdmUgdmFsdWVzIHJlcXVpcmUgYSBwcmVmaXhlZCBzaWduIChwbHVzIG9yIG1pbnVzKQ0KICAgICAgICAgIC0gIjw2MDAiICAgIyBhYnNvbHV0ZSB2YWx1ZXMgb25seSByZXF1aXJlIGEgbG9naWNhbCBvcGVyYXRvcg0KICAgIHdhcm5pbmc6ICAgICAjIGlmIHRoZSByZXNwb25zZSB0aW1lIGlzIGJlbG93IDgwMG1zLCB0aGUgcmVzdWx0IHNob3VsZCBiZSBhIHdhcm5pbmcNCiAgICAgIC0gY3JpdGVyaWE6DQogICAgICAgICAgLSAiPD04MDAiDQp0b3RhbF9zY29yZToNCiAgcGFzczogIjkwJSINCiAgd2FybmluZzogNzUl",
-         "timeEnd":"2019-11-18T11:29:36Z",
-         "timeStart":"2019-11-18T11:21:06Z"
-      },
-      "project":"sockshop",
-      "result":"fail",
-      "service":"carts",
-      "stage":"staging",
-      "teststrategy":"performance",
-      "labels": {
-        "testId": "4711",
-        "buildId": "build-17",
-        "owner": "JohnDoe"
-      }
-   }
-}
-```
-</p>
-</details>
-
-([&uarr; up to index](#keptn-cloud-events))
-
-## Evaluation Invalidated
-
-The *evaluation-invalidated* event is sent when a previous evaluation-done event should be marked as invalid. The `triggeredid` property of the CloudEvent context references the ID of the evaluation-done event that should be invalidated.
-
-### type
-```json
-"type": "sh.keptn.events.evaluation.invalidated"
-```
-
-### data
-```json
-"EvaluationInvalidatedEventData": {
-  "properties": {
-    "project": {
-      "type": "string"
-    },
-    "service": {
-      "type": "string"
-    },
-    "stage": {
-      "type": "string"
-    },
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-```
-
-### Example
-
-<details><summary>Example of sh.keptn.events.evaluation.invalidated event</summary>
-<p>
-
-```json
-{
-  "type": "sh.keptn.events.evaluation.invalidated",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/cli",
-  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "time": "2019-07-09T09:03:25.437Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08635340-6f9e-4b32-97ff-3b6c292bc509",
-  "triggeredid": "1b7cd584-320e-4ef0-8522-8a817263fdab",
-  "data": {
-    "project": "sockshop",
-    "stage": "production",
-    "service": "carts"
-  }
-}
-```
-
-Sending this event would result in the corresponding evaluation-done event with the id `1b7cd584-320e-4ef0-8522-8a817263fdab` to be invalidated, since this ID is referenced by the `triggeredid` field.
-</p>
-</details>
-
-([&uarr; up to index](#keptn-cloud-events))
-
-## Problem
-
-The generic *problem* event is sent when a problem activity related to a monitored service is happening. For example, a *problem* event is sent when a problem is opened or resolved. 
-
-### type
-```json
-"type": "sh.keptn.events.problem"
-```
-
-### data
-```json
-"ProblemEventData": {
-  "required": [
-    "PID",
-    "ProblemDetails",
-    "ProblemID",
-    "ProblemTitle"
-  ],
-  "properties": {
-    "ImpactedEntities": {
-      "type": "string"
-    },
-    "ImpactedEntity": {
-      "type": "string"
-    },
-    "PID": {
-      "type": "string"
-    },
-    "ProblemDetails": {
-      "patternProperties": {
-        ".*": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    },
-    "ProblemID": {
-      "type": "string"
-    },
-    "ProblemTitle": {
-      "type": "string"
-    },
-    "ProblemURL": {
-      "type": "string"
-    },
-    "project": {
-      "type": "string"
-    },
-    "service": {
-      "type": "string"
-    },
-    "stage": {
-      "type": "string"
-    },
-    "State": {
-      "type": "string"
-    },
-    "Tags": {
-      "type": "string"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-```
-
-### Examples
-<details><summary>Example of sh.keptn.events.problem without project, service, and stage</summary>
-<p>
-
-```json
-{
-  "type": "sh.keptn.events.problem",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/dynatrace",
-  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "time": "2019-07-09T09:03:25.437Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08635340-6f9e-4b32-97ff-3b6c292bc509",
-  "data": {
-    "ImpactedEntity": "carts-primary",
-    "PID": "93a5-3fas-a09d-8ckf",
-    "ProblemDetails": {
-      "displayName": "641",
-      "endTime": -1,
-      "hasRootCause": false,
-      "id": "1234_5678V2",
-      "impactLevel": "SERVICE",
-      "severityLevel": "PERFORMANCE",
-      "startTime": 1587624420000,
-      "status": "OPEN"
-    },
-    "ProblemID": "762",
-    "ProblemTitle": "Response time degradation",
-    "ProblemURL": "https://.../#problems/problemdetails;pid=93a5-3fas-a09d-8ckf",
-    "State": "OPEN",
-    "Tags": "keptn_project:sockshop,keptn_stage:production,keptn_service:carts"
-  }
-}
-```
-
-</p>
-</details>
-
-<details><summary>Example of sh.keptn.events.problem with project, stage, and service</summary>
-<p>
-
-```json
-{
-  "type": "sh.keptn.events.problem",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/dynatrace",
-  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "time": "2019-07-09T09:03:25.437Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08635340-6f9e-4b32-97ff-3b6c292bc509",
-  "data": {
-    "ImpactedEntity": "carts-primary",
-    "PID": "93a5-3fas-a09d-8ckf",
-    "ProblemDetails": {
-      "displayName": "641",
-      "endTime": -1,
-      "hasRootCause": false,
-      "id": "1234_5678V2",
-      "impactLevel": "SERVICE",
-      "severityLevel": "PERFORMANCE",
-      "startTime": 1587624420000,
-      "status": "OPEN"
-    },
-    "ProblemID": "762",
-    "ProblemTitle": "Response time degradation",
-    "ProblemURL": "https://.../#problems/problemdetails;pid=93a5-3fas-a09d-8ckf",
-    "State": "OPEN",
-    "project": "sockshop",
-    "stage": "production",
-    "service": "carts"
-  }
-}
-```
-</p>
-</details>
-
-([&uarr; up to index](#keptn-cloud-events))
-
-## Problem Open
-
-The *problem open* event is sent when a monitored service causes any problem **and** the state of the problem is `OPEN`. 
-
-### type
-```json
-"type": "sh.keptn.event.problem.open"
-```
-
-### data
-```json
-"ProblemEventData": {
-  "required": [
-    "PID",
-    "ProblemDetails",
-    "ProblemID",
-    "ProblemTitle"
-  ],
-  "properties": {
-    "ImpactedEntity": {
-      "type": "string"
-    },
-    "PID": {
-      "type": "string"
-    },
-    "ProblemDetails": {
-      "patternProperties": {
-        ".*": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    },
-    "ProblemID": {
-      "type": "string"
-    },
-    "ProblemTitle": {
-      "type": "string"
-    },
-    "ProblemURL": {
-      "type": "string"
-    },
-    "project": {
-      "type": "string"
-    },
-    "service": {
-      "type": "string"
-    },
-    "stage": {
-      "type": "string"
-    },
-    "State": {
-      "type": "string"
-      "default": "OPEN"
-    },
-    "Tags": {
-      "type": "string"
-    },
-    "labels": {
-      "patternProperties": {
-        ".*": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-
-```
-
-### Example
-<details><summary>Example of sh.keptn.event.problem.open from Prometheus</summary>
-<p>
-
-```json
-{
-  "type": "sh.keptn.event.problem.open",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/prometheus-service",
-  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "data": {
-    "ImpactedEntity": "carts-primary",
-    "PID": "",
-    "ProblemDetails": {
-      "problemDetails":"Pod name"
-    },
-    "ProblemID": "762",
-    "ProblemTitle": "cpu_usage_sockshop_carts",
-    "State": "OPEN",
-    "project": "sockshop",
-    "stage": "production", 
-    "service": "service"
-  }
-}
-```
-</p>
-</details>
-
-<details><summary>Example of sh.keptn.event.problem.open from Dynatrace</summary>
-<p>
-
-```json
-{
-  "type": "sh.keptn.event.problem.open",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/dynatrace-service",
-  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "data": {
-    "ImpactedEntity": "carts-primary",
-    "PID": "93a5-3fas-a09d-8ckf",
-    "ProblemDetails": {
-      "displayName": "641",
-      "endTime": -1,
-      "hasRootCause": false,
-      "id": "1234_5678V2",
-      "impactLevel": "SERVICE",
-      "severityLevel": "PERFORMANCE",
-      "startTime": 1587624420000,
-      "status": "OPEN"
-    },
-    "ProblemID": "ab81-941c-f198",
-    "ProblemTitle": "Response time degradation",
-    "ProblemURL": "https://.../#problems/problemdetails;pid=93a5-3fas-a09d-8ckf",
-    "State": "OPEN",
-    "project": "sockshop",
-    "stage": "production", 
-    "service": "service"
-  }
-}
-```
-</p>
-</details>
-
-([&uarr; up to index](#keptn-cloud-events))
-
-
-## Configure Monitoring 
-
-The *monitoring configure* event is sent to configure a monitoring solution for a Keptn cluster.
-
-### type
-```json
-"type": "sh.keptn.event.monitoring.configure"
-```
-
-### data
-```json
-"ConfigureMonitoringEventData": {
-  "required": [
-    "project",
-    "service",
-    "type"
-  ],
-  "properties": {
-    "project": {
-      "type": "string"
-    },
-    "service": {
-      "type": "string"
-    },
-    "type": {
-      "type": "string"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-```
-
-### Example
-<details><summary>sh.keptn.event.monitoring.configure</summary>
-<p>
-
-```json
-{
-  "type": "sh.keptn.event.monitoring.configure",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/prometheus-service",
-  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "data": {
-    "project": "sockshop",
-    "service": "carts",
-    "type": "prometheus"
-  }
-}
-```
-</p>
-</details>
-
-([&uarr; up to index](#keptn-cloud-events))
-
-## Get SLI
-The *get-sli* event is sent when a SLI provider must be triggered for gathering service level indicators.
-
-### type
-```json
-"type": "sh.keptn.internal.event.get-sli"
-```
-
-### data
-```json
-"InternalGetSLIEventData": {
-  "required": [
-    "customFilters",
-    "deployment",
-    "deploymentstrategy",
-    "end",
-    "indicators",
-    "project",
-    "service",
-    "sliProvider",
-    "stage",
-    "start",
-    "teststrategy"
-  ],
-  "properties": {
-    "customFilters": {
-      "items": {
-        "$ref": "#/definitions/SLIFilter"
-      },
-      "type": "array"
-    },
-    "deployment": {
-      "type": "string"
-    },
-    "deploymentstrategy": {
-      "type": "string"
-    },
-    "end": {
-      "type": "string"
-    },
-    "indicators": {
-      "items": {
-        "type": "string"
-      },
-      "type": "array"
-    },
-    "project": {
-      "type": "string"
-    },
-    "service": {
-      "type": "string"
-    },
-    "sliProvider": {
-      "type": "string"
-    },
-    "stage": {
-      "type": "string"
-    },
-    "start": {
-      "type": "string"
-    },
-    "teststrategy": {
-      "type": "string"
-    },
-    "labels": {
-      "patternProperties": {
-        ".*": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-},
-"SLIFilter": {
-  "required": [
-    "key",
-    "value"
-  ],
-  "properties": {
-    "key": {
-      "type": "string"
-    },
-    "value": {
-      "type": "string"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-```
-
-### Example
-<details><summary>Example of sh.keptn.internal.event.get-sli</summary>
-<p>
-
-```json
-{
-  "type": "sh.keptn.internal.event.get-sli",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/lighthouse-service",
-  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "data": {
-    "customFilters": [
-      { "key" : "dynatraceEntityName", "value": "HealthCheckController" },
-      { "key" : "tags", "value": "test-subject:true" }
-    ],
-    "deployment": "direct",
-    "deploymentstrategy": "direct",
-    "indicators": ["throughput", "error_rate", "request_latency_p95"],
-    "project": "sockshop",
-    "service": "carts",
-    "stage": "dev",
-    "start": "2019-10-28T15:44:27.152330783Z",
-    "end": "2019-10-28T15:54:27.152330783Z",
-    "sliProvider": "dynatrace",
-    "teststrategy":"manual",
-    "labels": {
-      "testId": "4711",
-      "buildId": "build-17",
-      "owner": "JohnDoe"
-    }
-  }
-}
-```
-</p>
-</details>
-
-([&uarr; up to index](#keptn-cloud-events))
-
-## Get SLI Done
-The *get-sli.done* event is sent when the data gathering by a SLI provider is done.
-
-### type
-```json
-"type": "sh.keptn.internal.event.get-sli.done"
-```
-
-### data
-```json
-"InternalGetSLIDoneEventData": {
-  "required": [
-    "deployment",
-    "deploymentstrategy",
-    "end",
-    "indicatorValues",
-    "project",
-    "service",
-    "stage",
-    "start",
-    "teststrategy"
-  ],
-  "properties": {
-    "deployment": {
-      "type": "string"
-    },
-    "deploymentstrategy": {
-      "type": "string"
-    },
-    "end": {
-      "type": "string"
-    },
-    "indicatorValues": {
-      "items": {
-        "$ref": "#/definitions/SLIResult"
-      },
-      "type": "array"
-    },
-    "project": {
-      "type": "string"
-    },
-    "service": {
-      "type": "string"
-    },
-    "stage": {
-      "type": "string"
-    },
-    "start": {
-      "type": "string"
-    },
-    "teststrategy": {
-      "type": "string"
-    },
-    "labels": {
-      "patternProperties": {
-        ".*": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-},
-"SLIResult": {
-  "required": [
-    "metric",
-    "success",
-    "value"
-  ],
-  "properties": {
-    "message": {
-      "type": "string"
-    },
-    "metric": {
-      "type": "string"
-    },
-    "success": {
-      "type": "boolean"
-    },
-    "value": {
-      "type": "number"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-```
-
-### Example
-<details><summary>Example of sh.keptn.internal.event.get-sli.done</summary>
-<p>
-
-```json
-{
-  "type": "sh.keptn.internal.event.get-sli.done",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/prometheus-service",
-  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "data": {
-    "project": "sockshop",
-    "stage": "staging",
-    "service": "carts",
-    "teststrategy": "manual",
-    "deploymentstrategy": "direct",
-    "deployment": "direct",
-    "start": "2019-11-05T16:30:27.152Z",
-    "end": "2019-11-05T16:35:27.152Z",
-    "indicatorValues": [
-      {
-        "metric":"request_latency_p95",
-        "value": 1.1620000000000001,
-        "success": true
-      },
-      {
-        "metric":"error_rate",
-        "value": 0,
-        "success": true
-      }
-    ],
-    "labels": {
-      "testId": "4711",
-      "buildId": "build-17",
-      "owner": "JohnDoe"
-    }
-  }
-}
-```
-</p>
-</details>
-
-## Approval Triggered
-
-The *approval.triggered* event is sent when an approval is required before executing the next step 
-(e.g., a configuration-change event for the next stage).
-
-### type
-```json
-"type": "sh.keptn.event.approval.triggered"
-```
-
-### data
-```json
-"ApprovalTriggeredEventData": {
-  "required": [
-    "project",
-    "result",
-    "stage",
-    "service"
-  ],
-  "properties": {
-    "deploymentstrategy": {
-      "type": "string"
-    },
-    "image": {
-      "type": "string"
-    },
-    "project": {
-      "type": "string"
-    },
-    "result": {
-      "type": "string"
-    },
-    "stage": {
-      "type": "string"
-    },
-    "service": {
-      "type": "string"
-    },
-    "tag": {
-      "type": "string"
-    },
-    "teststrategy": {
-      "type": "string"
-    },
-    "labels": {
-      "patternProperties": {
-        ".*": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-```
-
-### Example
-<details><summary>Example of sh.keptn.event.approval.triggered</summary>
-<p>
-
-```json
-{
-  "type": "sh.keptn.event.approval.triggered",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/gatekeeper-service",
-  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "data": {    
-    "project": "sockshop",
-    "stage": "staging",
-    "service": "carts",
-    "image": "docker.io/keptnexamples/carts",
-    "tag": "0.9.1",
-    "result": "pass",
-    "labels": {
-      "testId": "4711",
-      "buildId": "build-17",
-      "owner": "JohnDoe"
-    }
-  }
-}
-```
-
-</p>
-</details>
-([&uarr; up to index](#keptn-cloud-events))
-
-## Approval Finished
-
-The *approval.finished* event is sent for responding an *approval.triggered* event. This *approval.finished* event contains the result of the approval.
-
-### type
-```json
-"type": "sh.keptn.event.approval.finished"
-```
-
-### data
-```json
-"ApprovalFinishedEventData": {
-  "required": [
-    "approval",
-    "project",
-    "stage",
-    "service"
-  ],
-  "properties": {
-    "approval": {
+    "DeploymentTriggeredEventData": {
       "required": [
-        "result",
+        "project",
+        "stage",
+        "service",
+        "labels",
         "status",
+        "result",
+        "message",
+        "configurationChange",
+        "deployment"
       ],
-      "result": { // Enum: pass (represents an approval), failed (represents a disapproval)
-        "type": "string" 
-      },
-      "status": { // Enum: succeeded, errored, unknown
-        "type": "string" 
-      },
-      "type": "object"
-    },
-    "deploymentstrategy": {
-      "type": "string"
-    },
-    "image": {
-      "type": "string"
-    },
-    "project": {
-      "type": "string"
-    },
-    "service": {
-      "type": "string"
-    },
-    "stage": {
-      "type": "string"
-    },
-    "tag": {
-      "type": "string"
-    },
-    "teststrategy": {
-      "type": "string"
-    },
-    "labels": {
-      "patternProperties": {
-        ".*": {
+      "properties": {
+        "project": {
           "type": "string"
-        }
-      },
-      "type": "object"
-    },
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-```
-
-### Example
-<details><summary>Example of sh.keptn.event.approval.finished</summary>
-<p>
-
-```json
-{
-  "type": "sh.keptn.event.approval.finished",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/gatekeeper-service",
-  "id": "ggb878d3-03c0-4e8f-bc3f-454bc1b3d888",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "triggeredid" : "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "data": {
-    "approval": {
-      "result": "pass",
-      "status": "succeeded"
-    },
-    "project": "sockshop",
-    "stage": "staging",
-    "service": "carts",
-    "image": "docker.io/keptnexamples/carts",
-    "tag": "0.9.1",
-    "labels": {
-      "testId": "4711",
-      "buildId": "build-17",
-      "owner": "JohnDoe"
-    }
-  }
-}
-```
-
-</p>
-</details>
-
-([&uarr; up to index](#keptn-cloud-events))
-
-## Remediation Triggered
-
-The *remediation.triggered* event indicates the start of following remediation actions.
-
-### type
-```json
-"type": "sh.keptn.event.remediation.triggered"
-```
-
-### data
-```json
-"RemediationTriggeredEventData": {
-  "required": [
-    "problem",
-    "project",
-    "remediation",
-    "stage",
-    "service"
-  ],
-  "properties": {
-    "problem": {
-      "required": [
-        "PID",
-        "ProblemDetails",
-        "ProblemID",
-        "ProblemTitle"
-      ],
-      "ImpactedEntities": {
-        "type": "string"
-      },
-      "PID": {
-        "type": "string"
-      },
-      "ProblemDetails": {
-        "items": {
-          "type": "integer"
         },
-        "type": "array"
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "configurationChange": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ConfigurationChange"
+        },
+        "deployment": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/DeploymentWithStrategy"
+        }
       },
-      "ProblemID": {
-        "type": "string"
-      },
-      "ProblemTitle": {
-        "type": "string"
-      },
-      "ProblemURL": {
-        "type": "string"
-      },
-      "State": {
-        "type": "string"
-      },
-      "Tags": {
-        "type": "string"
-      },
+      "additionalProperties": false,
       "type": "object"
     },
-    "project": {
-      "type": "string"
-    },
-    "remediation": {
-      "type": "object"
-    },
-    "service": {
-      "type": "string"
-    },
-    "stage": {
-      "type": "string"
-    },
-    "labels": {
-      "patternProperties": {
-        ".*": {
+    "DeploymentWithStrategy": {
+      "properties": {
+        "deploymentstrategy": {
           "type": "string"
         }
       },
+      "additionalProperties": false,
       "type": "object"
-    },
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-```
-
-### Example
-<details><summary>Example of sh.keptn.event.remediation.triggered</summary>
-<p>
-
-```json
-{
-  "type": "sh.keptn.event.remediation.triggered",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/remediation-service",
-  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "data": {    
-    "problem": {
-      "ImpactedEntity": "carts-primary",
-      "PID": "93a5-3fas-a09d-8ckf",
-      "ProblemDetails": "Pod name",
-      "ProblemID": "762",
-      "ProblemTitle": "cpu_usage_sockshop_carts",
-      "State": "OPEN",
-    },
-    "project": "sockshop",
-    "remediation": {
-    },
-    "stage": "staging",
-    "service": "carts",
-    "labels": {
-      "testId": "4711",
-      "buildId": "build-17",
-      "owner": "JohnDoe"
     }
   }
 }
 ```
-
 </p>
 </details>
-([&uarr; up to index](#keptn-cloud-events))
 
-## Remediation Started
-
-The *remediation.started* event is sent when a remediation workflow is started.
-
-### type
-```json
-"type": "sh.keptn.event.remediation.started"
-```
-
-### data
-```json
-"RemediationStartedEventData": {
-  "required": [
-    "project",
-    "remediation",
-    "service",
-    "stage"
-  ],
-  "properties": {
-    "project": {
-      "type": "string"
-    },
-    "remediation": {
-      "type": "object"
-    },
-    "service": {
-      "type": "string"
-    },
-    "stage": {
-      "type": "string"
-    },
-    "labels": {
-      "patternProperties": {
-        ".*": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    },
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-```
-
-### Example
-<details><summary>Example of sh.keptn.event.remediation.started</summary>
-<p>
+#### Example
 
 ```json
 {
-  "type": "sh.keptn.event.remediation.started",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/remediation-service",
-  "id": "ggb878d3-03c0-4e8f-bc3f-454bc1b3d888",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
   "data": {
     "project": "sockshop",
-    "remediation": {
-    },
-    "stage": "staging",
+    "stage": "dev",
     "service": "carts",
     "labels": {
-      "testId": "4711",
-      "buildId": "build-17",
-      "owner": "JohnDoe"
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message",
+    "configurationChange": {
+      "values": {
+        "key": "value"
+      }
+    },
+    "deployment": {
+      "deploymentstrategy": "direct"
+    }
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.deployment.triggered"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+### Deployment Started
+#### Type
+sh.keptn.event.deployment.started
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.deployment.started</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/DeploymentStartedEventData",
+  "definitions": {
+    "DeploymentStartedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
     }
   }
 }
 ```
-
 </p>
 </details>
 
-([&uarr; up to index](#keptn-cloud-events))
+#### Example
 
-## Remediation Status Changed
-
-The *remediation.status.changed* event is sent when a remediation action was triggered but there are further remediation actions available.
-
-### type
 ```json
-"type": "sh.keptn.event.remediation.status.changed"
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message"
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.deployment.started"
+}
 ```
 
-### data
+([&uarr; up to index](#keptn-cloud-events))
+### Deployment Status Changed
+#### Type
+sh.keptn.event.deployment.status.changed
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.deployment.status.changed</summary>
+<p>
+
 ```json
-"RemediationStatusChangedEventData": {
-  "required": [
-    "project",
-    "remediation",
-    "service",
-    "stage"
-  ],
-  "properties": {
-    "project": {
-      "type": "string"
-    },
-    "remediation": {
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/DeploymentStatusChangedEventData",
+  "definitions": {
+    "DeploymentStatusChangedEventData": {
       "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
         "status",
         "result",
+        "message"
       ],
-      "status": { // Enum: succeeded, errored, unknown
-        "type": "string" 
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
       },
-      "result": {
-        "required": [
-          "actionIndex",
-          "actionName",
-        ],
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message"
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.deployment.status.changed"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+### Deployment Finished
+#### Type
+sh.keptn.event.deployment.finished
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.deployment.finished</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/DeploymentFinishedEventData",
+  "definitions": {
+    "DeploymentData": {
+      "required": [
+        "deploymentNames",
+        "gitCommit"
+      ],
+      "properties": {
+        "deploymentstrategy": {
+          "type": "string"
+        },
+        "deploymentURIsLocal": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "deploymentURIsPublic": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "deploymentNames": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "gitCommit": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "DeploymentFinishedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message",
+        "deployment"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "deployment": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/DeploymentData"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message",
+    "deployment": {
+      "deploymentstrategy": "direct",
+      "deploymentURIsLocal": [
+        "http://carts.sockshop-staging.svc.cluster.local"
+      ],
+      "deploymentURIsPublic": [
+        "http://carts.sockshot.local:80"
+      ],
+      "deploymentNames": [
+        "deployment-1"
+      ],
+      "gitCommit": "ca82a6dff817gc66f44342007202690a93763949"
+    }
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.deployment.finished"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+## Test
+### Test Triggered
+#### Type
+sh.keptn.event.test.triggered
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.test.triggered</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/TestTriggeredEventData",
+  "definitions": {
+    "": {
+      "required": [
+        "teststrategy"
+      ],
+      "properties": {
+        "teststrategy": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "TestTriggeredEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message",
+        "test",
+        "deployment"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "test": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/"
+        },
+        "deployment": {
+          "$ref": "#/definitions/"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message",
+    "test": {
+      "teststrategy": "functional"
+    },
+    "deployment": {
+      "deploymentURIsLocal": [
+        "http://carts.sockshop-staging.svc.cluster.local"
+      ],
+      "deploymentURIsPublic": [
+        "http://carts.sockshot.local:80"
+      ]
+    }
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.test.triggered"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+### Test Started
+#### Type
+sh.keptn.event.test.started
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.test.started</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/TestStartedEventData",
+  "definitions": {
+    "TestStartedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message"
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.test.started"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+### Test Status Changed
+#### Type
+sh.keptn.event.test.triggered
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.test.triggered</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/TestStatusChangedEventData",
+  "definitions": {
+    "TestStatusChangedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message"
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.test.triggered"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+### Test Finished
+#### Type
+sh.keptn.event.test.finished
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.test.finished</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/TestFinishedEventData",
+  "definitions": {
+    "": {
+      "required": [
+        "start",
+        "end",
+        "gitCommit"
+      ],
+      "properties": {
+        "start": {
+          "type": "string"
+        },
+        "end": {
+          "type": "string"
+        },
+        "gitCommit": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "TestFinishedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message",
+        "test"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "test": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message",
+    "test": {
+      "start": "2019-10-20T07:57:27.152330783Z",
+      "end": "2019-10-20T08:57:27.152330783Z",
+      "gitCommit": "ca82a6dff817gc66f44342007202690a93763949"
+    }
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.test.finished"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+## Evaluation
+### Evaluation Triggered
+#### Type
+sh.keptn.event.evaluation.triggered
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.evaluation.triggered</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/EvaluationTriggeredEventData",
+  "definitions": {
+    "": {
+      "required": [
+        "start",
+        "end"
+      ],
+      "properties": {
+        "start": {
+          "type": "string"
+        },
+        "end": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "EvaluationTriggeredEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message",
+        "test",
+        "evaluation",
+        "deployment"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "test": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/"
+        },
+        "evaluation": {
+          "$ref": "#/definitions/"
+        },
+        "deployment": {
+          "$ref": "#/definitions/"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message",
+    "test": {
+      "start": "2019-10-20T06:57:27.152330783Z",
+      "end": "2019-10-20T07:57:27.152330783Z"
+    },
+    "evaluation": {
+      "start": "2019-10-20T07:57:27.152330783Z",
+      "end": "2019-10-20T08:57:27.152330783Z"
+    },
+    "deployment": {
+      "deploymentNames": [
+        "deployment-1"
+      ]
+    }
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.evaluation.triggered"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+### Evaluation Started
+#### Type
+sh.keptn.event.evaluation.started
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.evaluation.started</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/EvaluationStartedEventData",
+  "definitions": {
+    "EvaluationStartedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message"
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.evaluation.started"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+### Evaluation Status Changed
+#### Type
+sh.keptn.event.evaluation.status.changed
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.evaluation.status.changed</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/EvaluationStatusChangedEventData",
+  "definitions": {
+    "EvaluationStatusChangedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message"
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.evaluation.status.changed"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+### Evaluation Finished
+#### Type
+sh.keptn.event.evaluation.finished
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.evaluation.finished</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/EvaluationFinishedEventData",
+  "definitions": {
+    "EvaluationDetails": {
+      "required": [
+        "timeStart",
+        "timeEnd",
+        "result",
+        "score",
+        "sloFileContent",
+        "indicatorResults",
+        "comparedEvents",
+        "gitCommit"
+      ],
+      "properties": {
+        "timeStart": {
+          "type": "string"
+        },
+        "timeEnd": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "score": {
+          "type": "number"
+        },
+        "sloFileContent": {
+          "type": "string"
+        },
+        "indicatorResults": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/SLIEvaluationResult"
+          },
+          "type": "array"
+        },
+        "comparedEvents": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "gitCommit": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "EvaluationFinishedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message",
+        "evaluation"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "evaluation": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/EvaluationDetails"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "SLIEvaluationResult": {
+      "required": [
+        "score",
+        "value",
+        "targets",
+        "status"
+      ],
+      "properties": {
+        "score": {
+          "type": "number"
+        },
+        "value": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/SLIResult"
+        },
+        "targets": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/SLITarget"
+          },
+          "type": "array"
+        },
+        "status": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "SLIResult": {
+      "required": [
+        "metric",
+        "value",
+        "success"
+      ],
+      "properties": {
+        "metric": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "SLITarget": {
+      "required": [
+        "criteria",
+        "targetValue",
+        "violated"
+      ],
+      "properties": {
+        "criteria": {
+          "type": "string"
+        },
+        "targetValue": {
+          "type": "number"
+        },
+        "violated": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message",
+    "evaluation": {
+      "timeStart": "2019-11-18T11:21:06Z",
+      "timeEnd": "2019-11-18T11:29:36Z",
+      "result": "fail",
+      "score": 0,
+      "sloFileContent": "LS0tDQpzcGVjX3ZlcnNpb246ICcxLjAnDQpjb21wYXJpc29uOg0KICBjb21wYXJlX3dpdGg6ICJzaW5nbGVfcmVzdWx0Ig0KICBpbmNsdWRlX3Jlc3VsdF93aXRoX3Njb3JlOiAicGFzcyINCiAgYWdncmVnYXRlX2Z1bmN0aW9uOiBhdmcNCm9iamVjdGl2ZXM6DQogIC0gc2xpOiByZXNwb25zZV90aW1lX3A5NQ0KICAgIHBhc3M6ICAgICAgICAjIHBhc3MgaWYgKHJlbGF0aXZlIGNoYW5nZSA8PSAxMCUgQU5EIGFic29sdXRlIHZhbHVlIGlzIDwgNTAwKQ0KICAgICAgLSBjcml0ZXJpYToNCiAgICAgICAgICAtICI8PSsxMCUiICMgcmVsYXRpdmUgdmFsdWVzIHJlcXVpcmUgYSBwcmVmaXhlZCBzaWduIChwbHVzIG9yIG1pbnVzKQ0KICAgICAgICAgIC0gIjw2MDAiICAgIyBhYnNvbHV0ZSB2YWx1ZXMgb25seSByZXF1aXJlIGEgbG9naWNhbCBvcGVyYXRvcg0KICAgIHdhcm5pbmc6ICAgICAjIGlmIHRoZSByZXNwb25zZSB0aW1lIGlzIGJlbG93IDgwMG1zLCB0aGUgcmVzdWx0IHNob3VsZCBiZSBhIHdhcm5pbmcNCiAgICAgIC0gY3JpdGVyaWE6DQogICAgICAgICAgLSAiPD04MDAiDQp0b3RhbF9zY29yZToNCiAgcGFzczogIjkwJSINCiAgd2FybmluZzogNzUl",
+      "indicatorResults": [
+        {
+          "score": 0,
+          "value": {
+            "metric": "response_time_p95",
+            "value": 1002.6278552658177,
+            "success": true,
+            "message": "a message"
+          },
+          "targets": [
+            {
+              "criteria": "\u003c=+10%",
+              "targetValue": 600,
+              "violated": true
+            }
+          ],
+          "status": "failed"
+        }
+      ],
+      "comparedEvents": [
+        "event-id-1",
+        "event-id-2"
+      ],
+      "gitCommit": ""
+    }
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.evaluation.finished"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+## Release
+### Release Triggered
+#### Type
+sh.keptn.event.release.triggered
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.release.triggered</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/ReleaseTriggeredEventData",
+  "definitions": {
+    "DeploymentWithStrategy": {
+      "properties": {
+        "deploymentstrategy": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "ReleaseTriggeredEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message",
+        "deployment"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "deployment": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/DeploymentWithStrategy"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message",
+    "deployment": {
+      "deploymentstrategy": "duplicate"
+    }
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.release.triggered"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+### Release Started
+#### Type
+sh.keptn.event.release.started
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.release.started</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/ReleaseStartedEventData",
+  "definitions": {
+    "ReleaseStartedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message"
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.release.started"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+### Release Status Changed
+#### Type
+sh.keptn.event.release.status.changed
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.release.status.changed</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/ReleaseStatusChangedEventData",
+  "definitions": {
+    "ReleaseStatusChangedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message"
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.release.status.changed"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+### Release Finished
+#### Type
+sh.keptn.event.release.finished
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.release.finished</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/ReleaseFinishedEventData",
+  "definitions": {
+    "ReleaseData": {
+      "required": [
+        "gitCommit"
+      ],
+      "properties": {
+        "gitCommit": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "ReleaseFinishedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message",
+        "release"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "release": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ReleaseData"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message",
+    "release": {
+      "gitCommit": "ca82a6dff817gc66f44342007202690a93763949"
+    }
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.release.finished"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+## Remediation
+### Remediation Triggered
+#### Type
+sh.keptn.event.remediation.triggered
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.remediation.triggered</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/RemediationTriggeredEventData",
+  "definitions": {
+    "ProblemDetails": {
+      "required": [
+        "ProblemID",
+        "ProblemTitle",
+        "ProblemDetails",
+        "PID"
+      ],
+      "properties": {
+        "State": {
+          "type": "string"
+        },
+        "ProblemID": {
+          "type": "string"
+        },
+        "ProblemTitle": {
+          "type": "string"
+        },
+        "ProblemDetails": {
+          "type": "string",
+          "media": {
+            "binaryEncoding": "base64"
+          }
+        },
+        "PID": {
+          "type": "string"
+        },
+        "ProblemURL": {
+          "type": "string"
+        },
+        "ImpactedEntity": {
+          "type": "string"
+        },
+        "Tags": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "RemediationTriggeredEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message",
+        "problem"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "problem": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ProblemDetails"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.remediation.triggered"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+### Remediation Started
+#### Type
+sh.keptn.event.remediation.started
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.remediation.started</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/RemediationStartedEventData",
+  "definitions": {
+    "RemediationStartedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message"
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.remediation.started"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+### Remediation Status Changed
+#### Type
+sh.keptn.event.remediation.status.changed
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.remediation.status.changed</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/RemediationStatusChangedEventData",
+  "definitions": {
+    "Remediation": {
+      "required": [
+        "actionIndex",
+        "actionName"
+      ],
+      "properties": {
         "actionIndex": {
           "type": "integer"
-        },      
+        },
         "actionName": {
           "type": "string"
-        },
-      },
-      "type": "object"
-    },
-    "service": {
-      "type": "string"
-    },
-    "stage": {
-      "type": "string"
-    },
-    "labels": {
-      "patternProperties": {
-        ".*": {
-          "type": "string"
         }
       },
+      "additionalProperties": false,
       "type": "object"
     },
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-```
-
-### Example
-<details><summary>Example of sh.keptn.event.remediation.status.changed</summary>
-<p>
-
-```json
-{
-  "type": "sh.keptn.event.remediation.status.changed",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/remediation-service",
-  "id": "ggb878d3-03c0-4e8f-bc3f-454bc1b3d888",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "data": {
-    "project": "sockshop",
-    "remediation": {
-      "status": "succeeded",
-      "result": {
-        "actionIndex": 0,
-        "actionName": "scaling",
-      }
-    },
-    "service": "carts",
-    "stage": "staging",
-    "labels": {
-      "testId": "4711",
-      "buildId": "build-17",
-      "owner": "JohnDoe"
-    },
-  }
-}
-```
-
-</p>
-</details>
-
-([&uarr; up to index](#keptn-cloud-events))
-
-## Remediation Finished
-
-The *remediation.finished* event is sent when a remediation action is finished.
-
-### type
-```json
-"type": "sh.keptn.event.remediation.finished"
-```
-
-### data
-```json
-"RemediationFinishedEventData": {
-  "required": [
-    "problem",
-    "project",
-    "remediation",
-    "service",
-    "stage"
-  ],
-  "properties": {
-    "problem": {
+    "RemediationStatusChangedEventData": {
       "required": [
-        "PID",
-        "ProblemDetails",
-        "ProblemID",
-        "ProblemTitle"
-      ],
-      "ImpactedEntities": {
-        "type": "string"
-      },
-      "PID": {
-        "type": "string"
-      },
-      "ProblemDetails": {
-        "items": {
-          "type": "integer"
-        },
-        "type": "array"
-      },
-      "ProblemID": {
-        "type": "string"
-      },
-      "ProblemTitle": {
-        "type": "string"
-      },
-      "ProblemURL": {
-        "type": "string"
-      },
-      "State": {
-        "type": "string"
-      },
-      "Tags": {
-        "type": "string"
-      },
-      "type": "object"
-    },
-    "project": {
-      "type": "string"
-    },
-    "remediation": {
-      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
         "status",
         "result",
+        "message",
+        "remediation"
       ],
-      "status": { // Enum: succeeded, errored, unknown
-        "type": "string" 
-      },
-      "result": {
-        "type": "string"  // Enum: pass, failed
-      },
-      "message": {
-        "type": "string"
-      },
-      "type": "object"
-    },
-    "service": {
-      "type": "string"
-    },
-    "stage": {
-      "type": "string"
-    },
-    "labels": {
-      "patternProperties": {
-        ".*": {
+      "properties": {
+        "project": {
           "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "remediation": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/Remediation"
         }
       },
+      "additionalProperties": false,
       "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
     },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message",
+    "remediation": {
+      "actionIndex": 1,
+      "actionName": "trigger-runbook"
+    }
   },
-  "additionalProperties": false,
-  "type": "object"
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.remediation.status.changed"
 }
 ```
 
-### Example
-<details><summary>Example of sh.keptn.event.remediation.finished</summary>
+([&uarr; up to index](#keptn-cloud-events))
+### Remediation Finished
+#### Type
+sh.keptn.event.remediation.finished
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.remediation.finished</summary>
 <p>
 
 ```json
 {
-  "type": "sh.keptn.event.remediation.finished",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/remediation-service",
-  "id": "ggb878d3-03c0-4e8f-bc3f-454bc1b3d888",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "data": {
-    "problem": {
-      "ImpactedEntity": "carts-primary",
-      "PID": "93a5-3fas-a09d-8ckf",
-      "ProblemDetails": "Pod name",
-      "ProblemID": "762",
-      "ProblemTitle": "cpu_usage_sockshop_carts",
-      "State": "OPEN",
-    },
-    "project": "sockshop",
-    "remediation": {
-      "status": "succeeded",
-      "result": "pass"
-    },
-    "service": "carts",
-    "stage": "staging",
-    "labels": {
-      "testId": "4711",
-      "buildId": "build-17",
-      "owner": "JohnDoe"
-    },
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/RemediationFinishedEventData",
+  "definitions": {
+    "RemediationFinishedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
   }
 }
 ```
-
 </p>
 </details>
 
-([&uarr; up to index](#keptn-cloud-events))
+#### Example
 
-## Action Triggered
-
-The *action.triggered* event triggers a remediation action.
-
-### type
 ```json
-"type": "sh.keptn.event.action.triggered"
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message"
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.remediation.finished"
+}
 ```
 
-### data
+([&uarr; up to index](#keptn-cloud-events))
+## Action
+### Action Triggered
+#### Type
+sh.keptn.event.action.triggered
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.action.triggered</summary>
+<p>
+
 ```json
-"ActionTriggeredEventData": {
-  "required": [
-    "action",
-    "problem",
-    "project",
-    "service",
-    "stage"
-  ],
-  "properties": {
-    "action": {
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/ActionTriggeredEventData",
+  "definitions": {
+    "ActionInfo": {
       "required": [
         "name",
         "action",
         "description"
-      ],     
-      "name": {
-        "type": "string"
-      },
-      "action": {
-        "type": "string"
-      },
-      "description": {
-        "type": "string"
-      },
-      "value": {
-        "type": ["object", "string"]
-      },
-      "type": "object"
-    },
-    "problem": {
-      "required": [
-        "PID",
-        "ProblemDetails",
-        "ProblemID",
-        "ProblemTitle"
       ],
-      "ImpactedEntities": {
-        "type": "string"
-      },
-      "PID": {
-        "type": "string"
-      },
-      "ProblemDetails": {
-        "items": {
-          "type": "integer"
+      "properties": {
+        "name": {
+          "type": "string"
         },
-        "type": "array"
+        "action": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "value": {
+          "additionalProperties": true
+        }
       },
-      "ProblemID": {
-        "type": "string"
-      },
-      "ProblemTitle": {
-        "type": "string"
-      },
-      "ProblemURL": {
-        "type": "string"
-      },
-      "State": {
-        "type": "string"
-      },
-      "Tags": {
-        "type": "string"
-      },
+      "additionalProperties": false,
       "type": "object"
     },
-    "project": {
-      "type": "string"
+    "ActionTriggeredEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message",
+        "action",
+        "problem"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "action": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ActionInfo"
+        },
+        "problem": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ProblemDetails"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
     },
-    "service": {
-      "type": "string"
-    },
-    "stage": {
-      "type": "string"
-    },
-    "labels": {
-      "patternProperties": {
-        ".*": {
+    "ProblemDetails": {
+      "required": [
+        "ProblemID",
+        "ProblemTitle",
+        "ProblemDetails",
+        "PID"
+      ],
+      "properties": {
+        "State": {
+          "type": "string"
+        },
+        "ProblemID": {
+          "type": "string"
+        },
+        "ProblemTitle": {
+          "type": "string"
+        },
+        "ProblemDetails": {
+          "type": "string",
+          "media": {
+            "binaryEncoding": "base64"
+          }
+        },
+        "PID": {
+          "type": "string"
+        },
+        "ProblemURL": {
+          "type": "string"
+        },
+        "ImpactedEntity": {
+          "type": "string"
+        },
+        "Tags": {
           "type": "string"
         }
       },
+      "additionalProperties": false,
       "type": "object"
-    },
-  },
-  "additionalProperties": false,
-  "type": "object"
+    }
+  }
 }
 ```
+</p>
+</details>
 
-### Example
-<details><summary>Example of sh.keptn.event.action.triggered</summary>
-<p>
+#### Example
 
 ```json
 {
-  "type": "sh.keptn.event.action.triggered",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/remediation-service",
-  "id": "f2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "data": {    
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": null,
+    "status": "",
+    "result": "",
+    "message": "",
     "action": {
       "name": "Feature toggeling",
       "action": "toggle-feature",
-      "description": "Toggles a feature flage",
+      "description": "Toggles a feature flag",
       "value": {
         "EnableItemCache": "on"
       }
     },
     "problem": {
-      "ImpactedEntity": "carts-primary",
-      "PID": "93a5-3fas-a09d-8ckf",
-      "ProblemDetails": "Pod name",
+      "State": "OPEN",
       "ProblemID": "762",
       "ProblemTitle": "cpu_usage_sockshop_carts",
-      "State": "OPEN",
-    },
-    "project": "sockshop",
-    "service": "carts",
-    "stage": "staging",
-    "labels": {
-      "testId": "4711",
-      "buildId": "build-17",
-      "owner": "JohnDoe"
-    },
-  }
+      "ProblemDetails": null,
+      "PID": "93a5-3fas-a09d-8ckf",
+      "ProblemURL": "http://problem.url.com",
+      "ImpactedEntity": "carts-primary"
+    }
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.action.triggered"
 }
 ```
-
-</p>
-</details>
 
 ([&uarr; up to index](#keptn-cloud-events))
+### Action Started
+#### Type
+sh.keptn.event.action.started
+#### Data
 
-## Action Started
-
-The *action.started* event is sent when a remediation action is started by the action provider.
-
-### type
-```json
-"type": "sh.keptn.event.action.started"
-```
-
-### data
-```json
-"ActionStartedEventData": {
-  "required": [
-    "project",
-    "service",
-    "stage"
-  ],
-  "properties": {
-    "project": {
-      "type": "string"
-    },
-    "service": {
-      "type": "string"
-    },
-    "stage": {
-      "type": "string"
-    },
-    "labels": {
-      "patternProperties": {
-        ".*": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    },
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-```
-
-### Example
-<details><summary>Example of sh.keptn.event.action.started</summary>
+<details><summary>Json Schema of sh.keptn.event.action.started</summary>
 <p>
 
 ```json
 {
-  "type": "sh.keptn.event.action.started",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/unleash-service",
-  "id": "ggb878d3-03c0-4e8f-bc3f-454bc1b3d888",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "triggeredid": "2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "data": {
-    "project": "sockshop",
-    "service": "carts",
-    "stage": "staging",
-    "labels": {
-      "testId": "4711",
-      "buildId": "build-17",
-      "owner": "JohnDoe"
-    },
-  }
-}
-```
-
-</p>
-</details>
-
-([&uarr; up to index](#keptn-cloud-events))
-
-## Action Finished
-
-The *action.finished* event is sent when a remediation action is finished.
-
-### type
-```json
-"type": "sh.keptn.event.action.finished"
-```
-
-### data
-```json
-"ActionFinishedEventData": {
-  "required": [
-    "action",
-    "project",
-    "service",
-    "stage"
-  ],
-  "properties": {
-    "action": {
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/ActionStartedEventData",
+  "definitions": {
+    "ActionStartedEventData": {
       "required": [
-        "result",
+        "project",
+        "stage",
+        "service",
+        "labels",
         "status",
+        "result",
+        "message"
       ],
-      "result": { // Enum: pass , failed 
-        "type": "string" 
-      },
-      "status": { // Enum: succeeded, errored, unknown
-        "type": "string" 
-      },
-      "type": "object"
-    },
-    "project": {
-      "type": "string"
-    },
-    "service": {
-      "type": "string"
-    },
-    "stage": {
-      "type": "string"
-    },
-    "labels": {
-      "patternProperties": {
-        ".*": {
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
           "type": "string"
         }
       },
+      "additionalProperties": false,
       "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
     },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message"
   },
-  "additionalProperties": false,
-  "type": "object"
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.action.started"
 }
 ```
 
-### Example
-<details><summary>Example of sh.keptn.event.action.finished</summary>
+([&uarr; up to index](#keptn-cloud-events))
+### Action Finished
+#### Type
+sh.keptn.event.action.finished
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.action.finished</summary>
 <p>
 
 ```json
 {
-  "type": "sh.keptn.event.action.finished",
-  "specversion": "0.2",
-  "source": "https://github.com/keptn/keptn/unleash-service",
-  "id": "ggb878d3-03c0-4e8f-bc3f-454bc1b3d888",
-  "time": "2019-06-07T07:02:15.64489Z",
-  "contenttype": "application/json",
-  "shkeptncontext": "08735340-6f9e-4b32-97ff-3b6c292bc509",
-  "triggeredid": "2b878d3-03c0-4e8f-bc3f-454bc1b3d79d",
-  "data": {
-    "action": {
-      "result": "pass",
-      "status": "succeeded"
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/ActionFinishedEventData",
+  "definitions": {
+    "ActionData": {
+      "required": [
+        "gitCommit"
+      ],
+      "properties": {
+        "gitCommit": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
     },
-    "project": "sockshop",
-    "service": "carts",
-    "stage": "staging",
-    "labels": {
-      "testId": "4711",
-      "buildId": "build-17",
-      "owner": "JohnDoe"
-    },
+    "ActionFinishedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message",
+        "action"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "action": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ActionData"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
   }
 }
 ```
-
 </p>
 </details>
 
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": null,
+    "status": "",
+    "result": "",
+    "message": "",
+    "action": {
+      "gitCommit": "93a5-3fas-a09d-8ckf"
+    }
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.action.finished"
+}
+```
+
 ([&uarr; up to index](#keptn-cloud-events))
+## Get SLI
+### Get SLI Triggered
+#### Type
+sh.keptn.event.get-sli.triggered
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.get-sli.triggered</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/GetSLITriggeredEventData",
+  "definitions": {
+    "": {
+      "required": [
+        "sliProvider",
+        "start",
+        "end",
+        "indicators",
+        "customFilters"
+      ],
+      "properties": {
+        "sliProvider": {
+          "type": "string"
+        },
+        "start": {
+          "type": "string"
+        },
+        "end": {
+          "type": "string"
+        },
+        "indicators": {
+          "$ref": "#/definitions/"
+        },
+        "customFilters": {
+          "$ref": "#/definitions/"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "GetSLITriggeredEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message",
+        "get-sli"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "get-sli": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": null,
+    "status": "",
+    "result": "",
+    "message": "",
+    "get-sli": {
+      "sliProvider": "dynatrace",
+      "start": "2019-10-28T15:44:27.152330783Z",
+      "end": "2019-10-28T15:54:27.152330783Z",
+      "indicators": [
+        "throughput",
+        "error_rate",
+        "request_latency_p95"
+      ],
+      "customFilters": [
+        {
+          "key": "dynatraceEntityName",
+          "value": "HealthCheckController"
+        },
+        {
+          "key": "tags",
+          "value": "test-subject:true"
+        }
+      ]
+    }
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.get-sli.triggered"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+### Get SLI Started
+#### Type
+sh.keptn.event.get-sli.started
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.get-sli.started</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/GetSLIStartedEventData",
+  "definitions": {
+    "GetSLIStartedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message"
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.get-sli.started"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+### Get SLI Finished
+#### Type
+sh.keptn.event.get-sli.finished
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.get-sli.finished</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/GetSLIFinishedEventData",
+  "definitions": {
+    "": {
+      "required": [
+        "start",
+        "end",
+        "indicatorValues"
+      ],
+      "properties": {
+        "start": {
+          "type": "string"
+        },
+        "end": {
+          "type": "string"
+        },
+        "indicatorValues": {
+          "$ref": "#/definitions/"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "GetSLIFinishedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message",
+        "get-sli"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "get-sli": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": null,
+    "status": "",
+    "result": "",
+    "message": "",
+    "get-sli": {
+      "start": "2019-10-20T07:57:27.152330783Z",
+      "end": "2019-10-22T08:57:27.152330783Z",
+      "indicatorValues": [
+        {
+          "metric": "response_time_p50",
+          "value": 1011.0745528937252,
+          "success": true
+        }
+      ]
+    }
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.get-sli.finished"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+## Monitoring
+### Configure Monitoring Triggered
+#### Type
+sh.keptn.event.configure-monitoring.triggered
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.configure-monitoring.triggered</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/ConfigureMonitoringTriggeredEventData",
+  "definitions": {
+    "ConfigureMonitoringTriggeredEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message",
+        "configureMonitoring"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "configureMonitoring": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ConfigureMonitoringTriggeredParams"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "ConfigureMonitoringTriggeredParams": {
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": null,
+    "status": "",
+    "result": "",
+    "message": "",
+    "configureMonitoring": {
+      "type": "dynatrace"
+    }
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.configure-monitoring.triggered"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+### Configure Monitoring Started
+#### Type
+sh.keptn.event.configure-monitoring.started
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.configure-monitoring.started</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/ConfigureMonitoringStartedEventData",
+  "definitions": {
+    "ConfigureMonitoringStartedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message"
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.configure-monitoring.started"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+### Configure Monitoring Finished
+#### Type
+sh.keptn.event.configure-monitoring.finished
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.configure-monitoring.finished</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/ConfigureMonitoringFinishedEventData",
+  "definitions": {
+    "ConfigureMonitoringFinishedEventData": {
+      "required": [
+        "project",
+        "stage",
+        "service",
+        "labels",
+        "status",
+        "result",
+        "message"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message"
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.configure-monitoring.finished"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+## Problem
+### Problem Open
+#### Type
+sh.keptn.event.problem.open
+#### Data
+
+<details><summary>Json Schema of sh.keptn.event.problem.open</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/ProblemEventData",
+  "definitions": {
+    "ProblemEventData": {
+      "required": [
+        "ProblemID",
+        "ProblemTitle",
+        "ProblemDetails",
+        "PID",
+        "labels"
+      ],
+      "properties": {
+        "State": {
+          "type": "string"
+        },
+        "ProblemID": {
+          "type": "string"
+        },
+        "ProblemTitle": {
+          "type": "string"
+        },
+        "ProblemDetails": {
+          "type": "string",
+          "media": {
+            "binaryEncoding": "base64"
+          }
+        },
+        "PID": {
+          "type": "string"
+        },
+        "ProblemURL": {
+          "type": "string"
+        },
+        "ImpactedEntity": {
+          "type": "string"
+        },
+        "Tags": {
+          "type": "string"
+        },
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+#### Example
+
+```json
+{
+  "data": {
+    "State": "OPEN",
+    "ProblemID": "ab81-941c-f198",
+    "ProblemTitle": "Response Time Degradation",
+    "ProblemDetails": {
+      "displayName": "641",
+      "endTime": -1,
+      "hasRootCause": false,
+      "id": "1234_5678V2",
+      "impactLevel": "SERVICE",
+      "severityLevel": "PERFORMANCE",
+      "startTime": 1587624420000,
+      "status": "OPEN"
+    },
+    "PID": "93a5-3fas-a09d-8ckf",
+    "ProblemURL": "https://.../#problems/problemdetails;pid=93a5-3fas-a09d-8ckf",
+    "ImpactedEntity": "carts-primary",
+    "project": "sockshop",
+    "stage": "production",
+    "service": "service",
+    "labels": null
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.problem.open"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+
