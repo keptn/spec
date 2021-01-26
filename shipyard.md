@@ -171,10 +171,10 @@ spec:
       tasks:
       - name: deployment
         properties:  
-          strategy: direct
+          deploymentstrategy: direct
       - name: test
         properties:
-          kind: functional
+          teststrategy: functional
       - name: evaluation 
       - name: release 
 
@@ -186,10 +186,10 @@ spec:
       tasks:
       - name: deployment
         properties: 
-          strategy: blue_green_service
+          deploymentstrategy: blue_green_service
       - name: test
         properties:  
-          kind: performance
+          teststrategy: performance
       - name: evaluation
       - name: release
         
@@ -201,7 +201,7 @@ spec:
       tasks:
       - name: deployment
         properties:
-          strategy: blue_green
+          deploymentstrategy: blue_green
       - name: release
       
     - name: remediation
@@ -246,7 +246,7 @@ Defines the deployment strategy used to deploy a new version of a service. For e
 ```yaml
 - name: deployment
   properties: 
-    strategy: blue_green_service
+    deploymentstrategy: blue_green_service
 ```
 
 ## evaluation
@@ -278,7 +278,7 @@ Defines whether remediation actions are enabled or not.
 
 ## test
 
-Defines the test strategy used to validate a deployment. Failed tests result in an automatic roll-back of the latest deployment in case of a blue/green deployment strategy. For example, the *jmeter-service* supports the test `strategy` set to:
+Defines the test strategy used to validate a deployment. Failed tests result in an automatic roll-back of the latest deployment in case of a blue/green deployment strategy. For example, the *jmeter-service* supports the `teststrategy` set to:
   * `functional`: Test a deployment based on functional tests. 
   * `performance`: Test a deployment based on performance/load tests.
 
@@ -286,6 +286,6 @@ Defines the test strategy used to validate a deployment. Failed tests result in 
 ```yaml
 - name: test
   properties: 
-    strategy: functional
+    teststrategy: functional
 ```
 
