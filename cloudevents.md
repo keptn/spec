@@ -2443,6 +2443,93 @@ sh.keptn.event.evaluation.finished
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
+#### Evaluation Invalidated
+##### Type
+sh.keptn.event.evaluation.invalidated
+##### Data Json Schema
+
+<details><summary>Json Schema of sh.keptn.event.evaluation.invalidated</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/EventData",
+  "definitions": {
+    "EventData": {
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
+          "type": "string"
+        },
+        "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+##### Example Cloud Event
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message"
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "source": "source-service",
+  "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "type": "sh.keptn.event.evaluation.invalidated"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
 ## Release
 ### Release Triggered
 #### Type
