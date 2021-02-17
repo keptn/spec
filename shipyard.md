@@ -208,7 +208,7 @@ spec:
   stages:
     - name: dev
       sequences:
-        - name: artifact-delivery
+        - name: delivery
           tasks:
           - name: deployment
             properties:
@@ -221,9 +221,9 @@ spec:
 
     - name: hardening
       sequences:
-        - name: artifact-delivery
+        - name: delivery
           triggeredOn:
-          - event: dev.artifact-delivery.finished
+          - event: dev.delivery.finished
           tasks:
           - name: deployment
             properties:
@@ -236,9 +236,9 @@ spec:
 
     - name: production
       sequences:
-        - name: artifact-delivery
+        - name: delivery
           triggered-on:
-          - event: hardening.artifact-delivery.finished
+          - event: hardening.delivery.finished
           tasks:
           - name: deployment
               properties:
@@ -246,7 +246,7 @@ spec:
           - name: release
         - name: rollback
           triggeredOn:
-          - event: "production.artifact-delivery.finished"
+          - event: production.delivery.finished
             selector:
               match:
                 result: failed
@@ -286,8 +286,9 @@ Defines the kind of approval, which is required before deploying an artifact in 
 ## deployment
 
 Defines the deployment strategy used to deploy a new version of a service. For example, the *helm-service* supports the deployment `strategy` set to: 
+
 * `direct`: Deploys a new version of a service by replacing the old version of the service.
-  * `blue_green_service`: Deploys a new version of a service next to the old one. After a successful validation of this new version, it replaces the old one and is marked as stable.
+* `blue_green_service`: Deploys a new version of a service next to the old one. After a successful validation of this new version, it replaces the old one and is marked as stable.
 
 *Usage:*
 ```yaml
