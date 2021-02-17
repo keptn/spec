@@ -10,7 +10,7 @@
 * `kind`: is `Shipyard`
 * `metadata`: Contains at least the property name, which declares a unique name for the Shipyard.
 * `spec`: Consists of the property stages.
-  * `stages`: An array of stages and each stage consists of the properties name and task sequences.
+    * `stages`: An array of stages and each stage consists of the properties name and task sequences.
 
 ## Stage
 
@@ -24,7 +24,7 @@ A Shipyard consists of a list of stages. A stage has the properties:
 A stage consists of a list of sequences whereby a sequence is an ordered list of tasks that are triggered sequentially. A sequence has the properties:
 
 * `name`: A unique name of the sequence
-* `triggers` *(optional)*: An array of events that trigger the sequence.
+* `triggeredOn` *(optional)*: An array of events that trigger the sequence.
 * `tasks`: An array of tasks executed by the sequence in the declared order.
 
 ## Task
@@ -32,128 +32,169 @@ A stage consists of a list of sequences whereby a sequence is an ordered list of
 A sequence consists of a list of tasks whereby a single task is the smallest executable unit. A task has the properties:
 
 * `name`: A unique name of the task
-* `properties` *(optional)*: Task properties as individual `key:value` pairs. These properties precise the task and are consumed by the unit that executes the task.
+* `properties` *(optional)*: Task properties as individual `key:value` pairs. These properties precise the task and are
+  consumed by the unit that executes the task.
 
 # Specification
 
 ```json
-"Shipyard": {
-  "required": [
-    "apiVersion",
-    "kind",
-    "metadata",
-    "spec"
-  ],
-  "properties": {
-    "apiVersion": {
-      "type": "string"
-    },
-    "kind": {
-      "type": "string"
-    },
-    "metadata": {
-      "$ref": "#/definitions/Metadata"
-    },
-    "spec": {
-      "$ref": "#/definitions/ShipyardSpec"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-},
-
-"Metadata": {
-  "required": [
-    "name"
-  ],
-  "properties": {
-    "name": {
-      "type": "string"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-},
-
-"ShipyardSpec": {
-  "required": [
-    "stages"
-  ],
-  "properties": {
-    "stages": {
-      "items": {
-        "$ref": "#/definitions/Stage"
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/Shipyard",
+  "definitions": {
+    "Metadata": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        }
       },
-      "type": "array"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-},
-
-"Stage": {
-  "required": [
-    "name",
-    "sequences"
-  ],
-  "properties": {
-    "name": {
-      "type": "string"
+      "additionalProperties": false,
+      "type": "object"
     },
-    "sequences": {
-      "items": {
-        "$ref": "#/definitions/Sequence"
+    "Selector": {
+      "required": [
+        "match"
+      ],
+      "properties": {
+        "match": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
       },
-      "type": "array"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-},
-
-"Sequence": {
-  "required": [
-    "name",
-    "triggers",
-    "tasks"
-  ],
-  "properties": {
-    "name": {
-      "type": "string"
+      "additionalProperties": false,
+      "type": "object"
     },
-    "triggers": {
-      "items": {
-        "type": "string"
+    "Sequence": {
+      "required": [
+        "name",
+        "tasks"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "triggeredOn": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/Trigger"
+          },
+          "type": "array"
+        },
+        "tasks": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/Task"
+          },
+          "type": "array"
+        }
       },
-      "type": "array"
+      "additionalProperties": false,
+      "type": "object"
     },
-    "tasks": {
-      "items": {
-        "$ref": "#/definitions/Task"
+    "Shipyard": {
+      "required": [
+        "apiVersion",
+        "kind",
+        "metadata",
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "metadata": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/Metadata"
+        },
+        "spec": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ShipyardSpec"
+        }
       },
-      "type": "array"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-},
-
-"Task": {
-  "required": [
-    "name",
-    "properties"
-  ],
-  "properties": {
-    "name": {
-      "type": "string"
+      "additionalProperties": false,
+      "type": "object"
     },
-    "properties": {
-      "additionalProperties": true
+    "ShipyardSpec": {
+      "required": [
+        "stages"
+      ],
+      "properties": {
+        "stages": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/Stage"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Stage": {
+      "required": [
+        "name",
+        "sequences"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "sequences": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/Sequence"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Task": {
+      "required": [
+        "name",
+        "properties"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "properties": {
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Trigger": {
+      "required": [
+        "event"
+      ],
+      "properties": {
+        "event": {
+          "type": "string"
+        },
+        "selector": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/Selector"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
     }
-  },
-  "additionalProperties": false,
-  "type": "object"
+  }
 }
+
 ```
 
 # Example of a Shipyard (in yaml)
@@ -165,49 +206,54 @@ metadata:
   name: shipyard-sockshop
 spec:
   stages:
-  - name: dev
-    sequences:
-    - name: artifact-delivery
-      tasks:
-      - name: deployment
-        properties:  
-          deploymentstrategy: direct
-      - name: test
-        properties:
-          teststrategy: functional
-      - name: evaluation 
-      - name: release 
+    - name: dev
+      sequences:
+        - name: delivery
+          tasks:
+          - name: deployment
+            properties:
+              deploymentstrategy: direct
+          - name: test
+            properties:
+              teststrategy: functional
+          - name: evaluation
+          - name: release
 
-  - name: hardening
-    sequences:
-    - name: artifact-delivery
-      triggers:
-      - dev.artifact-delivery.finished
-      tasks:
-      - name: deployment
-        properties: 
-          deploymentstrategy: blue_green_service
-      - name: test
-        properties:  
-          teststrategy: performance
-      - name: evaluation
-      - name: release
-        
-  - name: production
-    sequences:
-    - name: artifact-delivery 
-      triggers:
-      - hardening.artifact-delivery.finished
-      tasks:
-      - name: deployment
-        properties:
-          deploymentstrategy: blue_green
-      - name: release
-      
-    - name: remediation
-      tasks:
-      - name: remediation
-      - name: evaluation
+    - name: hardening
+      sequences:
+        - name: delivery
+          triggeredOn:
+          - event: dev.delivery.finished
+          tasks:
+          - name: deployment
+            properties:
+              deploymentstrategy: blue_green_service
+          - name: test
+            properties:
+              teststrategy: performance
+          - name: evaluation
+          - name: release
+
+    - name: production
+      sequences:
+        - name: delivery
+          triggered-on:
+          - event: hardening.delivery.finished
+          tasks:
+          - name: deployment
+              properties:
+                deploymentstrategy: blue_green
+          - name: release
+        - name: rollback
+          triggeredOn:
+          - event: production.delivery.finished
+            selector:
+              match:
+                result: failed
+        - name: remediation
+          tasks:
+          - name: remediation
+          - name: evaluation
 ```
 
 # Reserved Keptn Tasks
@@ -217,41 +263,43 @@ Reserved Keptn tasks are explained below:
 * [**deployment**](#deployment)
 * [**evaluation**](#evaluation)
 * [**release**](#release)
+* [**rollback**](#rollback)  
 * [**remediation**](#remediation)
 * [**test**](#test)
 
 ## approval
 
 Defines the kind of approval, which is required before deploying an artifact in a stage. The approval strategy can be defined based on the evaluation result `pass` and `warning`. Keptn supports the approval strategies for the evaluation results `pass` and `warning` set to:
-  * `automatic`: Task sequence continues without requesting approval.
-  * `manual`:  Task sequence requests for approval before continuing.
-  
+* `automatic`: Task sequence continues without requesting approval.
+* `manual`:  Task sequence requests for approval before continuing.
+
 *Usage:*
 ```yaml
 - name: approval
-  properties: 
+  properties:
     pass: automatic
     warning: manual
 ```
 
-  > **Note:** Per default, an `automatic` approval strategy is used for evaluation result `pass` and `warning`.
+> **Note:** Per default, an `automatic` approval strategy is used for evaluation result `pass` and `warning`.
 
 ## deployment
 
 Defines the deployment strategy used to deploy a new version of a service. For example, the *helm-service* supports the deployment `strategy` set to: 
-  * `direct`: Deploys a new version of a service by replacing the old version of the service.
-  * `blue_green_service`: Deploys a new version of a service next to the old one. After a successful validation of this new version, it replaces the old one and is marked as stable.
+
+* `direct`: Deploys a new version of a service by replacing the old version of the service.
+* `blue_green_service`: Deploys a new version of a service next to the old one. After a successful validation of this new version, it replaces the old one and is marked as stable.
 
 *Usage:*
 ```yaml
 - name: deployment
-  properties: 
+  properties:
     deploymentstrategy: blue_green_service
 ```
 
 ## evaluation
 
-Defines the quality evaluation that is executed to verify the quality of a deplyoment based on its SLOs/SLIs. 
+Defines the quality evaluation that is executed to verify the quality of a deplyoment based on its SLOs/SLIs.
 
 *Usage:*
 ```yaml
@@ -260,11 +308,21 @@ Defines the quality evaluation that is executed to verify the quality of a deply
 
 ## release
 
-Defines the releasing task that is executed after a successful deployment happened. 
+Defines the releasing task that is executed after a successful deployment happened.
 
 *Usage:*
 ```yaml
 - name: release
+```
+
+## rollback
+
+Defines the rollback task that is executed when a rollback shall be triggered.
+
+*Usage:*
+
+```yaml
+- name: rollback
 ```
 
 ## remediation
@@ -279,13 +337,13 @@ Defines whether remediation actions are enabled or not.
 ## test
 
 Defines the test strategy used to validate a deployment. Failed tests result in an automatic roll-back of the latest deployment in case of a blue/green deployment strategy. For example, the *jmeter-service* supports the `teststrategy` set to:
-  * `functional`: Test a deployment based on functional tests. 
-  * `performance`: Test a deployment based on performance/load tests.
+* `functional`: Test a deployment based on functional tests.
+* `performance`: Test a deployment based on performance/load tests.
 
 *Usage:*
 ```yaml
 - name: test
-  properties: 
+  properties:
     teststrategy: functional
 ```
 
