@@ -58,6 +58,12 @@ In Keptn, events have a payload structure as follows (*Note:* The `triggeredid` 
       "description": "The version of the CloudEvents specification",
       "value": "1.0"
     },
+    "shkeptnspecversion": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The version of the Keptn specification",
+      "value": "0.2.0"
+    },
     "time": {
       "format": "date-time",
       "type": "string",
