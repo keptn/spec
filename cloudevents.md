@@ -1,5 +1,6 @@
-# Keptn Cloud Events
-
+## Data
+The data block of a Keptn CloudEvent carries the Keptn Payload of a specific event
+In the following each data block is described and an example of a CloudEvent containing the data block is given.
 * [Project](#project)
 * [Service](#service)
 * [Approval](#approval)
@@ -10,193 +11,15 @@
 * [Remediation](#remediation)
 * [Action](#action)
 * [Get-SLI](#get-sli)
+* [Monitoring](#monitoring)
 * [Problem](#problem)
----
 
-## Keptn CloudEvents
 
-All Keptn events conform to the CloudEvents spec in [version 1.0](https://github.com/cloudevents/spec/blob/v1.0/spec.md). The CloudEvents specification is a vendor-neutral specification for defining the format of event data.
-
-In Keptn, events have a payload structure as follows (*Note:* The `triggeredid` is not contained in events of type `triggered` mentioned below):
-
-```json
-"sh.keptn.event": {
-  "required": [
-    "data",
-    "id",
-    "shkeptncontext",
-    "source",
-    "specversion",
-    "time",
-    "triggeredid",
-    "type"
-  ],
-  "properties": {
-    "data": {
-      "type": ["object", "string"],
-      "description": "The Keptn event payload depending on the type."
-    },
-    "id": {
-      "type": "string",
-      "minLength": 1,
-      "description": "Unique UUID of the Keptn event"
-    },
-    "shkeptncontext": {
-      "format": "uuid",
-      "type": "string",
-      "description": "Unique UUID value that connects various events together"
-    },
-    "source": {
-      "format": "uri-reference",
-      "type": "string",
-      "minLength": 1,
-      "description": "URL to service implementation in Keptn code repo"
-    },
-    "specversion": {
-      "type": "string",
-      "minLength": 1,
-      "description": "The version of the CloudEvents specification",
-      "value": "1.0"
-    },
-    "shkeptnspecversion": {
-      "type": "string",
-      "minLength": 1,
-      "description": "The version of the Keptn specification",
-      "value": "0.2.0"
-    },
-    "time": {
-      "format": "date-time",
-      "type": "string",
-      "description": "Timestamp of when the event happened"
-    },
-    "triggeredid": {
-      "format": "uuid",
-      "type": "string",
-      "description": "The event ID that has triggered the step"
-    },
-    "type": {
-      "type": "string",
-      "minLength": 1,
-      "description": "Type of the Keptn event"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-```
-
-### Type
-
-The event type of a Keptn CloudEvent has the format: 
-
-* `sh.keptn.event.[task].[event status]`
-
-As indicated by the brackets, the event type is defined by a **task** and the **event status**. 
-* The task is declared in the [Shipyard](https://github.com/keptn/spec/blob/master/shipyard.md) of a project. For example, a Shipyard can contain tasks like: `deployment`, `test`, or `evaluation`. Consequently, the event type for a `deployment` task would be `sh.keptn.event.deployment.[event status]`
-* The kinds of event states are defined with: `triggered`, `started`, `status.changed`*, and `finished` (* is optional)
-
-By combining the *task* and *event status* for the `deployment` task, the event types are:
-
-- `sh.keptn.event.deployment.triggered`
-- `sh.keptn.event.deployment.started`
-- `sh.keptn.event.deployment.status.changed`
-- `sh.keptn.event.deployment.finished`
-
-### Data
-
-The data block of a Keptn CloudEvent is structured as follows:
-
-```json
-"data": {
-  "required": [
-    "labels",
-    "message",
-    "project",
-    "result",
-    "service",
-    "stage",
-    "status",
-    "[task]"
-  ],
-  "properties": {
-    "labels": {
-      "patternProperties": {
-        ".*": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    },
-    "message": {
-      "type": "string",
-      "description": "A message from the last task"
-    },
-    "project": {
-      "type": "string",
-      "description": "The name of the project"
-    },
-    "result": {
-      "type": "string",
-      "description": "The result of the last task"
-    },
-    "service": {
-      "type": "string",
-      "description": "The name of the service"
-    },
-    "stage": {
-      "type": "string",
-      "description": "The name of the stage"
-    },
-    "status": {
-      "type": "string",
-      "description": "The status of the last task"
-    },
-    "[task]": {
-      "type": "object"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
-}
-```
-
-The data block of a Keptn CloudEvent contains the properties: 
-- labels
-- message
-- project
-- result
-- service
-- stage
-- status
-- *[task]*
-
-Like the task property in the event type, the task property in the data block depends on the task declaration in the Shipyard. Based on the example of a `deployment` task, the data block contains a `deployment` property of type object. Hence, any payload can be added to this `deployment` property.
-
-This is an example of a data block for a `sh.keptn.event.deployment.finished` event:
-
-```
-"data": {
-  "deployment": {
-    "deploymentNames": [ "carts" ],
-    "deploymentURIsLocal": [ "carts.svc.cluster.local" ],
-    "deploymentURIsPublic": [ "carts.dev.xyz" ],
-    "gitCommit": "aaa6c32e817b9435a4b3f6078b4826fd1aefbccc"
-  },
-  "labels": null,
-  "message": "",
-  "project": "sockshop",
-  "result": "pass",
-  "service": "carts",
-  "stage": "dev",
-  "status": "succeeded"
-}
-```
-
-## Project
-### Project Create Triggered
-#### Type
+### Project
+#### Project Create Triggered
+##### Type
 sh.keptn.event.project.create.triggered
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.project.create.triggered</summary>
 <p>
@@ -209,7 +32,6 @@ sh.keptn.event.project.create.triggered
     "ProjectCreateData": {
       "required": [
         "projectName",
-        "gitRemoteURL",
         "shipyard"
       ],
       "properties": {
@@ -232,7 +54,7 @@ sh.keptn.event.project.create.triggered
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -243,6 +65,7 @@ sh.keptn.event.project.create.triggered
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.project.create.triggered"
@@ -250,10 +73,10 @@ sh.keptn.event.project.create.triggered
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Project Create Started
-#### Type
+#### Project Create Started
+##### Type
 sh.keptn.event.project.create.started
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.project.create.started</summary>
 <p>
@@ -264,15 +87,6 @@ sh.keptn.event.project.create.started
   "$ref": "#/definitions/ProjectCreateStartedEventData",
   "definitions": {
     "ProjectCreateStartedEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message"
-      ],
       "properties": {
         "project": {
           "type": "string"
@@ -292,9 +106,19 @@ sh.keptn.event.project.create.started
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -310,7 +134,7 @@ sh.keptn.event.project.create.started
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -327,17 +151,19 @@ sh.keptn.event.project.create.started
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.project.create.started"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Project Create Finished
-#### Type
+#### Project Create Finished
+##### Type
 sh.keptn.event.project.create.finished
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.project.create.finished</summary>
 <p>
@@ -350,7 +176,6 @@ sh.keptn.event.project.create.finished
     "ProjectCreateData": {
       "required": [
         "projectName",
-        "gitRemoteURL",
         "shipyard"
       ],
       "properties": {
@@ -369,13 +194,6 @@ sh.keptn.event.project.create.finished
     },
     "ProjectCreateFinishedEventData": {
       "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message",
         "createdProject"
       ],
       "properties": {
@@ -397,9 +215,19 @@ sh.keptn.event.project.create.finished
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -419,7 +247,7 @@ sh.keptn.event.project.create.finished
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -441,18 +269,20 @@ sh.keptn.event.project.create.finished
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.project.create.finished"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-## Service
-### Service Create Started
-#### Type
+### Service
+#### Service Create Started
+##### Type
 sh.keptn.event.service.create.started
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.service.create.started</summary>
 <p>
@@ -463,15 +293,6 @@ sh.keptn.event.service.create.started
   "$ref": "#/definitions/ServiceCreateStartedEventData",
   "definitions": {
     "ServiceCreateStartedEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message"
-      ],
       "properties": {
         "project": {
           "type": "string"
@@ -491,9 +312,19 @@ sh.keptn.event.service.create.started
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -509,7 +340,7 @@ sh.keptn.event.service.create.started
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -526,17 +357,19 @@ sh.keptn.event.service.create.started
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.service.create.started"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Service Create Status Changed
-#### Type
+#### Service Create Status Changed
+##### Type
 sh.keptn.event.service.create.status.changed
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.service.create.status.changed</summary>
 <p>
@@ -547,15 +380,6 @@ sh.keptn.event.service.create.status.changed
   "$ref": "#/definitions/ServiceCreateStatusChangedEventData",
   "definitions": {
     "ServiceCreateStatusChangedEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message"
-      ],
       "properties": {
         "project": {
           "type": "string"
@@ -575,9 +399,19 @@ sh.keptn.event.service.create.status.changed
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -593,7 +427,7 @@ sh.keptn.event.service.create.status.changed
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -610,17 +444,19 @@ sh.keptn.event.service.create.status.changed
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.service.create.status.changed"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Service Create Finished
-#### Type
+#### Service Create Finished
+##### Type
 sh.keptn.event.service.create.finished
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.service.create.finished</summary>
 <p>
@@ -630,29 +466,7 @@ sh.keptn.event.service.create.finished
   "$schema": "http://json-schema.org/draft-04/schema#",
   "$ref": "#/definitions/ServiceCreateFinishedEventData",
   "definitions": {
-    "Helm": {
-      "required": [
-        "chart"
-      ],
-      "properties": {
-        "chart": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
     "ServiceCreateFinishedEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message",
-        "helm"
-      ],
       "properties": {
         "project": {
           "type": "string"
@@ -672,17 +486,23 @@ sh.keptn.event.service.create.finished
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
           "type": "string"
-        },
-        "helm": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/Helm"
         }
       },
       "additionalProperties": false,
@@ -694,7 +514,7 @@ sh.keptn.event.service.create.finished
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -707,134 +527,24 @@ sh.keptn.event.service.create.finished
     },
     "status": "succeeded",
     "result": "pass",
-    "message": "a message",
-    "helm": {
-      "chart": "c3RhZ2VzOg0KICAtIG5hbWU6ICJkZXYiDQogICAgZGVwbG95bWVudF9zdHJhdGVneTogImRpcmVjdCINCiAgICB0ZXN0X3N0cmF0ZWd5OiAiZnVuY3Rpb25hbCINCiAgLSBuYW1lOiAic3RhZ2luZyINCiAgICBkZXBsb3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHRlc3Rfc3RyYXRlZ3k6ICJwZXJmb3JtYW5jZSINCiAgLSBuYW1lOiAicHJvZHVjdGlvbiINCiAgICBkZXBsb3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHJlbWVkaWF0aW9uX3N0cmF0ZWd5OiAiYXV0b21hdGVkIg0K\""
-    }
+    "message": "a message"
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.service.create.finished"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-## Approval
-### Approval Triggered
-#### Type
-sh.keptn.event.approval.triggered
-#### Data
-
-<details><summary>Json Schema of sh.keptn.event.approval.triggered</summary>
-<p>
-
-```json
-{
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "$ref": "#/definitions/ApprovalTriggeredEventData",
-  "definitions": {
-    "": {
-      "required": [
-        "pass",
-        "warning"
-      ],
-      "properties": {
-        "pass": {
-          "type": "string"
-        },
-        "warning": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "ApprovalTriggeredEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message",
-        "approval"
-      ],
-      "properties": {
-        "project": {
-          "type": "string"
-        },
-        "stage": {
-          "type": "string"
-        },
-        "service": {
-          "type": "string"
-        },
-        "labels": {
-          "patternProperties": {
-            ".*": {
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "status": {
-          "type": "string"
-        },
-        "result": {
-          "type": "string"
-        },
-        "message": {
-          "type": "string"
-        },
-        "approval": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/"
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    }
-  }
-}
-```
-</p>
-</details>
-
-#### Example
-
-```json
-{
-  "data": {
-    "project": "sockshop",
-    "stage": "dev",
-    "service": "carts",
-    "labels": {
-      "label-key": "label-value"
-    },
-    "status": "succeeded",
-    "result": "pass",
-    "message": "a message",
-    "approval": {
-      "pass": "automatic",
-      "warning": "manual"
-    }
-  },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
-  "source": "source-service",
-  "specversion": "1.0",
-  "type": "sh.keptn.event.approval.triggered"
-}
-```
-
-([&uarr; up to index](#keptn-cloud-events))
-### Approval Started
-#### Type
+### Approval
+#### Approval Started
+##### Type
 sh.keptn.event.approval.started
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.approval.started</summary>
 <p>
@@ -845,15 +555,6 @@ sh.keptn.event.approval.started
   "$ref": "#/definitions/ApprovalStartedEventData",
   "definitions": {
     "ApprovalStartedEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message"
-      ],
       "properties": {
         "project": {
           "type": "string"
@@ -873,9 +574,19 @@ sh.keptn.event.approval.started
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -891,7 +602,7 @@ sh.keptn.event.approval.started
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -908,17 +619,19 @@ sh.keptn.event.approval.started
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.approval.started"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Approval Status Changed
-#### Type
+#### Approval Status Changed
+##### Type
 sh.keptn.event.approval.status.changed
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.approval.status.changed</summary>
 <p>
@@ -929,15 +642,6 @@ sh.keptn.event.approval.status.changed
   "$ref": "#/definitions/ApprovalStatusChangedEventData",
   "definitions": {
     "ApprovalStatusChangedEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message"
-      ],
       "properties": {
         "project": {
           "type": "string"
@@ -957,9 +661,19 @@ sh.keptn.event.approval.status.changed
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -975,7 +689,7 @@ sh.keptn.event.approval.status.changed
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -992,17 +706,19 @@ sh.keptn.event.approval.status.changed
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.approval.status.changed"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Approval Finished
-#### Type
+#### Approval Finished
+##### Type
 sh.keptn.event.approval.finished
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.approval.finished</summary>
 <p>
@@ -1013,15 +729,6 @@ sh.keptn.event.approval.finished
   "$ref": "#/definitions/ApprovalFinishedEventData",
   "definitions": {
     "ApprovalFinishedEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message"
-      ],
       "properties": {
         "project": {
           "type": "string"
@@ -1041,9 +748,19 @@ sh.keptn.event.approval.finished
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -1059,7 +776,7 @@ sh.keptn.event.approval.finished
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -1076,18 +793,20 @@ sh.keptn.event.approval.finished
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.approval.finished"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-## Deployment
-### Deployment Triggered
-#### Type
+### Deployment
+#### Deployment Triggered
+##### Type
 sh.keptn.event.deployment.triggered
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.deployment.triggered</summary>
 <p>
@@ -1114,15 +833,38 @@ sh.keptn.event.deployment.triggered
       "additionalProperties": false,
       "type": "object"
     },
+    "DeploymentTriggeredData": {
+      "required": [
+        "deploymentURIsLocal",
+        "deploymentstrategy"
+      ],
+      "properties": {
+        "deploymentURIsLocal": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "deploymentURIsPublic": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "deploymentstrategy": {
+          "enum": [
+            "direct",
+            "blue_green_service",
+            "user_managed"
+          ],
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
     "DeploymentTriggeredEventData": {
       "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message",
         "configurationChange",
         "deployment"
       ],
@@ -1145,9 +887,19 @@ sh.keptn.event.deployment.triggered
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -1159,16 +911,7 @@ sh.keptn.event.deployment.triggered
         },
         "deployment": {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/DeploymentWithStrategy"
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "DeploymentWithStrategy": {
-      "properties": {
-        "deploymentstrategy": {
-          "type": "string"
+          "$ref": "#/definitions/DeploymentTriggeredData"
         }
       },
       "additionalProperties": false,
@@ -1180,7 +923,7 @@ sh.keptn.event.deployment.triggered
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -1200,11 +943,13 @@ sh.keptn.event.deployment.triggered
       }
     },
     "deployment": {
+      "deploymentURIsLocal": null,
       "deploymentstrategy": "direct"
     }
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.deployment.triggered"
@@ -1212,10 +957,10 @@ sh.keptn.event.deployment.triggered
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Deployment Started
-#### Type
+#### Deployment Started
+##### Type
 sh.keptn.event.deployment.started
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.deployment.started</summary>
 <p>
@@ -1226,15 +971,6 @@ sh.keptn.event.deployment.started
   "$ref": "#/definitions/DeploymentStartedEventData",
   "definitions": {
     "DeploymentStartedEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message"
-      ],
       "properties": {
         "project": {
           "type": "string"
@@ -1254,9 +990,19 @@ sh.keptn.event.deployment.started
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -1272,7 +1018,7 @@ sh.keptn.event.deployment.started
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -1289,17 +1035,19 @@ sh.keptn.event.deployment.started
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.deployment.started"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Deployment Status Changed
-#### Type
+#### Deployment Status Changed
+##### Type
 sh.keptn.event.deployment.status.changed
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.deployment.status.changed</summary>
 <p>
@@ -1310,15 +1058,6 @@ sh.keptn.event.deployment.status.changed
   "$ref": "#/definitions/DeploymentStatusChangedEventData",
   "definitions": {
     "DeploymentStatusChangedEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message"
-      ],
       "properties": {
         "project": {
           "type": "string"
@@ -1338,9 +1077,19 @@ sh.keptn.event.deployment.status.changed
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -1356,7 +1105,7 @@ sh.keptn.event.deployment.status.changed
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -1373,17 +1122,19 @@ sh.keptn.event.deployment.status.changed
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.deployment.status.changed"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Deployment Finished
-#### Type
+#### Deployment Finished
+##### Type
 sh.keptn.event.deployment.finished
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.deployment.finished</summary>
 <p>
@@ -1393,13 +1144,20 @@ sh.keptn.event.deployment.finished
   "$schema": "http://json-schema.org/draft-04/schema#",
   "$ref": "#/definitions/DeploymentFinishedEventData",
   "definitions": {
-    "DeploymentData": {
+    "DeploymentFinishedData": {
       "required": [
+        "deploymentstrategy",
+        "deploymentURIsLocal",
         "deploymentNames",
         "gitCommit"
       ],
       "properties": {
         "deploymentstrategy": {
+          "enum": [
+            "direct",
+            "blue_green_service",
+            "user_managed"
+          ],
           "type": "string"
         },
         "deploymentURIsLocal": {
@@ -1429,13 +1187,6 @@ sh.keptn.event.deployment.finished
     },
     "DeploymentFinishedEventData": {
       "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message",
         "deployment"
       ],
       "properties": {
@@ -1457,9 +1208,19 @@ sh.keptn.event.deployment.finished
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -1467,7 +1228,7 @@ sh.keptn.event.deployment.finished
         },
         "deployment": {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/DeploymentData"
+          "$ref": "#/definitions/DeploymentFinishedData"
         }
       },
       "additionalProperties": false,
@@ -1479,7 +1240,7 @@ sh.keptn.event.deployment.finished
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -1509,134 +1270,20 @@ sh.keptn.event.deployment.finished
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.deployment.finished"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-## Test
-### Test Triggered
-#### Type
-sh.keptn.event.test.triggered
-#### Data
-
-<details><summary>Json Schema of sh.keptn.event.test.triggered</summary>
-<p>
-
-```json
-{
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "$ref": "#/definitions/TestTriggeredEventData",
-  "definitions": {
-    "": {
-      "required": [
-        "teststrategy"
-      ],
-      "properties": {
-        "teststrategy": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "TestTriggeredEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message",
-        "test",
-        "deployment"
-      ],
-      "properties": {
-        "project": {
-          "type": "string"
-        },
-        "stage": {
-          "type": "string"
-        },
-        "service": {
-          "type": "string"
-        },
-        "labels": {
-          "patternProperties": {
-            ".*": {
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "status": {
-          "type": "string"
-        },
-        "result": {
-          "type": "string"
-        },
-        "message": {
-          "type": "string"
-        },
-        "test": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/"
-        },
-        "deployment": {
-          "$ref": "#/definitions/"
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    }
-  }
-}
-```
-</p>
-</details>
-
-#### Example
-
-```json
-{
-  "data": {
-    "project": "sockshop",
-    "stage": "dev",
-    "service": "carts",
-    "labels": {
-      "label-key": "label-value"
-    },
-    "status": "succeeded",
-    "result": "pass",
-    "message": "a message",
-    "test": {
-      "teststrategy": "functional"
-    },
-    "deployment": {
-      "deploymentURIsLocal": [
-        "http://carts.sockshop-staging.svc.cluster.local"
-      ],
-      "deploymentURIsPublic": [
-        "http://carts.sockshot.local:80"
-      ]
-    }
-  },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
-  "source": "source-service",
-  "specversion": "1.0",
-  "type": "sh.keptn.event.test.triggered"
-}
-```
-
-([&uarr; up to index](#keptn-cloud-events))
-### Test Started
-#### Type
+### Test
+#### Test Started
+##### Type
 sh.keptn.event.test.started
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.test.started</summary>
 <p>
@@ -1647,15 +1294,6 @@ sh.keptn.event.test.started
   "$ref": "#/definitions/TestStartedEventData",
   "definitions": {
     "TestStartedEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message"
-      ],
       "properties": {
         "project": {
           "type": "string"
@@ -1675,9 +1313,19 @@ sh.keptn.event.test.started
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -1693,7 +1341,7 @@ sh.keptn.event.test.started
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -1710,17 +1358,19 @@ sh.keptn.event.test.started
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.test.started"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Test Status Changed
-#### Type
+#### Test Status Changed
+##### Type
 sh.keptn.event.test.triggered
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.test.triggered</summary>
 <p>
@@ -1731,15 +1381,6 @@ sh.keptn.event.test.triggered
   "$ref": "#/definitions/TestStatusChangedEventData",
   "definitions": {
     "TestStatusChangedEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message"
-      ],
       "properties": {
         "project": {
           "type": "string"
@@ -1759,9 +1400,19 @@ sh.keptn.event.test.triggered
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -1777,7 +1428,7 @@ sh.keptn.event.test.triggered
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -1794,6 +1445,7 @@ sh.keptn.event.test.triggered
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.test.triggered"
@@ -1801,10 +1453,10 @@ sh.keptn.event.test.triggered
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Test Finished
-#### Type
+#### Test Finished
+##### Type
 sh.keptn.event.test.finished
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.test.finished</summary>
 <p>
@@ -1814,7 +1466,7 @@ sh.keptn.event.test.finished
   "$schema": "http://json-schema.org/draft-04/schema#",
   "$ref": "#/definitions/TestFinishedEventData",
   "definitions": {
-    "": {
+    "TestFinishedDetails": {
       "required": [
         "start",
         "end",
@@ -1836,13 +1488,6 @@ sh.keptn.event.test.finished
     },
     "TestFinishedEventData": {
       "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message",
         "test"
       ],
       "properties": {
@@ -1864,9 +1509,19 @@ sh.keptn.event.test.finished
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -1874,7 +1529,7 @@ sh.keptn.event.test.finished
         },
         "test": {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/"
+          "$ref": "#/definitions/TestFinishedDetails"
         }
       },
       "additionalProperties": false,
@@ -1886,7 +1541,7 @@ sh.keptn.event.test.finished
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -1908,18 +1563,20 @@ sh.keptn.event.test.finished
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.test.finished"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-## Evaluation
-### Evaluation Triggered
-#### Type
+### Evaluation
+#### Evaluation Triggered
+##### Type
 sh.keptn.event.evaluation.triggered
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.evaluation.triggered</summary>
 <p>
@@ -1929,7 +1586,22 @@ sh.keptn.event.evaluation.triggered
   "$schema": "http://json-schema.org/draft-04/schema#",
   "$ref": "#/definitions/EvaluationTriggeredEventData",
   "definitions": {
-    "": {
+    "Deployment": {
+      "required": [
+        "deploymentNames"
+      ],
+      "properties": {
+        "deploymentNames": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Evaluation": {
       "required": [
         "start",
         "end"
@@ -1947,13 +1619,6 @@ sh.keptn.event.evaluation.triggered
     },
     "EvaluationTriggeredEventData": {
       "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message",
         "test",
         "evaluation",
         "deployment"
@@ -1977,9 +1642,19 @@ sh.keptn.event.evaluation.triggered
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -1987,13 +1662,31 @@ sh.keptn.event.evaluation.triggered
         },
         "test": {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/"
+          "$ref": "#/definitions/Test"
         },
         "evaluation": {
-          "$ref": "#/definitions/"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/Evaluation"
         },
         "deployment": {
-          "$ref": "#/definitions/"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/Deployment"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Test": {
+      "required": [
+        "start",
+        "end"
+      ],
+      "properties": {
+        "start": {
+          "type": "string"
+        },
+        "end": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -2005,7 +1698,7 @@ sh.keptn.event.evaluation.triggered
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -2035,6 +1728,7 @@ sh.keptn.event.evaluation.triggered
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.evaluation.triggered"
@@ -2042,10 +1736,10 @@ sh.keptn.event.evaluation.triggered
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Evaluation Started
-#### Type
+#### Evaluation Started
+##### Type
 sh.keptn.event.evaluation.started
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.evaluation.started</summary>
 <p>
@@ -2056,15 +1750,6 @@ sh.keptn.event.evaluation.started
   "$ref": "#/definitions/EvaluationStartedEventData",
   "definitions": {
     "EvaluationStartedEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message"
-      ],
       "properties": {
         "project": {
           "type": "string"
@@ -2084,9 +1769,19 @@ sh.keptn.event.evaluation.started
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -2102,7 +1797,7 @@ sh.keptn.event.evaluation.started
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -2119,17 +1814,19 @@ sh.keptn.event.evaluation.started
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.evaluation.started"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Evaluation Status Changed
-#### Type
+#### Evaluation Status Changed
+##### Type
 sh.keptn.event.evaluation.status.changed
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.evaluation.status.changed</summary>
 <p>
@@ -2140,15 +1837,6 @@ sh.keptn.event.evaluation.status.changed
   "$ref": "#/definitions/EvaluationStatusChangedEventData",
   "definitions": {
     "EvaluationStatusChangedEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message"
-      ],
       "properties": {
         "project": {
           "type": "string"
@@ -2168,9 +1856,19 @@ sh.keptn.event.evaluation.status.changed
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -2186,7 +1884,7 @@ sh.keptn.event.evaluation.status.changed
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -2203,17 +1901,19 @@ sh.keptn.event.evaluation.status.changed
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.evaluation.status.changed"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Evaluation Finished
-#### Type
+#### Evaluation Finished
+##### Type
 sh.keptn.event.evaluation.finished
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.evaluation.finished</summary>
 <p>
@@ -2231,7 +1931,6 @@ sh.keptn.event.evaluation.finished
         "score",
         "sloFileContent",
         "indicatorResults",
-        "comparedEvents",
         "gitCommit"
       ],
       "properties": {
@@ -2271,16 +1970,6 @@ sh.keptn.event.evaluation.finished
       "type": "object"
     },
     "EvaluationFinishedEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message",
-        "evaluation"
-      ],
       "properties": {
         "project": {
           "type": "string"
@@ -2300,9 +1989,19 @@ sh.keptn.event.evaluation.finished
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -2320,7 +2019,9 @@ sh.keptn.event.evaluation.finished
       "required": [
         "score",
         "value",
-        "targets",
+        "passTargets",
+        "warningTargets",
+        "keySli",
         "status"
       ],
       "properties": {
@@ -2331,14 +2032,28 @@ sh.keptn.event.evaluation.finished
           "$schema": "http://json-schema.org/draft-04/schema#",
           "$ref": "#/definitions/SLIResult"
         },
-        "targets": {
+        "passTargets": {
           "items": {
             "$schema": "http://json-schema.org/draft-04/schema#",
             "$ref": "#/definitions/SLITarget"
           },
           "type": "array"
         },
+        "warningTargets": {
+          "items": {
+            "$ref": "#/definitions/SLITarget"
+          },
+          "type": "array"
+        },
+        "keySli": {
+          "type": "boolean"
+        },
         "status": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         }
       },
@@ -2394,7 +2109,7 @@ sh.keptn.event.evaluation.finished
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -2423,13 +2138,21 @@ sh.keptn.event.evaluation.finished
             "success": true,
             "message": "a message"
           },
-          "targets": [
+          "passTargets": [
             {
               "criteria": "\u003c=+10%",
               "targetValue": 600,
               "violated": true
             }
           ],
+          "warningTargets": [
+            {
+              "criteria": "\u003c=+20%",
+              "targetValue": 800,
+              "violated": true
+            }
+          ],
+          "keySli": false,
           "status": "failed"
         }
       ],
@@ -2442,8 +2165,10 @@ sh.keptn.event.evaluation.finished
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.evaluation.finished"
 }
 ```
@@ -2536,11 +2261,11 @@ sh.keptn.event.evaluation.invalidated
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-## Release
-### Release Triggered
-#### Type
+### Release
+#### Release Triggered
+##### Type
 sh.keptn.event.release.triggered
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.release.triggered</summary>
 <p>
@@ -2550,9 +2275,41 @@ sh.keptn.event.release.triggered
   "$schema": "http://json-schema.org/draft-04/schema#",
   "$ref": "#/definitions/ReleaseTriggeredEventData",
   "definitions": {
-    "DeploymentWithStrategy": {
+    "DeploymentFinishedData": {
+      "required": [
+        "deploymentstrategy",
+        "deploymentURIsLocal",
+        "deploymentNames",
+        "gitCommit"
+      ],
       "properties": {
         "deploymentstrategy": {
+          "enum": [
+            "direct",
+            "blue_green_service",
+            "user_managed"
+          ],
+          "type": "string"
+        },
+        "deploymentURIsLocal": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "deploymentURIsPublic": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "deploymentNames": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "gitCommit": {
           "type": "string"
         }
       },
@@ -2561,13 +2318,6 @@ sh.keptn.event.release.triggered
     },
     "ReleaseTriggeredEventData": {
       "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message",
         "deployment"
       ],
       "properties": {
@@ -2589,9 +2339,19 @@ sh.keptn.event.release.triggered
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -2599,7 +2359,7 @@ sh.keptn.event.release.triggered
         },
         "deployment": {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/DeploymentWithStrategy"
+          "$ref": "#/definitions/DeploymentFinishedData"
         }
       },
       "additionalProperties": false,
@@ -2611,7 +2371,7 @@ sh.keptn.event.release.triggered
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -2626,11 +2386,15 @@ sh.keptn.event.release.triggered
     "result": "pass",
     "message": "a message",
     "deployment": {
-      "deploymentstrategy": "duplicate"
+      "deploymentstrategy": "duplicate",
+      "deploymentURIsLocal": null,
+      "deploymentNames": null,
+      "gitCommit": ""
     }
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.release.triggered"
@@ -2638,10 +2402,10 @@ sh.keptn.event.release.triggered
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Release Started
-#### Type
+#### Release Started
+##### Type
 sh.keptn.event.release.started
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.release.started</summary>
 <p>
@@ -2652,15 +2416,6 @@ sh.keptn.event.release.started
   "$ref": "#/definitions/ReleaseStartedEventData",
   "definitions": {
     "ReleaseStartedEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message"
-      ],
       "properties": {
         "project": {
           "type": "string"
@@ -2680,9 +2435,19 @@ sh.keptn.event.release.started
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -2698,7 +2463,7 @@ sh.keptn.event.release.started
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -2715,17 +2480,19 @@ sh.keptn.event.release.started
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.release.started"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Release Status Changed
-#### Type
+#### Release Status Changed
+##### Type
 sh.keptn.event.release.status.changed
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.release.status.changed</summary>
 <p>
@@ -2736,15 +2503,6 @@ sh.keptn.event.release.status.changed
   "$ref": "#/definitions/ReleaseStatusChangedEventData",
   "definitions": {
     "ReleaseStatusChangedEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message"
-      ],
       "properties": {
         "project": {
           "type": "string"
@@ -2764,9 +2522,19 @@ sh.keptn.event.release.status.changed
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -2782,7 +2550,7 @@ sh.keptn.event.release.status.changed
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -2799,17 +2567,19 @@ sh.keptn.event.release.status.changed
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.release.status.changed"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Release Finished
-#### Type
+#### Release Finished
+##### Type
 sh.keptn.event.release.finished
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.release.finished</summary>
 <p>
@@ -2833,13 +2603,6 @@ sh.keptn.event.release.finished
     },
     "ReleaseFinishedEventData": {
       "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message",
         "release"
       ],
       "properties": {
@@ -2861,9 +2624,19 @@ sh.keptn.event.release.finished
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -2883,7 +2656,7 @@ sh.keptn.event.release.finished
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -2903,18 +2676,20 @@ sh.keptn.event.release.finished
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.release.finished"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-## Remediation
-### Remediation Triggered
-#### Type
+### Remediation
+#### Remediation Triggered
+##### Type
 sh.keptn.event.remediation.triggered
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.remediation.triggered</summary>
 <p>
@@ -2926,6 +2701,7 @@ sh.keptn.event.remediation.triggered
   "definitions": {
     "ProblemDetails": {
       "required": [
+        "State",
         "ProblemID",
         "ProblemTitle",
         "ProblemDetails",
@@ -2965,13 +2741,6 @@ sh.keptn.event.remediation.triggered
     },
     "RemediationTriggeredEventData": {
       "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message",
         "problem"
       ],
       "properties": {
@@ -2993,9 +2762,19 @@ sh.keptn.event.remediation.triggered
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -3015,12 +2794,13 @@ sh.keptn.event.remediation.triggered
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.remediation.triggered"
@@ -3028,10 +2808,10 @@ sh.keptn.event.remediation.triggered
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Remediation Started
-#### Type
+#### Remediation Started
+##### Type
 sh.keptn.event.remediation.started
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.remediation.started</summary>
 <p>
@@ -3042,15 +2822,6 @@ sh.keptn.event.remediation.started
   "$ref": "#/definitions/RemediationStartedEventData",
   "definitions": {
     "RemediationStartedEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message"
-      ],
       "properties": {
         "project": {
           "type": "string"
@@ -3070,9 +2841,19 @@ sh.keptn.event.remediation.started
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -3088,7 +2869,7 @@ sh.keptn.event.remediation.started
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -3105,17 +2886,19 @@ sh.keptn.event.remediation.started
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.remediation.started"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Remediation Status Changed
-#### Type
+#### Remediation Status Changed
+##### Type
 sh.keptn.event.remediation.status.changed
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.remediation.status.changed</summary>
 <p>
@@ -3143,13 +2926,6 @@ sh.keptn.event.remediation.status.changed
     },
     "RemediationStatusChangedEventData": {
       "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message",
         "remediation"
       ],
       "properties": {
@@ -3171,9 +2947,19 @@ sh.keptn.event.remediation.status.changed
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -3193,7 +2979,7 @@ sh.keptn.event.remediation.status.changed
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -3214,17 +3000,19 @@ sh.keptn.event.remediation.status.changed
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.remediation.status.changed"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Remediation Finished
-#### Type
+#### Remediation Finished
+##### Type
 sh.keptn.event.remediation.finished
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.remediation.finished</summary>
 <p>
@@ -3235,15 +3023,6 @@ sh.keptn.event.remediation.finished
   "$ref": "#/definitions/RemediationFinishedEventData",
   "definitions": {
     "RemediationFinishedEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message"
-      ],
       "properties": {
         "project": {
           "type": "string"
@@ -3263,9 +3042,19 @@ sh.keptn.event.remediation.finished
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -3281,7 +3070,7 @@ sh.keptn.event.remediation.finished
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -3298,18 +3087,20 @@ sh.keptn.event.remediation.finished
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.remediation.finished"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-## Action
-### Action Triggered
-#### Type
+### Action
+#### Action Triggered
+##### Type
 sh.keptn.event.action.triggered
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.action.triggered</summary>
 <p>
@@ -3322,8 +3113,7 @@ sh.keptn.event.action.triggered
     "ActionInfo": {
       "required": [
         "name",
-        "action",
-        "description"
+        "action"
       ],
       "properties": {
         "name": {
@@ -3344,13 +3134,6 @@ sh.keptn.event.action.triggered
     },
     "ActionTriggeredEventData": {
       "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message",
         "action",
         "problem"
       ],
@@ -3373,9 +3156,19 @@ sh.keptn.event.action.triggered
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -3395,6 +3188,7 @@ sh.keptn.event.action.triggered
     },
     "ProblemDetails": {
       "required": [
+        "State",
         "ProblemID",
         "ProblemTitle",
         "ProblemDetails",
@@ -3438,7 +3232,7 @@ sh.keptn.event.action.triggered
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -3446,10 +3240,6 @@ sh.keptn.event.action.triggered
     "project": "sockshop",
     "stage": "dev",
     "service": "carts",
-    "labels": null,
-    "status": "",
-    "result": "",
-    "message": "",
     "action": {
       "name": "Feature toggeling",
       "action": "toggle-feature",
@@ -3470,6 +3260,7 @@ sh.keptn.event.action.triggered
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.action.triggered"
@@ -3477,10 +3268,10 @@ sh.keptn.event.action.triggered
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Action Started
-#### Type
+#### Action Started
+##### Type
 sh.keptn.event.action.started
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.action.started</summary>
 <p>
@@ -3491,15 +3282,6 @@ sh.keptn.event.action.started
   "$ref": "#/definitions/ActionStartedEventData",
   "definitions": {
     "ActionStartedEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message"
-      ],
       "properties": {
         "project": {
           "type": "string"
@@ -3519,9 +3301,19 @@ sh.keptn.event.action.started
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -3537,7 +3329,7 @@ sh.keptn.event.action.started
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -3554,17 +3346,19 @@ sh.keptn.event.action.started
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.action.started"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Action Finished
-#### Type
+#### Action Finished
+##### Type
 sh.keptn.event.action.finished
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.action.finished</summary>
 <p>
@@ -3575,9 +3369,6 @@ sh.keptn.event.action.finished
   "$ref": "#/definitions/ActionFinishedEventData",
   "definitions": {
     "ActionData": {
-      "required": [
-        "gitCommit"
-      ],
       "properties": {
         "gitCommit": {
           "type": "string"
@@ -3588,13 +3379,6 @@ sh.keptn.event.action.finished
     },
     "ActionFinishedEventData": {
       "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message",
         "action"
       ],
       "properties": {
@@ -3616,9 +3400,19 @@ sh.keptn.event.action.finished
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -3638,7 +3432,7 @@ sh.keptn.event.action.finished
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -3646,163 +3440,26 @@ sh.keptn.event.action.finished
     "project": "sockshop",
     "stage": "dev",
     "service": "carts",
-    "labels": null,
-    "status": "",
-    "result": "",
-    "message": "",
     "action": {
       "gitCommit": "93a5-3fas-a09d-8ckf"
     }
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.action.finished"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-## Get SLI
-### Get SLI Triggered
-#### Type
-sh.keptn.event.get-sli.triggered
-#### Data
-
-<details><summary>Json Schema of sh.keptn.event.get-sli.triggered</summary>
-<p>
-
-```json
-{
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "$ref": "#/definitions/GetSLITriggeredEventData",
-  "definitions": {
-    "": {
-      "required": [
-        "sliProvider",
-        "start",
-        "end",
-        "indicators",
-        "customFilters"
-      ],
-      "properties": {
-        "sliProvider": {
-          "type": "string"
-        },
-        "start": {
-          "type": "string"
-        },
-        "end": {
-          "type": "string"
-        },
-        "indicators": {
-          "$ref": "#/definitions/"
-        },
-        "customFilters": {
-          "$ref": "#/definitions/"
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "GetSLITriggeredEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message",
-        "get-sli"
-      ],
-      "properties": {
-        "project": {
-          "type": "string"
-        },
-        "stage": {
-          "type": "string"
-        },
-        "service": {
-          "type": "string"
-        },
-        "labels": {
-          "patternProperties": {
-            ".*": {
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "status": {
-          "type": "string"
-        },
-        "result": {
-          "type": "string"
-        },
-        "message": {
-          "type": "string"
-        },
-        "get-sli": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/"
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    }
-  }
-}
-```
-</p>
-</details>
-
-#### Example
-
-```json
-{
-  "data": {
-    "project": "sockshop",
-    "stage": "dev",
-    "service": "carts",
-    "labels": null,
-    "status": "",
-    "result": "",
-    "message": "",
-    "get-sli": {
-      "sliProvider": "dynatrace",
-      "start": "2019-10-28T15:44:27.152330783Z",
-      "end": "2019-10-28T15:54:27.152330783Z",
-      "indicators": [
-        "throughput",
-        "error_rate",
-        "request_latency_p95"
-      ],
-      "customFilters": [
-        {
-          "key": "dynatraceEntityName",
-          "value": "HealthCheckController"
-        },
-        {
-          "key": "tags",
-          "value": "test-subject:true"
-        }
-      ]
-    }
-  },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
-  "source": "source-service",
-  "specversion": "1.0",
-  "type": "sh.keptn.event.get-sli.triggered"
-}
-```
-
-([&uarr; up to index](#keptn-cloud-events))
-### Get SLI Started
-#### Type
+### Get SLI
+#### Get SLI Started
+##### Type
 sh.keptn.event.get-sli.started
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.get-sli.started</summary>
 <p>
@@ -3813,15 +3470,6 @@ sh.keptn.event.get-sli.started
   "$ref": "#/definitions/GetSLIStartedEventData",
   "definitions": {
     "GetSLIStartedEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message"
-      ],
       "properties": {
         "project": {
           "type": "string"
@@ -3841,9 +3489,19 @@ sh.keptn.event.get-sli.started
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -3859,7 +3517,7 @@ sh.keptn.event.get-sli.started
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -3876,17 +3534,19 @@ sh.keptn.event.get-sli.started
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.get-sli.started"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Get SLI Finished
-#### Type
+#### Get SLI Finished
+##### Type
 sh.keptn.event.get-sli.finished
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.get-sli.finished</summary>
 <p>
@@ -3896,11 +3556,10 @@ sh.keptn.event.get-sli.finished
   "$schema": "http://json-schema.org/draft-04/schema#",
   "$ref": "#/definitions/GetSLIFinishedEventData",
   "definitions": {
-    "": {
+    "GetSLIFinished": {
       "required": [
         "start",
-        "end",
-        "indicatorValues"
+        "end"
       ],
       "properties": {
         "start": {
@@ -3910,7 +3569,11 @@ sh.keptn.event.get-sli.finished
           "type": "string"
         },
         "indicatorValues": {
-          "$ref": "#/definitions/"
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/SLIResult"
+          },
+          "type": "array"
         }
       },
       "additionalProperties": false,
@@ -3918,13 +3581,6 @@ sh.keptn.event.get-sli.finished
     },
     "GetSLIFinishedEventData": {
       "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message",
         "get-sli"
       ],
       "properties": {
@@ -3946,9 +3602,19 @@ sh.keptn.event.get-sli.finished
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -3956,7 +3622,30 @@ sh.keptn.event.get-sli.finished
         },
         "get-sli": {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/"
+          "$ref": "#/definitions/GetSLIFinished"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "SLIResult": {
+      "required": [
+        "metric",
+        "value",
+        "success"
+      ],
+      "properties": {
+        "metric": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -3968,7 +3657,7 @@ sh.keptn.event.get-sli.finished
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -3976,36 +3665,27 @@ sh.keptn.event.get-sli.finished
     "project": "sockshop",
     "stage": "dev",
     "service": "carts",
-    "labels": null,
-    "status": "",
-    "result": "",
-    "message": "",
     "get-sli": {
-      "start": "2019-10-20T07:57:27.152330783Z",
-      "end": "2019-10-22T08:57:27.152330783Z",
-      "indicatorValues": [
-        {
-          "metric": "response_time_p50",
-          "value": 1011.0745528937252,
-          "success": true
-        }
-      ]
+      "start": "",
+      "end": ""
     }
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.get-sli.finished"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-## Monitoring
-### Configure Monitoring Triggered
-#### Type
+### Monitoring
+#### Configure Monitoring Triggered
+##### Type
 sh.keptn.event.configure-monitoring.triggered
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.configure-monitoring.triggered</summary>
 <p>
@@ -4017,13 +3697,6 @@ sh.keptn.event.configure-monitoring.triggered
   "definitions": {
     "ConfigureMonitoringTriggeredEventData": {
       "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message",
         "configureMonitoring"
       ],
       "properties": {
@@ -4045,9 +3718,19 @@ sh.keptn.event.configure-monitoring.triggered
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -4079,7 +3762,7 @@ sh.keptn.event.configure-monitoring.triggered
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -4087,16 +3770,13 @@ sh.keptn.event.configure-monitoring.triggered
     "project": "sockshop",
     "stage": "dev",
     "service": "carts",
-    "labels": null,
-    "status": "",
-    "result": "",
-    "message": "",
     "configureMonitoring": {
       "type": "dynatrace"
     }
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
   "type": "sh.keptn.event.configure-monitoring.triggered"
@@ -4104,10 +3784,10 @@ sh.keptn.event.configure-monitoring.triggered
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Configure Monitoring Started
-#### Type
+#### Configure Monitoring Started
+##### Type
 sh.keptn.event.configure-monitoring.started
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.configure-monitoring.started</summary>
 <p>
@@ -4118,15 +3798,6 @@ sh.keptn.event.configure-monitoring.started
   "$ref": "#/definitions/ConfigureMonitoringStartedEventData",
   "definitions": {
     "ConfigureMonitoringStartedEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message"
-      ],
       "properties": {
         "project": {
           "type": "string"
@@ -4146,9 +3817,19 @@ sh.keptn.event.configure-monitoring.started
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -4164,7 +3845,7 @@ sh.keptn.event.configure-monitoring.started
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -4181,17 +3862,19 @@ sh.keptn.event.configure-monitoring.started
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.configure-monitoring.started"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Configure Monitoring Finished
-#### Type
+#### Configure Monitoring Finished
+##### Type
 sh.keptn.event.configure-monitoring.finished
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.configure-monitoring.finished</summary>
 <p>
@@ -4202,15 +3885,6 @@ sh.keptn.event.configure-monitoring.finished
   "$ref": "#/definitions/ConfigureMonitoringFinishedEventData",
   "definitions": {
     "ConfigureMonitoringFinishedEventData": {
-      "required": [
-        "project",
-        "stage",
-        "service",
-        "labels",
-        "status",
-        "result",
-        "message"
-      ],
       "properties": {
         "project": {
           "type": "string"
@@ -4230,9 +3904,19 @@ sh.keptn.event.configure-monitoring.finished
           "type": "object"
         },
         "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
           "type": "string"
         },
         "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
           "type": "string"
         },
         "message": {
@@ -4248,7 +3932,7 @@ sh.keptn.event.configure-monitoring.finished
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -4265,18 +3949,20 @@ sh.keptn.event.configure-monitoring.finished
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.configure-monitoring.finished"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-## Problem
-### Problem Open
-#### Type
+### Problem
+#### Problem Open
+##### Type
 sh.keptn.event.problem.open
-#### Data
+##### Data Json Schema
 
 <details><summary>Json Schema of sh.keptn.event.problem.open</summary>
 <p>
@@ -4349,7 +4035,7 @@ sh.keptn.event.problem.open
 </p>
 </details>
 
-#### Example
+##### Example Cloud Event
 
 ```json
 {
@@ -4377,11 +4063,12 @@ sh.keptn.event.problem.open
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
   "source": "source-service",
   "specversion": "1.0",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
   "type": "sh.keptn.event.problem.open"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-
