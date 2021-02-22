@@ -1,8 +1,20 @@
 # Keptn CloudEvents
-All Keptn events conform to the CloudEvents spec in [version 1.0](https://github.com/cloudevents/spec/blob/v1.0/spec.md).
-The CloudEvents specification is a vendor-neutral specification for defining the format of event data.
+* [Project](#project)
+* [Service](#service)
+* [Approval](#approval)
+* [Deployment](#deployment)
+* [Test](#test)
+* [Evaluation](#evaluation)
+* [Release](#release)
+* [Remediation](#remediation)
+* [Action](#action)
+* [Get-SLI](#get-sli)
+* [Monitoring](#monitoring)
+* [Problem](#problem)
+---
+All Keptn events conform to the CloudEvents spec in [version 1.0](https://github.com/cloudevents/spec/blob/v1.0/spec.md). The CloudEvents specification is a vendor-neutral specification for defining the format of event data.
 
-In Keptn, events have a payload structure as follows (*Note:* The "triggeredid" is not contained in events of type "triggered" mentioned below):
+In Keptn, events have a payload structure as follows (*Note:* The `triggeredid` is not contained in events of type `triggered` mentioned below):
 ```json
 "sh.keptn.event": {
   "required": [
@@ -84,20 +96,19 @@ By combining the *task* and *event status* for the `deployment` task, the event 
 * `sh.keptn.event.deployment.status.changed`
 * `sh.keptn.event.deployment.finished`
 ## Data
-The data block of a Keptn CloudEvent carries the Keptn Payload of a specific event
+The data block of a Keptn CloudEvent carries the Keptn Payload of a specific event and contains the properties:
+* labels
+* message
+* project
+* result
+* service
+* stage
+* status
+* *[task]*
+
+Like the task property in the event type, the task property in the data block depends on the task declaration in the Shipyard. Based on the example of a `deployment` task, the data block contains a `deployment` property of type object. Hence, any payload can be added to this `deployment` property
+
 In the following each data block is described and an example of a CloudEvent containing the data block is given.
-* [Project](#project)
-* [Service](#service)
-* [Approval](#approval)
-* [Deployment](#deployment)
-* [Test](#test)
-* [Evaluation](#evaluation)
-* [Release](#release)
-* [Remediation](#remediation)
-* [Action](#action)
-* [Get-SLI](#get-sli)
-* [Monitoring](#monitoring)
-* [Problem](#problem)
 
 
 ### Project
