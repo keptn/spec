@@ -1,3 +1,88 @@
+# Keptn CloudEvents
+All Keptn events conform to the CloudEvents spec in [version 1.0](https://github.com/cloudevents/spec/blob/v1.0/spec.md).
+The CloudEvents specification is a vendor-neutral specification for defining the format of event data.
+
+In Keptn, events have a payload structure as follows (*Note:* The "triggeredid" is not contained in events of type "triggered" mentioned below):
+```json
+"sh.keptn.event": {
+  "required": [
+    "data",
+    "id",
+    "shkeptncontext",
+    "source",
+    "specversion",
+    "time",
+    "triggeredid",
+    "type"
+  ],
+  "properties": {
+    "data": {
+      "type": ["object", "string"],
+      "description": "The Keptn event payload depending on the type."
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique UUID of the Keptn event"
+    },
+    "shkeptncontext": {
+      "format": "uuid",
+      "type": "string",
+      "description": "Unique UUID value that connects various events together"
+    },
+    "source": {
+      "format": "uri-reference",
+      "type": "string",
+      "minLength": 1,
+      "description": "URL to service implementation in Keptn code repo"
+    },
+    "specversion": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The version of the CloudEvents specification",
+      "value": "1.0"
+    },
+    "shkeptnspecversion": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The version of the Keptn specification",
+      "value": "0.2.0"
+    },
+    "time": {
+      "format": "date-time",
+      "type": "string",
+      "description": "Timestamp of when the event happened"
+    },
+    "triggeredid": {
+      "format": "uuid",
+      "type": "string",
+      "description": "The event ID that has triggered the step"
+    },
+    "type": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Type of the Keptn event"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
+```
+## Type
+The event type of a Keptn CloudEventHas the format:
+
+* `sh.keptn.event.[task].[event status]`
+
+As indicated by the brackets, the event type is defined by a **task** and the **event status**.
+* The task is declared in the [Shipyard](https://github.com/keptn/spec/blob/master/shipyard.md) of a project. For example, a Shipyard can contain tasks like: `deployment`, `test`, or `evaluation`. Consequently, the event type for a `deployment` task would be `sh.keptn.event.deployment.[event status]`
+* The kinds of event states are defined with: `triggered`, `started`, `status.changed`, and `finished` (`status.changed` is optional)
+
+By combining the *task* and *event status* for the `deployment` task, the event types are:
+
+* `sh.keptn.event.deployment.triggered`
+* `sh.keptn.event.deployment.started`
+* `sh.keptn.event.deployment.status.changed`
+* `sh.keptn.event.deployment.finished`
 ## Data
 The data block of a Keptn CloudEvent carries the Keptn Payload of a specific event
 In the following each data block is described and an example of a CloudEvent containing the data block is given.
@@ -541,6 +626,127 @@ sh.keptn.event.service.create.finished
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Approval
+#### Approval Triggered
+##### Type
+sh.keptn.event.approval.triggered
+##### Data Json Schema
+
+<details><summary>Json Schema of sh.keptn.event.approval.triggered</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/ApprovalTriggeredEventData",
+  "definitions": {
+    "Approval": {
+      "required": [
+        "pass",
+        "warning"
+      ],
+      "properties": {
+        "pass": {
+          "enum": [
+            "automatic",
+            "manual"
+          ],
+          "type": "string"
+        },
+        "warning": {
+          "enum": [
+            "automatic",
+            "manual"
+          ],
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "ApprovalTriggeredEventData": {
+      "required": [
+        "approval"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
+          "type": "string"
+        },
+        "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "approval": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/Approval"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+##### Example Cloud Event
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message",
+    "approval": {
+      "pass": "automatic",
+      "warning": "manual"
+    }
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.approval.triggered"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
 #### Approval Started
 ##### Type
 sh.keptn.event.approval.started
@@ -943,7 +1149,12 @@ sh.keptn.event.deployment.triggered
       }
     },
     "deployment": {
-      "deploymentURIsLocal": null,
+      "deploymentURIsLocal": [
+        "http://carts.sockshop-staging.svc.cluster.local"
+      ],
+      "deploymentURIsPublic": [
+        "http://carts.sockshot.local:80"
+      ],
       "deploymentstrategy": "direct"
     }
   },
@@ -1280,6 +1491,154 @@ sh.keptn.event.deployment.finished
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Test
+#### Test Triggered
+##### Type
+sh.keptn.event.test.triggered
+##### Data Json Schema
+
+<details><summary>Json Schema of sh.keptn.event.test.triggered</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/TestTriggeredEventData",
+  "definitions": {
+    "TestTriggeredDeploymentDetails": {
+      "required": [
+        "deploymentURIsLocal"
+      ],
+      "properties": {
+        "deploymentURIsLocal": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "deploymentURIsPublic": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "TestTriggeredDetails": {
+      "required": [
+        "teststrategy"
+      ],
+      "properties": {
+        "teststrategy": {
+          "enum": [
+            "real-user",
+            "functional",
+            "performance",
+            "healthcheck"
+          ],
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "TestTriggeredEventData": {
+      "required": [
+        "test",
+        "deployment"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
+          "type": "string"
+        },
+        "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "test": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/TestTriggeredDetails"
+        },
+        "deployment": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/TestTriggeredDeploymentDetails"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+##### Example Cloud Event
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message",
+    "test": {
+      "teststrategy": "functional"
+    },
+    "deployment": {
+      "deploymentURIsLocal": [
+        "http://carts.sockshop-staging.svc.cluster.local"
+      ],
+      "deploymentURIsPublic": [
+        "http://carts.sockshot.local:80"
+      ]
+    }
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.test.triggered"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
 #### Test Started
 ##### Type
 sh.keptn.event.test.started
@@ -2160,7 +2519,7 @@ sh.keptn.event.evaluation.finished
         "event-id-1",
         "event-id-2"
       ],
-      "gitCommit": ""
+      "gitCommit": "ca82a6dff817gc66f44342007202690a93763949"
     }
   },
   "datacontenttype": "application/json",
@@ -2387,9 +2746,17 @@ sh.keptn.event.release.triggered
     "message": "a message",
     "deployment": {
       "deploymentstrategy": "duplicate",
-      "deploymentURIsLocal": null,
-      "deploymentNames": null,
-      "gitCommit": ""
+      "deploymentURIsLocal": [
+        "http://carts.sockshop-staging.svc.cluster.local"
+      ],
+      "deploymentURIsPublic": [
+        "http://carts.sockshot.local:80"
+      ],
+      "deploymentNames": [
+        "carts-primary",
+        "carts-generated"
+      ],
+      "gitCommit": "ca82a6dff817gc66f44342007202690a93763949"
     }
   },
   "datacontenttype": "application/json",
@@ -3236,28 +3603,6 @@ sh.keptn.event.action.triggered
 
 ```json
 {
-  "data": {
-    "project": "sockshop",
-    "stage": "dev",
-    "service": "carts",
-    "action": {
-      "name": "Feature toggeling",
-      "action": "toggle-feature",
-      "description": "Toggles a feature flag",
-      "value": {
-        "EnableItemCache": "on"
-      }
-    },
-    "problem": {
-      "State": "OPEN",
-      "ProblemID": "762",
-      "ProblemTitle": "cpu_usage_sockshop_carts",
-      "ProblemDetails": null,
-      "PID": "93a5-3fas-a09d-8ckf",
-      "ProblemURL": "http://problem.url.com",
-      "ImpactedEntity": "carts-primary"
-    }
-  },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
@@ -3440,6 +3785,12 @@ sh.keptn.event.action.finished
     "project": "sockshop",
     "stage": "dev",
     "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message",
     "action": {
       "gitCommit": "93a5-3fas-a09d-8ckf"
     }
@@ -3456,6 +3807,168 @@ sh.keptn.event.action.finished
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Get SLI
+#### Get SLI Triggered
+##### Type
+sh.keptn.event.get-sli.triggered
+##### Data Json Schema
+
+<details><summary>Json Schema of sh.keptn.event.get-sli.triggered</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/GetSLITriggeredEventData",
+  "definitions": {
+    "GetSLI": {
+      "required": [
+        "sliProvider",
+        "start",
+        "end"
+      ],
+      "properties": {
+        "sliProvider": {
+          "type": "string"
+        },
+        "start": {
+          "type": "string"
+        },
+        "end": {
+          "type": "string"
+        },
+        "indicators": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "customFilters": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/SLIFilter"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "GetSLITriggeredEventData": {
+      "required": [
+        "get-sli"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
+          "type": "string"
+        },
+        "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "get-sli": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/GetSLI"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "SLIFilter": {
+      "required": [
+        "key",
+        "value"
+      ],
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+##### Example Cloud Event
+
+```json
+{
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message",
+    "get-sli": {
+      "sliProvider": "dynatrace",
+      "start": "2019-10-28T15:44:27.152330783Z",
+      "end": "2019-10-28T15:54:27.152330783Z",
+      "indicators": [
+        "throughput",
+        "error_rate",
+        "request_latency_p95"
+      ],
+      "customFilters": [
+        {
+          "key": "dynatraceEntityName",
+          "value": "HealthCheckController"
+        },
+        {
+          "key": "tags",
+          "value": "test-subject:true"
+        }
+      ]
+    }
+  },
+  "datacontenttype": "application/json",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "source": "source-service",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.get-sli.triggered"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
 #### Get SLI Started
 ##### Type
 sh.keptn.event.get-sli.started
@@ -3666,8 +4179,15 @@ sh.keptn.event.get-sli.finished
     "stage": "dev",
     "service": "carts",
     "get-sli": {
-      "start": "",
-      "end": ""
+      "start": "2019-10-20T07:57:27.152330783Z",
+      "end": "2019-10-22T08:57:27.152330783Z",
+      "indicatorValues": [
+        {
+          "metric": "response_time_p50",
+          "value": 1011.0745528937252,
+          "success": true
+        }
+      ]
     }
   },
   "datacontenttype": "application/json",
