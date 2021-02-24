@@ -81,9 +81,23 @@ In Keptn, events have a payload structure as follows (*Note:* The `triggeredid` 
 }
 ```
 ## Type
-The event type of a Keptn CloudEventHas the format:
+In Keptn, events follow two different formats of event types. One is related to the overall status of a **task sequence execution**, while the other format is related to the execution of a **certain task within a sequence**.
+### Task sequence events
+The event type of a Keptn CloudEvent concerning the overall state of a task sequence has the following format:
 
-* `sh.keptn.event.[task].[event status]`
+* `sh.keptn.event.[stage].[task sequence].[event status]` - For events concerning the execution of a task sequence
+
+As indicated by the brackets, the event type is defined by a **stage**, **task sequence** and the **event status**.
+* The task sequence is declared in the [Shipyard](https://github.com/keptn/spec/blob/master/shipyard.md) of a project.
+* The kinds of event states are defined with: `triggered` and `finished`
+
+For example, if a task sequence with the name `delivery` in the stage `hardening` should be executed, it has to be triggered by sending an event with the type `sh.keptn.event.hardening.delivery.triggered`. Once the `delivery` sequence is completed, a `sh.keptn.event.hardening.delivery.finished` event will be sent to indicate the completion of the task sequence.
+
+
+### Task events
+The event type of a Keptn CloudEvent concerning the execution of a certain task within a task sequence has the following format:
+
+* `sh.keptn.event.[task].[event status]` - For events concerning the execution of a certain task within a task sequence
 
 As indicated by the brackets, the event type is defined by a **task** and the **event status**.
 * The task is declared in the [Shipyard](https://github.com/keptn/spec/blob/master/shipyard.md) of a project. For example, a Shipyard can contain tasks like: `deployment`, `test`, or `evaluation`. Consequently, the event type for a `deployment` task would be `sh.keptn.event.deployment.[event status]`
@@ -100,10 +114,10 @@ The data block of a Keptn CloudEvent carries the Keptn Payload of a specific eve
 * labels
 * message
 * project
-* result
 * service
 * stage
-* status
+* status: indicates whether the service executing the task was able to perform the task without any unexpected errors. Possible values are `succeeded`, `errored`,or `unknown`
+* result: indicates the result of a successful task execution without unexpected problems (i.e. status = `succeeded`), such as the result of an evaluation, or a test execution. Possible values are `pass`, `warning`, or `fail`
 * *[task]*
 
 Like the task property in the event type, the task property in the data block depends on the task declaration in the Shipyard. Based on the example of a `deployment` task, the data block contains a `deployment` property of type object. Hence, any payload can be added to this `deployment` property
