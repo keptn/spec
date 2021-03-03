@@ -237,7 +237,7 @@ spec:
     - name: production
       sequences:
         - name: delivery
-          triggered-on:
+          triggeredOn:
           - event: hardening.delivery.finished
           tasks:
           - name: deployment
