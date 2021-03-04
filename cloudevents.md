@@ -2405,7 +2405,6 @@ sh.keptn.event.evaluation.finished
         "value",
         "passTargets",
         "warningTargets",
-        "keySli",
         "status"
       ],
       "properties": {
@@ -2415,6 +2414,9 @@ sh.keptn.event.evaluation.finished
         "value": {
           "$schema": "http://json-schema.org/draft-04/schema#",
           "$ref": "#/definitions/SLIResult"
+        },
+        "displayName": {
+          "type": "string"
         },
         "passTargets": {
           "items": {
