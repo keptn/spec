@@ -2403,8 +2403,10 @@ sh.keptn.event.evaluation.finished
       "required": [
         "score",
         "value",
+        "displayName",
         "passTargets",
         "warningTargets",
+        "keySli",
         "status"
       ],
       "properties": {
@@ -2524,6 +2526,7 @@ sh.keptn.event.evaluation.finished
             "success": true,
             "message": "a message"
           },
+          "displayName": "Response Time P95",
           "passTargets": [
             {
               "criteria": "\u003c=+10%",
