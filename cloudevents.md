@@ -2403,6 +2403,7 @@ sh.keptn.event.evaluation.finished
       "required": [
         "score",
         "value",
+        "displayName",
         "passTargets",
         "warningTargets",
         "keySli",
@@ -2415,6 +2416,9 @@ sh.keptn.event.evaluation.finished
         "value": {
           "$schema": "http://json-schema.org/draft-04/schema#",
           "$ref": "#/definitions/SLIResult"
+        },
+        "displayName": {
+          "type": "string"
         },
         "passTargets": {
           "items": {
@@ -2522,6 +2526,7 @@ sh.keptn.event.evaluation.finished
             "success": true,
             "message": "a message"
           },
+          "displayName": "Response Time P95",
           "passTargets": [
             {
               "criteria": "\u003c=+10%",

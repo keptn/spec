@@ -66,8 +66,9 @@ This comparison configuration means that the current result is compared to the a
 
 ## Objectives
 
-* `objectives`: Defines a list of objectives whereas an objective consists of a **sli** name, a **pass** criteria, an optional **warning** criteria, an optional **weight** criteria and an optional **key_sli** flag. 
+* `objectives`: Defines a list of objectives whereas an objective consists of a **sli** name, an optional **displayName**, a **pass** criteria, an optional **warning** criteria, an optional **weight** criteria and an optional **key_sli** flag. 
   * `sli`: Refers to the name of the SLI.
+  * `displayName` *(optional)*: Display name for the SLI.
   * `pass`: Represents the upper limit up to which an evaluation is successful. 
   * `warning` *(optional)*: Describes the border where the result is not pass and not fail, and a manual approval might be needed to decide. 
   * `weight` *(optional)*: Can be used to emphasize the importance of one SLI over the others. By default, `weight` is 1 for all SLIs and can be overwritten. The weight is important for calculating the score later. 
@@ -78,6 +79,7 @@ The following example demonstrates how the objectives work. Assume the following
 ```yaml
 objectives:
 - sli: response_time_p95
+  displayName: "Response Time P95"
   pass:
   - criteria:
     - "<=+10%"
@@ -180,6 +182,9 @@ Further assume, that in the previous evaluation error_rate was 5%. The upper lim
     "sli": {
       "type": "string"
     },
+    "displayName": {
+      "type": "string"
+    },
     "warning": {
       "items": {
         "$ref": "#/definitions/SLICriteria"
@@ -242,6 +247,7 @@ comparison:
   aggregate_function: avg
 objectives:
 - sli: response_time_p95
+  displayName: "Response Time P95"
   pass:
   - criteria:
     - "<=+10%"
