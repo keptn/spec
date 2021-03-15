@@ -17,67 +17,67 @@ All Keptn events conform to the CloudEvents spec in [version 1.0](https://github
 In Keptn, events have a payload structure as follows (*Note:* The `triggeredid` is not contained in events of type `triggered` mentioned below):
 ```json
 "sh.keptn.event": {
-  "required": [
-    "data",
-    "id",
-    "shkeptncontext",
-    "source",
-    "specversion",
-    "time",
-    "triggeredid",
-    "type"
-  ],
-  "properties": {
-    "data": {
-      "type": ["object", "string"],
-      "description": "The Keptn event payload depending on the type."
-    },
-    "id": {
-      "type": "string",
-      "minLength": 1,
-      "description": "Unique UUID of the Keptn event"
-    },
-    "shkeptncontext": {
-      "format": "uuid",
-      "type": "string",
-      "description": "Unique UUID value that connects various events together"
-    },
-    "source": {
-      "format": "uri-reference",
-      "type": "string",
-      "minLength": 1,
-      "description": "URL to service implementation in Keptn code repo"
-    },
-    "specversion": {
-      "type": "string",
-      "minLength": 1,
-      "description": "The version of the CloudEvents specification",
-      "value": "1.0"
-    },
-    "shkeptnspecversion": {
-      "type": "string",
-      "minLength": 1,
-      "description": "The version of the Keptn specification",
-      "value": "0.2.0"
-    },
-    "time": {
-      "format": "date-time",
-      "type": "string",
-      "description": "Timestamp of when the event happened"
-    },
-    "triggeredid": {
-      "format": "uuid",
-      "type": "string",
-      "description": "The event ID that has triggered the step"
-    },
-    "type": {
-      "type": "string",
-      "minLength": 1,
-      "description": "Type of the Keptn event"
-    }
-  },
-  "additionalProperties": false,
-  "type": "object"
+"required": [
+"data",
+"id",
+"shkeptncontext",
+"source",
+"specversion",
+"time",
+"triggeredid",
+"type"
+],
+"properties": {
+"data": {
+"type": ["object", "string"],
+"description": "The Keptn event payload depending on the type."
+},
+"id": {
+"type": "string",
+"minLength": 1,
+"description": "Unique UUID of the Keptn event"
+},
+"shkeptncontext": {
+"format": "uuid",
+"type": "string",
+"description": "Unique UUID value that connects various events together"
+},
+"source": {
+"format": "uri-reference",
+"type": "string",
+"minLength": 1,
+"description": "URL to service implementation in Keptn code repo"
+},
+"specversion": {
+"type": "string",
+"minLength": 1,
+"description": "The version of the CloudEvents specification",
+"value": "1.0"
+},
+"shkeptnspecversion": {
+"type": "string",
+"minLength": 1,
+"description": "The version of the Keptn specification",
+"value": "0.2.0"
+},
+"time": {
+"format": "date-time",
+"type": "string",
+"description": "Timestamp of when the event happened"
+},
+"triggeredid": {
+"format": "uuid",
+"type": "string",
+"description": "The event ID that has triggered the step"
+},
+"type": {
+"type": "string",
+"minLength": 1,
+"description": "Type of the Keptn event"
+}
+},
+"additionalProperties": false,
+"type": "object"
 }
 ```
 ## Type
@@ -3885,7 +3885,8 @@ sh.keptn.event.get-sli.triggered
     },
     "GetSLITriggeredEventData": {
       "required": [
-        "get-sli"
+        "get-sli",
+        "deployment"
       ],
       "properties": {
         "project": {
@@ -3927,6 +3928,9 @@ sh.keptn.event.get-sli.triggered
         "get-sli": {
           "$schema": "http://json-schema.org/draft-04/schema#",
           "$ref": "#/definitions/GetSLI"
+        },
+        "deployment": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -3987,7 +3991,8 @@ sh.keptn.event.get-sli.triggered
           "value": "test-subject:true"
         }
       ]
-    }
+    },
+    "deployment": "direct"
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
