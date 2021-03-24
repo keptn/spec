@@ -3885,7 +3885,8 @@ sh.keptn.event.get-sli.triggered
     },
     "GetSLITriggeredEventData": {
       "required": [
-        "get-sli"
+        "get-sli",
+        "deployment"
       ],
       "properties": {
         "project": {
@@ -3927,6 +3928,9 @@ sh.keptn.event.get-sli.triggered
         "get-sli": {
           "$schema": "http://json-schema.org/draft-04/schema#",
           "$ref": "#/definitions/GetSLI"
+        },
+        "deployment": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -3987,7 +3991,8 @@ sh.keptn.event.get-sli.triggered
           "value": "test-subject:true"
         }
       ]
-    }
+    },
+    "deployment": "direct"
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
