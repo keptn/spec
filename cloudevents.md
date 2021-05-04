@@ -4237,158 +4237,34 @@ sh.keptn.event.get-sli.finished
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Monitoring
-#### Configure Monitoring Triggered
+#### Configure Monitoring
 ##### Type
-sh.keptn.event.configure-monitoring.triggered
+sh.keptn.event.monitoring.configure
 ##### Data Json Schema
 
-<details><summary>Json Schema of sh.keptn.event.configure-monitoring.triggered</summary>
+<details><summary>Json Schema of sh.keptn.event.monitoring.configure</summary>
 <p>
 
 ```json
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "$ref": "#/definitions/ConfigureMonitoringTriggeredEventData",
+  "$ref": "#/definitions/ConfigureMonitoringEventData",
   "definitions": {
-    "ConfigureMonitoringTriggeredEventData": {
+    "ConfigureMonitoringEventData": {
       "required": [
-        "configureMonitoring"
-      ],
-      "properties": {
-        "project": {
-          "type": "string"
-        },
-        "stage": {
-          "type": "string"
-        },
-        "service": {
-          "type": "string"
-        },
-        "labels": {
-          "patternProperties": {
-            ".*": {
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "status": {
-          "enum": [
-            "succeeded",
-            "errored",
-            "unknown"
-          ],
-          "type": "string"
-        },
-        "result": {
-          "enum": [
-            "pass",
-            "warning",
-            "fail"
-          ],
-          "type": "string"
-        },
-        "message": {
-          "type": "string"
-        },
-        "configureMonitoring": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/ConfigureMonitoringTriggeredParams"
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "ConfigureMonitoringTriggeredParams": {
-      "required": [
-        "type"
+        "type",
+        "project",
+        "service"
       ],
       "properties": {
         "type": {
           "type": "string"
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    }
-  }
-}
-```
-</p>
-</details>
-
-##### Example Cloud Event
-
-```json
-{
-  "data": {
-    "project": "sockshop",
-    "stage": "dev",
-    "service": "carts",
-    "configureMonitoring": {
-      "type": "dynatrace"
-    }
-  },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "type": "sh.keptn.event.configure-monitoring.triggered"
-}
-```
-
-([&uarr; up to index](#keptn-cloud-events))
-#### Configure Monitoring Started
-##### Type
-sh.keptn.event.configure-monitoring.started
-##### Data Json Schema
-
-<details><summary>Json Schema of sh.keptn.event.configure-monitoring.started</summary>
-<p>
-
-```json
-{
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "$ref": "#/definitions/ConfigureMonitoringStartedEventData",
-  "definitions": {
-    "ConfigureMonitoringStartedEventData": {
-      "properties": {
-        "project": {
-          "type": "string"
         },
-        "stage": {
+        "project": {
           "type": "string"
         },
         "service": {
           "type": "string"
-        },
-        "labels": {
-          "patternProperties": {
-            ".*": {
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "status": {
-          "enum": [
-            "succeeded",
-            "errored",
-            "unknown"
-          ],
-          "type": "string"
-        },
-        "result": {
-          "enum": [
-            "pass",
-            "warning",
-            "fail"
-          ],
-          "type": "string"
-        },
-        "message": {
-          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -4405,15 +4281,9 @@ sh.keptn.event.configure-monitoring.started
 ```json
 {
   "data": {
+    "type": "dynatrace",
     "project": "sockshop",
-    "stage": "dev",
-    "service": "carts",
-    "labels": {
-      "label-key": "label-value"
-    },
-    "status": "succeeded",
-    "result": "pass",
-    "message": "a message"
+    "service": "service"
   },
   "datacontenttype": "application/json",
   "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
@@ -4421,94 +4291,7 @@ sh.keptn.event.configure-monitoring.started
   "source": "source-service",
   "specversion": "1.0",
   "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.configure-monitoring.started"
-}
-```
-
-([&uarr; up to index](#keptn-cloud-events))
-#### Configure Monitoring Finished
-##### Type
-sh.keptn.event.configure-monitoring.finished
-##### Data Json Schema
-
-<details><summary>Json Schema of sh.keptn.event.configure-monitoring.finished</summary>
-<p>
-
-```json
-{
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "$ref": "#/definitions/ConfigureMonitoringFinishedEventData",
-  "definitions": {
-    "ConfigureMonitoringFinishedEventData": {
-      "properties": {
-        "project": {
-          "type": "string"
-        },
-        "stage": {
-          "type": "string"
-        },
-        "service": {
-          "type": "string"
-        },
-        "labels": {
-          "patternProperties": {
-            ".*": {
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "status": {
-          "enum": [
-            "succeeded",
-            "errored",
-            "unknown"
-          ],
-          "type": "string"
-        },
-        "result": {
-          "enum": [
-            "pass",
-            "warning",
-            "fail"
-          ],
-          "type": "string"
-        },
-        "message": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    }
-  }
-}
-```
-</p>
-</details>
-
-##### Example Cloud Event
-
-```json
-{
-  "data": {
-    "project": "sockshop",
-    "stage": "dev",
-    "service": "carts",
-    "labels": {
-      "label-key": "label-value"
-    },
-    "status": "succeeded",
-    "result": "pass",
-    "message": "a message"
-  },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.configure-monitoring.finished"
+  "type": "sh.keptn.event.monitoring.configure"
 }
 ```
 
