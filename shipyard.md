@@ -65,7 +65,8 @@ A sequence consists of a list of tasks whereby a single task is the smallest exe
               "type": "string"
             }
           },
-          "type": "object"
+          "type": "object",
+          "additionalProperties": false
         }
       },
       "additionalProperties": false,
@@ -162,14 +163,14 @@ A sequence consists of a list of tasks whereby a single task is the smallest exe
     },
     "Task": {
       "required": [
-        "name",
-        "properties"
+        "name"
       ],
       "properties": {
         "name": {
           "type": "string"
         },
         "properties": {
+          "type": "object",
           "additionalProperties": true
         }
       },
