@@ -24,8 +24,44 @@ A Shipyard consists of a list of stages. A stage has the properties:
 A stage consists of a list of sequences whereby a sequence is an ordered list of tasks that are triggered sequentially. A sequence has the properties:
 
 * `name`: A unique name of the sequence
-* `triggeredOn` *(optional)*: An array of events that trigger the sequence.
 * `tasks`: An array of tasks executed by the sequence in the declared order.
+* `triggeredOn` *(optional)*: An array of events that trigger the sequence. This property can be used to trigger a sequence once another sequence has been finished. In addition to specifying the sequence whose completion should activate the trigger,
+it is also possible to define a `selector` that defines whether the sequence should be triggered if the preceeding sequence has been executed successfuly, or had a `failed` or `warning` result. 
+For example, the following sequence with the name `rollback` would only be triggered if the sequence `delivery` in production had a result of `failed`:
+
+```
+...
+        - name: rollback
+          triggeredOn:
+          - event: production.delivery.finished
+            selector:
+              match:
+                result: failed
+...
+``` 
+
+It is also possible to refer to certain tasks within the preceeding sequence. For example, by changing the `match` to `release.result: failed`, the `rollback` sequence would only be executed if the task `release` of the sequence `delivery` had a result of `failed`:
+
+```
+...
+        - name: rollback
+          triggeredOn:
+          - event: production.delivery.finished
+            selector:
+              match:
+                release.result: failed
+...
+```
+
+If no `selector` is specified, the sequence will only be triggered if the preceeding `delivery` sequence had a result of `pass`:
+```
+...
+        - name: rollback
+          triggeredOn:
+          - event: production.delivery.finished
+...
+```
+
 
 ## Task
 
