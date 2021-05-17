@@ -291,6 +291,8 @@ spec:
             selector:
               match:
                 result: failed
+          tasks:
+          - name: rollback
         - name: remediation
           tasks:
           - name: remediation
