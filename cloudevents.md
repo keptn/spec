@@ -168,17 +168,17 @@ sh.keptn.event.project.create.triggered
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.project.create.triggered",
+  "datacontenttype": "application/json",
   "data": {
     "projectName": "sockshop",
     "gitRemoteURL": "https://github.com/project/repository",
     "shipyard": "c3RhZ2VzOg0KICAtIG5hbWU6ICJkZXYiDQogICAgZGVwbG95bWVudF9zdHJhdGVneTogImRpcmVjdCINCiAgICB0ZXN0X3N0cmF0ZWd5OiAiZnVuY3Rpb25hbCINCiAgLSBuYW1lOiAic3RhZ2luZyINCiAgICBkZXBsb3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHRlc3Rfc3RyYXRlZ3k6ICJwZXJmb3JtYW5jZSINCiAgLSBuYW1lOiAicHJvZHVjdGlvbiINCiAgICBkZXBsb3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHJlbWVkaWF0aW9uX3N0cmF0ZWd5OiAiYXV0b21hdGVkIg0K"
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "type": "sh.keptn.event.project.create.triggered"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
 }
 ```
 
@@ -248,6 +248,11 @@ sh.keptn.event.project.create.started
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.project.create.started",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -259,13 +264,8 @@ sh.keptn.event.project.create.started
     "result": "pass",
     "message": "a message"
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.project.create.started"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -361,6 +361,11 @@ sh.keptn.event.project.create.finished
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.project.create.finished",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -377,13 +382,8 @@ sh.keptn.event.project.create.finished
       "shipyard": "c3RhZ2VzOg0KICAtIG5hbWU6ICJkZXYiDQogICAgZGVwbG95bWVudF9zdHJhdGVneTogImRpcmVjdCINCiAgICB0ZXN0X3N0cmF0ZWd5OiAiZnVuY3Rpb25hbCINCiAgLSBuYW1lOiAic3RhZ2luZyINCiAgICBkZXBsb3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHRlc3Rfc3RyYXRlZ3k6ICJwZXJmb3JtYW5jZSINCiAgLSBuYW1lOiAicHJvZHVjdGlvbiINCiAgICBkZXBsb3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHJlbWVkaWF0aW9uX3N0cmF0ZWd5OiAiYXV0b21hdGVkIg0K"
     }
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
   "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.project.create.finished"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
 }
 ```
 
@@ -454,6 +454,11 @@ sh.keptn.event.service.create.started
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.service.create.started",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -465,13 +470,8 @@ sh.keptn.event.service.create.started
     "result": "pass",
     "message": "a message"
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.service.create.started"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -541,6 +541,11 @@ sh.keptn.event.service.create.status.changed
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.service.create.status.changed",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -552,13 +557,8 @@ sh.keptn.event.service.create.status.changed
     "result": "pass",
     "message": "a message"
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
   "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.service.create.status.changed"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
 }
 ```
 
@@ -628,6 +628,11 @@ sh.keptn.event.service.create.finished
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.service.create.finished",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -639,13 +644,8 @@ sh.keptn.event.service.create.finished
     "result": "pass",
     "message": "a message"
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.service.create.finished"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -747,6 +747,11 @@ sh.keptn.event.approval.triggered
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.approval.triggered",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -762,12 +767,7 @@ sh.keptn.event.approval.triggered
       "warning": "manual"
     }
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "type": "sh.keptn.event.approval.triggered"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
 }
 ```
 
@@ -837,6 +837,11 @@ sh.keptn.event.approval.started
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.approval.started",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -848,13 +853,8 @@ sh.keptn.event.approval.started
     "result": "pass",
     "message": "a message"
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
   "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.approval.started"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
 }
 ```
 
@@ -924,6 +924,11 @@ sh.keptn.event.approval.status.changed
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.approval.status.changed",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -935,13 +940,8 @@ sh.keptn.event.approval.status.changed
     "result": "pass",
     "message": "a message"
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.approval.status.changed"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -1011,6 +1011,11 @@ sh.keptn.event.approval.finished
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.approval.finished",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -1022,13 +1027,8 @@ sh.keptn.event.approval.finished
     "result": "pass",
     "message": "a message"
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.approval.finished"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -1158,6 +1158,11 @@ sh.keptn.event.deployment.triggered
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.deployment.triggered",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -1183,12 +1188,7 @@ sh.keptn.event.deployment.triggered
       "deploymentstrategy": "direct"
     }
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "type": "sh.keptn.event.deployment.triggered"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
 }
 ```
 
@@ -1258,6 +1258,11 @@ sh.keptn.event.deployment.started
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.deployment.started",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -1269,13 +1274,8 @@ sh.keptn.event.deployment.started
     "result": "pass",
     "message": "a message"
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
   "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.deployment.started"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
 }
 ```
 
@@ -1345,6 +1345,11 @@ sh.keptn.event.deployment.status.changed
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.deployment.status.changed",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -1356,13 +1361,8 @@ sh.keptn.event.deployment.status.changed
     "result": "pass",
     "message": "a message"
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.deployment.status.changed"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -1480,6 +1480,11 @@ sh.keptn.event.deployment.finished
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.deployment.finished",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -1504,13 +1509,8 @@ sh.keptn.event.deployment.finished
       "gitCommit": "ca82a6dff817gc66f44342007202690a93763949"
     }
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.deployment.finished"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -1632,6 +1632,11 @@ sh.keptn.event.test.triggered
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.test.triggered",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -1654,12 +1659,7 @@ sh.keptn.event.test.triggered
       ]
     }
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "type": "sh.keptn.event.test.triggered"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
 }
 ```
 
@@ -1729,6 +1729,11 @@ sh.keptn.event.test.started
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.test.started",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -1740,13 +1745,8 @@ sh.keptn.event.test.started
     "result": "pass",
     "message": "a message"
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.test.started"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -1816,6 +1816,11 @@ sh.keptn.event.test.triggered
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.test.triggered",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -1827,12 +1832,7 @@ sh.keptn.event.test.triggered
     "result": "pass",
     "message": "a message"
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "type": "sh.keptn.event.test.triggered"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
 }
 ```
 
@@ -1929,6 +1929,11 @@ sh.keptn.event.test.finished
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.test.finished",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -1945,13 +1950,8 @@ sh.keptn.event.test.finished
       "gitCommit": "ca82a6dff817gc66f44342007202690a93763949"
     }
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
   "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.test.finished"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
 }
 ```
 
@@ -1988,13 +1988,17 @@ sh.keptn.event.evaluation.triggered
     "Evaluation": {
       "required": [
         "start",
-        "end"
+        "end",
+        "timeframe"
       ],
       "properties": {
         "start": {
           "type": "string"
         },
         "end": {
+          "type": "string"
+        },
+        "timeframe": {
           "type": "string"
         }
       },
@@ -2086,6 +2090,11 @@ sh.keptn.event.evaluation.triggered
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.evaluation.triggered",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -2102,7 +2111,8 @@ sh.keptn.event.evaluation.triggered
     },
     "evaluation": {
       "start": "2019-10-20T07:57:27.152330783Z",
-      "end": "2019-10-20T08:57:27.152330783Z"
+      "end": "2019-10-20T08:57:27.152330783Z",
+      "timeframe": ""
     },
     "deployment": {
       "deploymentNames": [
@@ -2110,12 +2120,7 @@ sh.keptn.event.evaluation.triggered
       ]
     }
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "type": "sh.keptn.event.evaluation.triggered"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
 }
 ```
 
@@ -2185,6 +2190,11 @@ sh.keptn.event.evaluation.started
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.evaluation.started",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -2196,13 +2206,8 @@ sh.keptn.event.evaluation.started
     "result": "pass",
     "message": "a message"
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.evaluation.started"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -2272,6 +2277,11 @@ sh.keptn.event.evaluation.status.changed
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.evaluation.status.changed",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -2283,13 +2293,8 @@ sh.keptn.event.evaluation.status.changed
     "result": "pass",
     "message": "a message"
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.evaluation.status.changed"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -2501,6 +2506,11 @@ sh.keptn.event.evaluation.finished
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.evaluation.finished",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -2552,13 +2562,8 @@ sh.keptn.event.evaluation.finished
       "gitCommit": "ca82a6dff817gc66f44342007202690a93763949"
     }
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.evaluation.finished"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -2628,6 +2633,11 @@ sh.keptn.event.evaluation.invalidated
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.evaluation.invalidated",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -2639,13 +2649,8 @@ sh.keptn.event.evaluation.invalidated
     "result": "pass",
     "message": "a message"
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
   "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.evaluation.invalidated"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
 }
 ```
 
@@ -2764,6 +2769,11 @@ sh.keptn.event.release.triggered
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.release.triggered",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -2789,12 +2799,7 @@ sh.keptn.event.release.triggered
       "gitCommit": "ca82a6dff817gc66f44342007202690a93763949"
     }
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "type": "sh.keptn.event.release.triggered"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
 }
 ```
 
@@ -2864,6 +2869,11 @@ sh.keptn.event.release.started
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.release.started",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -2875,13 +2885,8 @@ sh.keptn.event.release.started
     "result": "pass",
     "message": "a message"
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.release.started"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -2951,6 +2956,11 @@ sh.keptn.event.release.status.changed
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.release.status.changed",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -2962,13 +2972,8 @@ sh.keptn.event.release.status.changed
     "result": "pass",
     "message": "a message"
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.release.status.changed"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -3057,6 +3062,11 @@ sh.keptn.event.release.finished
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.release.finished",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -3071,74 +3081,30 @@ sh.keptn.event.release.finished
       "gitCommit": "ca82a6dff817gc66f44342007202690a93763949"
     }
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.release.finished"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-### Remediation
-#### Remediation Triggered
+### Get Action
+#### Get Action Triggered
 ##### Type
-sh.keptn.event.remediation.triggered
+sh.keptn.event.get-action.triggered
 ##### Data Json Schema
 
-<details><summary>Json Schema of sh.keptn.event.remediation.triggered</summary>
+<details><summary>Json Schema of sh.keptn.event.get-action.triggered</summary>
 <p>
 
 ```json
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "$ref": "#/definitions/RemediationTriggeredEventData",
+  "$ref": "#/definitions/GetActionTriggeredEventData",
   "definitions": {
-    "ProblemDetails": {
+    "GetActionTriggeredEventData": {
       "required": [
-        "State",
-        "ProblemID",
-        "ProblemTitle",
-        "ProblemDetails",
-        "PID"
-      ],
-      "properties": {
-        "State": {
-          "type": "string"
-        },
-        "ProblemID": {
-          "type": "string"
-        },
-        "ProblemTitle": {
-          "type": "string"
-        },
-        "ProblemDetails": {
-          "type": "string",
-          "media": {
-            "binaryEncoding": "base64"
-          }
-        },
-        "PID": {
-          "type": "string"
-        },
-        "ProblemURL": {
-          "type": "string"
-        },
-        "ImpactedEntity": {
-          "type": "string"
-        },
-        "Tags": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "RemediationTriggeredEventData": {
-      "required": [
-        "problem"
+        "problem",
+        "actionIndex"
       ],
       "properties": {
         "project": {
@@ -3180,191 +3146,25 @@ sh.keptn.event.remediation.triggered
         "problem": {
           "$schema": "http://json-schema.org/draft-04/schema#",
           "$ref": "#/definitions/ProblemDetails"
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    }
-  }
-}
-```
-</p>
-</details>
-
-##### Example Cloud Event
-
-```json
-{
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "type": "sh.keptn.event.remediation.triggered"
-}
-```
-
-([&uarr; up to index](#keptn-cloud-events))
-#### Remediation Started
-##### Type
-sh.keptn.event.remediation.started
-##### Data Json Schema
-
-<details><summary>Json Schema of sh.keptn.event.remediation.started</summary>
-<p>
-
-```json
-{
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "$ref": "#/definitions/RemediationStartedEventData",
-  "definitions": {
-    "RemediationStartedEventData": {
-      "properties": {
-        "project": {
-          "type": "string"
         },
-        "stage": {
-          "type": "string"
-        },
-        "service": {
-          "type": "string"
-        },
-        "labels": {
-          "patternProperties": {
-            ".*": {
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "status": {
-          "enum": [
-            "succeeded",
-            "errored",
-            "unknown"
-          ],
-          "type": "string"
-        },
-        "result": {
-          "enum": [
-            "pass",
-            "warning",
-            "fail"
-          ],
-          "type": "string"
-        },
-        "message": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    }
-  }
-}
-```
-</p>
-</details>
-
-##### Example Cloud Event
-
-```json
-{
-  "data": {
-    "project": "sockshop",
-    "stage": "dev",
-    "service": "carts",
-    "labels": {
-      "label-key": "label-value"
-    },
-    "status": "succeeded",
-    "result": "pass",
-    "message": "a message"
-  },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.remediation.started"
-}
-```
-
-([&uarr; up to index](#keptn-cloud-events))
-#### Remediation Status Changed
-##### Type
-sh.keptn.event.remediation.status.changed
-##### Data Json Schema
-
-<details><summary>Json Schema of sh.keptn.event.remediation.status.changed</summary>
-<p>
-
-```json
-{
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "$ref": "#/definitions/RemediationStatusChangedEventData",
-  "definitions": {
-    "Remediation": {
-      "required": [
-        "actionIndex",
-        "actionName"
-      ],
-      "properties": {
         "actionIndex": {
           "type": "integer"
-        },
-        "actionName": {
-          "type": "string"
         }
       },
       "additionalProperties": false,
       "type": "object"
     },
-    "RemediationStatusChangedEventData": {
+    "ProblemDetails": {
       "required": [
-        "remediation"
+        "problemTitle",
+        "rootCause"
       ],
       "properties": {
-        "project": {
+        "problemTitle": {
           "type": "string"
         },
-        "stage": {
+        "rootCause": {
           "type": "string"
-        },
-        "service": {
-          "type": "string"
-        },
-        "labels": {
-          "patternProperties": {
-            ".*": {
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "status": {
-          "enum": [
-            "succeeded",
-            "errored",
-            "unknown"
-          ],
-          "type": "string"
-        },
-        "result": {
-          "enum": [
-            "pass",
-            "warning",
-            "fail"
-          ],
-          "type": "string"
-        },
-        "message": {
-          "type": "string"
-        },
-        "remediation": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/Remediation"
         }
       },
       "additionalProperties": false,
@@ -3380,6 +3180,11 @@ sh.keptn.event.remediation.status.changed
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.get-action.triggered",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -3390,36 +3195,31 @@ sh.keptn.event.remediation.status.changed
     "status": "succeeded",
     "result": "pass",
     "message": "a message",
-    "remediation": {
-      "actionIndex": 1,
-      "actionName": "trigger-runbook"
-    }
+    "problem": {
+      "problemTitle": "Response time degradation",
+      "rootCause": "Problem root cause"
+    },
+    "actionIndex": 0
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.remediation.status.changed"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
-#### Remediation Finished
+#### Get Action Started
 ##### Type
-sh.keptn.event.remediation.finished
+sh.keptn.event.get-action.started
 ##### Data Json Schema
 
-<details><summary>Json Schema of sh.keptn.event.remediation.finished</summary>
+<details><summary>Json Schema of sh.keptn.event.get-action.started</summary>
 <p>
 
 ```json
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "$ref": "#/definitions/RemediationFinishedEventData",
+  "$ref": "#/definitions/GetActionStartedEventData",
   "definitions": {
-    "RemediationFinishedEventData": {
+    "GetActionStartedEventData": {
       "properties": {
         "project": {
           "type": "string"
@@ -3471,6 +3271,11 @@ sh.keptn.event.remediation.finished
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.get-action.started",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -3482,13 +3287,137 @@ sh.keptn.event.remediation.finished
     "result": "pass",
     "message": "a message"
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+#### Get Action Finished
+##### Type
+sh.keptn.event.get-action.finished
+##### Data Json Schema
+
+<details><summary>Json Schema of sh.keptn.event.get-action.finished</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/GetActionFinishedEventData",
+  "definitions": {
+    "ActionInfo": {
+      "required": [
+        "name",
+        "action"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "value": {
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "GetActionFinishedEventData": {
+      "required": [
+        "action",
+        "ActionIndex"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
+          "type": "string"
+        },
+        "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "action": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ActionInfo"
+        },
+        "ActionIndex": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+##### Example Cloud Event
+
+```json
+{
   "specversion": "1.0",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.remediation.finished"
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.get-action.finished",
+  "datacontenttype": "application/json",
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message",
+    "action": {
+      "name": "Feature toggling",
+      "action": "toggle-feature",
+      "description": "Toggles a feature flag",
+      "value": {
+        "EnableItemCache": "on"
+      }
+    },
+    "ActionIndex": 1
+  },
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -3585,38 +3514,14 @@ sh.keptn.event.action.triggered
     },
     "ProblemDetails": {
       "required": [
-        "State",
-        "ProblemID",
-        "ProblemTitle",
-        "ProblemDetails",
-        "PID"
+        "problemTitle",
+        "rootCause"
       ],
       "properties": {
-        "State": {
+        "problemTitle": {
           "type": "string"
         },
-        "ProblemID": {
-          "type": "string"
-        },
-        "ProblemTitle": {
-          "type": "string"
-        },
-        "ProblemDetails": {
-          "type": "string",
-          "media": {
-            "binaryEncoding": "base64"
-          }
-        },
-        "PID": {
-          "type": "string"
-        },
-        "ProblemURL": {
-          "type": "string"
-        },
-        "ImpactedEntity": {
-          "type": "string"
-        },
-        "Tags": {
+        "rootCause": {
           "type": "string"
         }
       },
@@ -3633,12 +3538,35 @@ sh.keptn.event.action.triggered
 
 ```json
 {
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
   "specversion": "1.0",
-  "type": "sh.keptn.event.action.triggered"
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.action.triggered",
+  "datacontenttype": "application/json",
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message",
+    "action": {
+      "name": "Feature toggling",
+      "action": "toggle-feature",
+      "description": "Toggles a feature flag",
+      "value": {
+        "EnableItemCache": "on"
+      }
+    },
+    "problem": {
+      "problemTitle": "cpu_usage_sockshop_carts",
+      "rootCause": "problem root cause"
+    }
+  },
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
 }
 ```
 
@@ -3708,6 +3636,11 @@ sh.keptn.event.action.started
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.action.started",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -3719,13 +3652,8 @@ sh.keptn.event.action.started
     "result": "pass",
     "message": "a message"
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.action.started"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -3811,6 +3739,11 @@ sh.keptn.event.action.finished
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.action.finished",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -3825,13 +3758,8 @@ sh.keptn.event.action.finished
       "gitCommit": "93a5-3fas-a09d-8ckf"
     }
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.action.finished"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -3962,6 +3890,11 @@ sh.keptn.event.get-sli.triggered
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.get-sli.triggered",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -3994,12 +3927,7 @@ sh.keptn.event.get-sli.triggered
     },
     "deployment": "direct"
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "type": "sh.keptn.event.get-sli.triggered"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
 }
 ```
 
@@ -4069,6 +3997,11 @@ sh.keptn.event.get-sli.started
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.get-sli.started",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -4080,13 +4013,8 @@ sh.keptn.event.get-sli.started
     "result": "pass",
     "message": "a message"
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.get-sli.started"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -4209,6 +4137,11 @@ sh.keptn.event.get-sli.finished
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.get-sli.finished",
+  "datacontenttype": "application/json",
   "data": {
     "project": "sockshop",
     "stage": "dev",
@@ -4225,13 +4158,8 @@ sh.keptn.event.get-sli.finished
       ]
     }
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.get-sli.finished"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -4280,29 +4208,29 @@ sh.keptn.event.monitoring.configure
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.monitoring.configure",
+  "datacontenttype": "application/json",
   "data": {
     "type": "dynatrace",
     "project": "sockshop",
     "service": "service"
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.monitoring.configure"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
 ### Problem
-#### Problem Open
+#### Problem
 ##### Type
-sh.keptn.event.problem.open
+sh.keptn.events.problem
 ##### Data Json Schema
 
-<details><summary>Json Schema of sh.keptn.event.problem.open</summary>
+<details><summary>Json Schema of sh.keptn.events.problem</summary>
 <p>
 
 ```json
@@ -4377,6 +4305,11 @@ sh.keptn.event.problem.open
 
 ```json
 {
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.events.problem",
+  "datacontenttype": "application/json",
   "data": {
     "State": "OPEN",
     "ProblemID": "ab81-941c-f198",
@@ -4399,13 +4332,8 @@ sh.keptn.event.problem.open
     "service": "service",
     "labels": null
   },
-  "datacontenttype": "application/json",
-  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "source": "source-service",
-  "specversion": "1.0",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "type": "sh.keptn.event.problem.open"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
