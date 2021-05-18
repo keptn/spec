@@ -382,8 +382,8 @@ sh.keptn.event.project.create.finished
       "shipyard": "c3RhZ2VzOg0KICAtIG5hbWU6ICJkZXYiDQogICAgZGVwbG95bWVudF9zdHJhdGVneTogImRpcmVjdCINCiAgICB0ZXN0X3N0cmF0ZWd5OiAiZnVuY3Rpb25hbCINCiAgLSBuYW1lOiAic3RhZ2luZyINCiAgICBkZXBsb3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHRlc3Rfc3RyYXRlZ3k6ICJwZXJmb3JtYW5jZSINCiAgLSBuYW1lOiAicHJvZHVjdGlvbiINCiAgICBkZXBsb3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHJlbWVkaWF0aW9uX3N0cmF0ZWd5OiAiYXV0b21hdGVkIg0K"
     }
   },
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -557,8 +557,8 @@ sh.keptn.event.service.create.status.changed
     "result": "pass",
     "message": "a message"
   },
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -853,8 +853,8 @@ sh.keptn.event.approval.started
     "result": "pass",
     "message": "a message"
   },
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -1274,8 +1274,8 @@ sh.keptn.event.deployment.started
     "result": "pass",
     "message": "a message"
   },
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -1950,8 +1950,8 @@ sh.keptn.event.test.finished
       "gitCommit": "ca82a6dff817gc66f44342007202690a93763949"
     }
   },
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -2112,7 +2112,7 @@ sh.keptn.event.evaluation.triggered
     "evaluation": {
       "start": "2019-10-20T07:57:27.152330783Z",
       "end": "2019-10-20T08:57:27.152330783Z",
-      "timeframe": ""
+      "timeframe": "10m"
     },
     "deployment": {
       "deploymentNames": [
@@ -2206,8 +2206,8 @@ sh.keptn.event.evaluation.started
     "result": "pass",
     "message": "a message"
   },
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
 }
 ```
 
@@ -2649,8 +2649,8 @@ sh.keptn.event.evaluation.invalidated
     "result": "pass",
     "message": "a message"
   },
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -3652,8 +3652,8 @@ sh.keptn.event.action.started
     "result": "pass",
     "message": "a message"
   },
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
 }
 ```
 
