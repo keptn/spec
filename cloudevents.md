@@ -6,6 +6,7 @@
 * [Test](#test)
 * [Evaluation](#evaluation)
 * [Release](#release)
+* [Get-Action](#get-action)
 * [Remediation](#remediation)
 * [Action](#action)
 * [Get-SLI](#get-sli)
