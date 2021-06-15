@@ -11,6 +11,7 @@
 * [Get-SLI](#get-sli)
 * [Monitoring](#monitoring)
 * [Problem](#problem)
+* [Error Log](#error-log)
 ---
 All Keptn events conform to the CloudEvents spec in [version 1.0](https://github.com/cloudevents/spec/blob/v1.0/spec.md). The CloudEvents specification is a vendor-neutral specification for defining the format of event data.
 
@@ -264,8 +265,8 @@ sh.keptn.event.project.create.started
     "result": "pass",
     "message": "a message"
   },
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
 }
 ```
 
@@ -470,8 +471,8 @@ sh.keptn.event.service.create.started
     "result": "pass",
     "message": "a message"
   },
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -853,8 +854,8 @@ sh.keptn.event.approval.started
     "result": "pass",
     "message": "a message"
   },
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -1745,8 +1746,8 @@ sh.keptn.event.test.started
     "result": "pass",
     "message": "a message"
   },
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
 }
 ```
 
@@ -3287,8 +3288,8 @@ sh.keptn.event.get-action.started
     "result": "pass",
     "message": "a message"
   },
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -3652,8 +3653,8 @@ sh.keptn.event.action.started
     "result": "pass",
     "message": "a message"
   },
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
 }
 ```
 
@@ -4338,3 +4339,67 @@ sh.keptn.events.problem
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
+### General purpose events
+In addition to the task sequence/task events listed above, Keptn also supports the following general-purpose events:
+### Logging
+For easier debugging of errors that occur either during the execution of a task of a sequence, or while performing any other operation, Keptn integration services can send error log events to the Keptn API via the distributor.
+#### Error Log
+##### Type
+sh.keptn.log.error
+##### Data Json Schema
+
+<details><summary>Json Schema of sh.keptn.log.error</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/ErrorLogEvent",
+  "definitions": {
+    "ErrorLogEvent": {
+      "required": [
+        "message",
+        "integrationid",
+        "task"
+      ],
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "integrationid": {
+          "type": "string"
+        },
+        "task": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+##### Example Cloud Event
+
+```json
+{
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.log.error",
+  "datacontenttype": "application/json",
+  "data": {
+    "message": "an unexpected error occurred",
+    "integrationid": "2b4b199c-cdaf-11eb-b8bc-0242ac130003",
+    "task": "deployment"
+  },
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+
