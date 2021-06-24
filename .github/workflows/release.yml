@@ -1,0 +1,17 @@
+on:
+  push:
+    tags:
+      - "*"
+  workflow_dispatch:
+
+jobs:
+  send_webhook:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Trigger spec auto update in core repo
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.KEPTN_BOT_TOKEN }}
+          repository: keptn/keptn
+          event-type: spec-update
+          client-payload: '{"ref": "${GITHUB_REF}"}'
