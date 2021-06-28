@@ -3,15 +3,29 @@ on:
     tags:
       - "*"
   workflow_dispatch:
-
+    inputs:
+      tag:
+        description: 'Tag to which the spec in the keptn/keptn repo should be updated to. Example: refs/tags/0.2.3'
+        required: true
+        default: ''
 jobs:
   send_webhook:
     runs-on: ubuntu-20.04
     steps:
       - name: Trigger spec auto update in core repo
+        if: github.event_name == "push"
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.KEPTN_BOT_TOKEN }}
           repository: keptn/keptn
           event-type: spec-update
-          client-payload: '{"ref": "${GITHUB_REF}"}'
+          client-payload: '{"ref": "${{ github.ref }}"}'
+
+      - name: Trigger manual spec update in core repo
+        if: github.event_name == "workflow_dispatch"
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.KEPTN_BOT_TOKEN }}
+          repository: keptn/keptn
+          event-type: spec-update
+          client-payload: '{"ref": "${{ github.event.inputs.tag }}"}'
