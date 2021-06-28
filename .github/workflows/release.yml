@@ -1,3 +1,4 @@
+name: Keptn Core spec update
 on:
   push:
     tags:
@@ -13,7 +14,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Trigger spec auto update in core repo
-        if: github.event_name == "push"
+        if: github.event_name == 'push'
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.KEPTN_BOT_TOKEN }}
@@ -22,7 +23,7 @@ jobs:
           client-payload: '{"ref": "${{ github.ref }}"}'
 
       - name: Trigger manual spec update in core repo
-        if: github.event_name == "workflow_dispatch"
+        if: github.event_name == 'workflow_dispatch'
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.KEPTN_BOT_TOKEN }}
