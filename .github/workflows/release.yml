@@ -1,4 +1,4 @@
-name: Keptn Core spec update
+name: Update spec in keptn repos
 on:
   push:
     tags:
@@ -12,13 +12,16 @@ on:
 jobs:
   send_webhook:
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        repo: ['keptn/keptn', 'keptn/go-utils']
     steps:
       - name: Trigger spec auto update in core repo
         if: github.event_name == 'push'
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.KEPTN_BOT_TOKEN }}
-          repository: keptn/keptn
+          repository: ${{ matrix.repo }}
           event-type: spec-update
           client-payload: '{"ref": "${{ github.ref }}"}'
 
@@ -27,6 +30,6 @@ jobs:
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.KEPTN_BOT_TOKEN }}
-          repository: keptn/keptn
+          repository: ${{ matrix.repo }}
           event-type: spec-update
           client-payload: '{"ref": "${{ github.event.inputs.tag }}"}'
