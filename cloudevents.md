@@ -3,6 +3,7 @@
 * [Service](#service)
 * [Approval](#approval)
 * [Deployment](#deployment)
+* [Rollback](#rollback)
 * [Test](#test)
 * [Evaluation](#evaluation)
 * [Release](#release)
@@ -265,8 +266,8 @@ sh.keptn.event.project.create.started
     "result": "pass",
     "message": "a message"
   },
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -1516,6 +1517,267 @@ sh.keptn.event.deployment.finished
 ```
 
 ([&uarr; up to index](#keptn-cloud-events))
+### Rollback
+#### Rollback Triggered
+##### Type
+sh.keptn.event.rollback.triggered
+##### Data Json Schema
+
+<details><summary>Json Schema of sh.keptn.event.rollback.triggered</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/RollbackTriggeredEventData",
+  "definitions": {
+    "RollbackTriggeredEventData": {
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
+          "type": "string"
+        },
+        "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+##### Example Cloud Event
+
+```json
+{
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.rollback.triggered",
+  "datacontenttype": "application/json",
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message"
+  },
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+#### Rollback Started
+##### Type
+sh.keptn.event.rollback.started
+##### Data Json Schema
+
+<details><summary>Json Schema of sh.keptn.event.rollback.started</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/RollbackStartedEventData",
+  "definitions": {
+    "RollbackStartedEventData": {
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
+          "type": "string"
+        },
+        "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+##### Example Cloud Event
+
+```json
+{
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.rollback.started",
+  "datacontenttype": "application/json",
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message"
+  },
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
+#### Rollback Finished
+##### Type
+sh.keptn.event.rollback.finished
+##### Data Json Schema
+
+<details><summary>Json Schema of sh.keptn.event.rollback.finished</summary>
+<p>
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/RollbackFinishedEventData",
+  "definitions": {
+    "RollbackFinishedEventData": {
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "enum": [
+            "succeeded",
+            "errored",
+            "unknown"
+          ],
+          "type": "string"
+        },
+        "result": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
+```
+</p>
+</details>
+
+##### Example Cloud Event
+
+```json
+{
+  "specversion": "1.0",
+  "id": "c4d3a334-6cb9-4e8c-a372-7e0b45942f53",
+  "source": "source-service",
+  "type": "sh.keptn.event.rollback.finished",
+  "datacontenttype": "application/json",
+  "data": {
+    "project": "sockshop",
+    "stage": "dev",
+    "service": "carts",
+    "labels": {
+      "label-key": "label-value"
+    },
+    "status": "succeeded",
+    "result": "pass",
+    "message": "a message"
+  },
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+}
+```
+
+([&uarr; up to index](#keptn-cloud-events))
 ### Test
 #### Test Triggered
 ##### Type
@@ -1746,8 +2008,8 @@ sh.keptn.event.test.started
     "result": "pass",
     "message": "a message"
   },
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -3653,8 +3915,8 @@ sh.keptn.event.action.started
     "result": "pass",
     "message": "a message"
   },
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
@@ -4396,8 +4658,8 @@ sh.keptn.log.error
     "integrationid": "2b4b199c-cdaf-11eb-b8bc-0242ac130003",
     "task": "deployment"
   },
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
 }
 ```
 
