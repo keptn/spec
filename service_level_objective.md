@@ -95,8 +95,8 @@ Further assume, that in the previous evaluation the metric response_time_p95 was
 *   pass: <= 5.5
 *   fail: > 5.5
 
-Listed criteria are combined using a logical OR, so if we consider the pass criteria in our example it is enough either for  "<=+10%" to be satisfied or "<600".
-To enforce multiple criteria at the same time (logical AND) it is enough to list them in the same criteria element, for instance the following would enforce for response time not to be higher than 10% compared to the previous value nor to be greater than 600:
+Listed criteria are combined using a logical AND, so if we consider the pass criteria in our example both  "<=+10%" and  "<600" needs to be satisfied.
+To list multiple criteria  (logical OR) it is enough to list them in different criteria element, for instance the following would enforce for response time not to be higher than 10% compared to the previous value or to be greater than 600:
 
 ```yaml
 objectives:
@@ -104,7 +104,9 @@ objectives:
   displayName: "Response Time P95"
   pass:
   - criteria:
-    - "<=+10%,<600"
+    - "<=+10%"
+  - criteria:  
+    - "<600"
   weight: 2
   key_sli: true
 ```
