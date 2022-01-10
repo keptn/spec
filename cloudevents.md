@@ -27,6 +27,7 @@ In Keptn, events have a payload structure as follows (*Note:* The `triggeredid` 
     "specversion",
     "time",
     "triggeredid",
+    "gitcommitid",
     "type"
   ],
   "properties": {
@@ -71,6 +72,11 @@ In Keptn, events have a payload structure as follows (*Note:* The `triggeredid` 
       "format": "uuid",
       "type": "string",
       "description": "The event ID that has triggered the step"
+    },
+    "gitcommitid": {
+      "format": "uuid",
+      "type": "string",
+      "description": "The git commit ID of the resource used in the context"
     },
     "type": {
       "type": "string",
@@ -180,7 +186,8 @@ sh.keptn.event.project.create.triggered
     "gitRemoteURL": "https://github.com/project/repository",
     "shipyard": "c3RhZ2VzOg0KICAtIG5hbWU6ICJkZXYiDQogICAgZGVwbG95bWVudF9zdHJhdGVneTogImRpcmVjdCINCiAgICB0ZXN0X3N0cmF0ZWd5OiAiZnVuY3Rpb25hbCINCiAgLSBuYW1lOiAic3RhZ2luZyINCiAgICBkZXBsb3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHRlc3Rfc3RyYXRlZ3k6ICJwZXJmb3JtYW5jZSINCiAgLSBuYW1lOiAicHJvZHVjdGlvbiINCiAgICBkZXBsb3ltZW50X3N0cmF0ZWd5OiAiYmx1ZV9ncmVlbl9zZXJ2aWNlIg0KICAgIHJlbWVkaWF0aW9uX3N0cmF0ZWd5OiAiYXV0b21hdGVkIg0K"
   },
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -267,7 +274,8 @@ sh.keptn.event.project.create.started
     "message": "a message"
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -385,7 +393,8 @@ sh.keptn.event.project.create.finished
     }
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -473,7 +482,8 @@ sh.keptn.event.service.create.started
     "message": "a message"
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -560,7 +570,8 @@ sh.keptn.event.service.create.status.changed
     "message": "a message"
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -647,7 +658,8 @@ sh.keptn.event.service.create.finished
     "message": "a message"
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -769,7 +781,8 @@ sh.keptn.event.approval.triggered
       "warning": "manual"
     }
   },
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -856,7 +869,8 @@ sh.keptn.event.approval.started
     "message": "a message"
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -943,7 +957,8 @@ sh.keptn.event.approval.status.changed
     "message": "a message"
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -1030,7 +1045,8 @@ sh.keptn.event.approval.finished
     "message": "a message"
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -1190,7 +1206,8 @@ sh.keptn.event.deployment.triggered
       "deploymentstrategy": "direct"
     }
   },
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -1277,7 +1294,8 @@ sh.keptn.event.deployment.started
     "message": "a message"
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -1364,7 +1382,8 @@ sh.keptn.event.deployment.status.changed
     "message": "a message"
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -1512,7 +1531,8 @@ sh.keptn.event.deployment.finished
     }
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -1599,7 +1619,8 @@ sh.keptn.event.rollback.triggered
     "result": "pass",
     "message": "a message"
   },
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -1686,7 +1707,8 @@ sh.keptn.event.rollback.started
     "message": "a message"
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -1773,7 +1795,8 @@ sh.keptn.event.rollback.finished
     "message": "a message"
   },
   "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -1922,7 +1945,8 @@ sh.keptn.event.test.triggered
       ]
     }
   },
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -2009,7 +2033,8 @@ sh.keptn.event.test.started
     "message": "a message"
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -2095,7 +2120,8 @@ sh.keptn.event.test.triggered
     "result": "pass",
     "message": "a message"
   },
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -2214,7 +2240,8 @@ sh.keptn.event.test.finished
     }
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -2383,7 +2410,8 @@ sh.keptn.event.evaluation.triggered
       ]
     }
   },
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -2470,7 +2498,8 @@ sh.keptn.event.evaluation.started
     "message": "a message"
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -2557,7 +2586,8 @@ sh.keptn.event.evaluation.status.changed
     "message": "a message"
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -2826,7 +2856,8 @@ sh.keptn.event.evaluation.finished
     }
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -2913,7 +2944,8 @@ sh.keptn.event.evaluation.invalidated
     "message": "a message"
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -3062,7 +3094,8 @@ sh.keptn.event.release.triggered
       "gitCommit": "ca82a6dff817gc66f44342007202690a93763949"
     }
   },
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -3149,7 +3182,8 @@ sh.keptn.event.release.started
     "message": "a message"
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -3236,7 +3270,8 @@ sh.keptn.event.release.status.changed
     "message": "a message"
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -3345,7 +3380,8 @@ sh.keptn.event.release.finished
     }
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -3464,7 +3500,8 @@ sh.keptn.event.get-action.triggered
     },
     "actionIndex": 0
   },
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -3551,7 +3588,8 @@ sh.keptn.event.get-action.started
     "message": "a message"
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -3680,7 +3718,8 @@ sh.keptn.event.get-action.finished
     "ActionIndex": 1
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -3829,7 +3868,8 @@ sh.keptn.event.action.triggered
       "rootCause": "problem root cause"
     }
   },
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -3916,7 +3956,8 @@ sh.keptn.event.action.started
     "message": "a message"
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -4022,7 +4063,8 @@ sh.keptn.event.action.finished
     }
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -4190,7 +4232,8 @@ sh.keptn.event.get-sli.triggered
     },
     "deployment": "direct"
   },
-  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1"
+  "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -4277,7 +4320,8 @@ sh.keptn.event.get-sli.started
     "message": "a message"
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -4422,7 +4466,8 @@ sh.keptn.event.get-sli.finished
     }
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -4482,7 +4527,8 @@ sh.keptn.event.monitoring.configure
     "service": "service"
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -4596,7 +4642,8 @@ sh.keptn.events.problem
     "labels": null
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
@@ -4659,7 +4706,8 @@ sh.keptn.log.error
     "task": "deployment"
   },
   "shkeptncontext": "a3e5f16d-8888-4720-82c7-6995062905c1",
-  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6"
+  "triggeredid": "3f9640b6-1d2a-4f11-95f5-23259f1d82d6",
+  "gitcommitid": "521747298a3790fde1710f3aa2d03b55020575aa"
 }
 ```
 
