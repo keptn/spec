@@ -1,8 +1,8 @@
 # Import package
 
-* An import package is a .zip file containing a **manifest.yaml** that describes additional 
+An import package is a .zip file containing a **manifest.yaml** that describes additional 
   contents and actions that should be carried out when processing the package.
-* A valid import package must contain all resource files that are referenced in the 
+A valid import package must contain all resource files that are referenced in the 
   **manifest.yaml**.
 
 ## Meta-data
@@ -11,9 +11,9 @@
 
 ## Tasks
 
-* `tasks`: is a list of api actions and resource tasks.
-    * `id`: Each task must contain a unique **id** property that only contains upper-case, 
-       lower-case letters, digits and an underscore (`[A-Za-z0-9_]+`)
+* `tasks`: list of api actions and resource tasks.
+    * `id`:  unique identifier of the task.  Must contain only upper-case, 
+       lower-case letters, digits or underscores (`[A-Za-z0-9_]+`)
     * `type`: Must be either **api** or **resource**. All required properties of the specified
        type have to be implemented.
     * `name` *(optional)*: A human readable name for the action to easier identify the action
@@ -22,17 +22,18 @@
 
 ### API action
 An API action is a task that interacts with a specific Keptn API endpoint. The JSON results of the endpoint
-will be stored in ` .Tasks.<task-id>.Response.<field>` and are accessible for all following tasks. The following
+are stored in ` .Tasks.<task-id>.Response.<field>` and are accessible for all following tasks. The following
 properties have to be implemented by an API action:
-* `action`: The name of the Keptn API endpoint that should be called. 
+* `action`: The name of the Keptn API endpoint to call. 
   See [Supported API endpoints](#supported-api-endpoints) for more information.
 * `payload`: A reference to a file that should be used as body payload for the API action.
-  If the action does not take a body, this property may be ignored.
+  If the action does not take a body, this property is ignored. The file reference has to be
+  specified as the full path within the provided import package.
 
 ### Resource task
-A resource task is a task that adds resources to Keptn. Similar to the API actions, the resources are also 
+A resource task adds resources to Keptn. Similar to the API actions, the resources are also 
 processed by the templating engine. The following properties have to be defined for a resource task:
-* `resource`: A reference to a file in the import package
+* `resource`: A reference (file path) to a file in the import package
 * `resourceUri`: The URI at which the file should be stored in Keptn
 * `stage` *(optional)*: An optional stage name that can be specified
 * `service` *(optional)*: An optional service that can be specified, if specified `stage` has to be non-empty
@@ -81,7 +82,7 @@ The following inputs are currently available to be used in all places that suppo
 * `[[ .Inputs.project ]]`: Will be rendered to the current project name
 
 ### Tasks references
-After a task has been processed it does expose it's response and the already fully rendered context via the 
+After a task has been processed, it exposes its response and the already fully rendered context via the 
 following properties:
 * `[[ .Tasks.<task-id>.Context.<property-name> ]]`: Can be used to access the rendered context property of 
   a given task with the `id`.
@@ -202,8 +203,8 @@ In resource files only properties of the task **context** can be utilized and ac
 
 # Example
 The following example contains the contents of an import package to create a service with 
-a webhook subscription for a given project. Besides the payload files from the [](#supported-api-endpoints)
-Section also the following **manifest.yaml** and **webhook.yaml** files have been used to produce
+a webhook subscription for a given project. In addition to the payload files from the [](#supported-api-endpoints)
+section, the **manifest.yaml** and **webhook.yaml** files have are also used to produce
 the following ZIP-archive:
 ```
 .
