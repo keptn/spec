@@ -1,9 +1,8 @@
 # Import package
 
-An import package is a .zip file containing a **manifest.yaml** that describes additional 
-  contents and actions that should be carried out when processing the package.
-A valid import package must contain all resource files that are referenced in the 
-  **manifest.yaml**.
+An import package is a .zip file that contains a **manifest.yaml** that describes additional 
+contents and actions to be performed when processing the package, in addition, all files
+referenced within the manifest must be included in the .zip file.
 
 ## Meta-data
 
@@ -31,8 +30,10 @@ properties have to be implemented by an API action:
   specified as the relative path within the provided import package.
 
 ### Resource task
-A resource task adds resources to Keptn. Similar to the API actions, resources are also 
-processed by the templating engine. The following properties have to be defined for a resource task:
+A resource task adds resources to Keptn. This task is similar to the Keptn CLI 
+[add-resource](https://keptn.sh/docs/0.18.x/reference/cli/commands/keptn_add-resource/) argument.
+Similar to API actions, resources are also 
+processed by the Golang templating engine. The following properties have to be defined for a resource task:
 * `resource`: A reference (relative file path) to a file in the import package
 * `resourceUri`: The URI at which the file should be stored in Keptn
 * `stage` *(optional)*: An optional stage name that can be specified
@@ -75,7 +76,7 @@ The following API actions are supported:
 
 ## Templating
 If not mentioned otherwise all string values of the `context` property in a **task** can be used with the
-templating syntax of the go templating engine. We use Golang templating with `[[` and `]]` as separator. 
+templating syntax of the Golang templating engine. We use `[[` and `]]` as separator. 
 
 ### Global Inputs
 The following inputs are currently available to be used in all places that support templating:
