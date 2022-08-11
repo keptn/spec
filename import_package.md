@@ -28,12 +28,12 @@ properties have to be implemented by an API action:
   See [Supported API endpoints](#supported-api-endpoints) for more information.
 * `payload`: A reference to a file that should be used as body payload for the API action.
   If the action does not take a body, this property is ignored. The file reference has to be
-  specified as the full path within the provided import package.
+  specified as the relative path within the provided import package.
 
 ### Resource task
-A resource task adds resources to Keptn. Similar to the API actions, the resources are also 
+A resource task adds resources to Keptn. Similar to the API actions, resources are also 
 processed by the templating engine. The following properties have to be defined for a resource task:
-* `resource`: A reference (file path) to a file in the import package
+* `resource`: A reference (relative file path) to a file in the import package
 * `resourceUri`: The URI at which the file should be stored in Keptn
 * `stage` *(optional)*: An optional stage name that can be specified
 * `service` *(optional)*: An optional service that can be specified, if specified `stage` has to be non-empty
@@ -43,14 +43,14 @@ If not mentioned otherwise, all payloads support templating and all given proper
 can be used in the payload. For more details see the [Templating](#templating) Section. 
 The following API actions are supported: 
 
-`keptn-api-v1-create-service`: Creates a service
+`keptn-api-v1-create-service`: Create a service
 ```json
 {
     "serviceName": "[[ .Context.service ]]"
 }
 ```
 
-`keptn-api-v1-uniform-create-secret`: Creates a secret
+`keptn-api-v1-uniform-create-secret`: Create a secret
 ```json
 {
     "scope":"[[ .Context.scope ]]",
@@ -75,7 +75,7 @@ The following API actions are supported:
 
 ## Templating
 If not mentioned otherwise all string values of the `context` property in a **task** can be used with the
-templating syntax of the go templating engine. We use `[[` and `]]` as separator. 
+templating syntax of the go templating engine. We use Golang templating with `[[` and `]]` as separator. 
 
 ### Global Inputs
 The following inputs are currently available to be used in all places that support templating:
