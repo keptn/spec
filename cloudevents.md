@@ -117,6 +117,68 @@ By combining the *task* and *event status* for the `deployment` task, the event 
 * `sh.keptn.event.deployment.started`
 * `sh.keptn.event.deployment.status.changed`
 * `sh.keptn.event.deployment.finished`
+
+## Standard vs. Custom Task Events
+This page shows some standard task events such as `deployment`, `test` and `evaluation`. The Keptn project has chosen to define these as they are common "tasks" that DevOps and SRE practioners want to achieve.
+
+The Shipyard file accepts any `String` as a task name: you are not limited to only the tasks shown on this page.
+
+Keptn core will "translate" the task name to a cloudevent `type` and build that `taskname.triggered` event automatically for you.
+
+For example, given this Shipyard:
+
+```
+...
+tasks:
+  - name: "my-custom-task"
+...
+```
+
+Keptn would "automatically" translate that at runtime into a cloudevent like this:
+
+```
+{
+  ...
+  "type": "sh.keptn.event.my-custom-task.triggered"
+  ...
+}
+```
+
+All tasks have a lifecycle:
+
+1. task.triggered
+2. task.started
+3. task.status.changed (optional)
+4. task.finished
+
+Any custom integrations must craft and send back these events such as `task.started`:
+
+```
+{
+  ...
+  "type": "sh.keptn.event.my-custom-task.started"
+  ...
+}
+```
+
+`task.status.changed`:
+```
+{
+  ...
+  "type": "sh.keptn.event.my-custom-task.status.changed"
+  ...
+}
+```
+
+And `task.finished`:
+```
+{
+  ...
+  "type": "sh.keptn.event.my-custom-task.started"
+  ...
+}
+```
+
 ## Data
 The data block of a Keptn CloudEvent carries the Keptn Payload of a specific event and contains the properties:
 * labels
