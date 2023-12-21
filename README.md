@@ -1,5 +1,7 @@
 # Keptn Specification
 
+## Keptn V1 has reached end of life on December 22nd, 2023 and has been [replaced](https://github.com/keptn/lifecycle-toolkit).
+
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/keptn/spec)
 
 This repository contains the specification for the [Keptn](https://keptn.sh) project, which describes requirements and expectations of all Keptn related services and implementations.
